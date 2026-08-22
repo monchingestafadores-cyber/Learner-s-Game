@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Metaphoria</title>
-  <link rel="stylesheet" href="style.css?v=340" />
+  <link rel="stylesheet" href="style.css?v=342" />
 </head>
 
 <body>
@@ -101,9 +101,25 @@
       </div>
     </section>
 
+    <!-- FULLSCREEN GUIDE -->
+    <section id="fullscreenGuide" class="screen fullscreen-guide-screen hidden">
+      <button type="button" onclick="showProfileHub()" class="image-btn back-image-btn fullscreen-guide-back-btn" aria-label="Back" title="Back"></button>
+      <img class="fullscreen-guide-logo" src="assets/images/welcome.png" alt="" />
+      <div class="fullscreen-guide-board">
+        <h1>Phone Guide</h1>
+        <p>If you are using a cellphone, tap fullscreen before playing.</p>
+        <p>It helps keep the board, choices, and typing areas visible.</p>
+        <div class="fullscreen-guide-actions">
+          <button type="button" onclick="sparkButton(this); toggleFullscreen()" class="fullscreen-guide-action fullscreen-guide-main">Use Fullscreen</button>
+          <button type="button" onclick="sparkButton(this); showChooseMode()" class="fullscreen-guide-action">Continue</button>
+        </div>
+      </div>
+      <img class="fullscreen-guide-character" src="assets/images/guide-happy.png" alt="" />
+    </section>
+
     <!-- CHOOSE MODE -->
     <section id="chooseMode" class="screen choose-mode-screen hidden">
-      <button type="button" onclick="showProfileHub()" class="image-btn back-image-btn choose-back-btn" aria-label="Back" title="Back"></button>
+      <button type="button" onclick="showFullscreenGuide()" class="image-btn back-image-btn choose-back-btn" aria-label="Back" title="Back"></button>
       <img class="choose-welcome-art" src="assets/images/welcome.png" alt="" />
       <img class="choose-mode-art" src="assets/images/choose-mode.png" alt="" />
       <div class="choose-mode-actions">
@@ -265,6 +281,6 @@
     <source src="assets/music/lofi.mp3" type="audio/mpeg" />
   </audio>
 
-  <script src="script.js?v=93"></script>
+  <script src="script.js?v=95"></script>
 </body>
 </html>

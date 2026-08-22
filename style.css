@@ -2993,8 +2993,100 @@ body {
 }
 
 .choose-mode-screen,
+.fullscreen-guide-screen,
 .learn-blank-screen {
   background: url("assets/images/bg.png") center center / cover no-repeat;
+}
+
+.fullscreen-guide-logo {
+  position: fixed;
+  left: calc(var(--fixed-left) + (430px * var(--fixed-scale)));
+  top: calc(var(--fixed-top) + (22px * var(--fixed-scale)));
+  width: calc(420px * var(--fixed-scale));
+  height: auto;
+  pointer-events: none;
+  filter: drop-shadow(0 calc(10px * var(--fixed-scale)) calc(8px * var(--fixed-scale)) rgba(0, 0, 0, 0.45));
+  z-index: 3;
+}
+
+.fullscreen-guide-board {
+  position: fixed;
+  left: calc(var(--fixed-left) + (235px * var(--fixed-scale)));
+  top: calc(var(--fixed-top) + (160px * var(--fixed-scale)));
+  width: calc(690px * var(--fixed-scale));
+  min-height: calc(395px * var(--fixed-scale));
+  padding: calc(62px * var(--fixed-scale)) calc(86px * var(--fixed-scale)) calc(42px * var(--fixed-scale));
+  color: #4b2407;
+  text-align: center;
+  background: url("assets/images/scroll-new.png") center / 100% 100% no-repeat;
+  filter: drop-shadow(0 calc(12px * var(--fixed-scale)) calc(11px * var(--fixed-scale)) rgba(0, 0, 0, 0.42));
+  z-index: 2;
+}
+
+.fullscreen-guide-board h1 {
+  margin: 0 0 calc(22px * var(--fixed-scale));
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: calc(42px * var(--fixed-scale));
+  line-height: 1;
+  color: #3a1b04;
+  text-shadow: 0 calc(2px * var(--fixed-scale)) 0 rgba(255, 235, 162, 0.8);
+}
+
+.fullscreen-guide-board p {
+  margin: calc(13px * var(--fixed-scale)) auto;
+  max-width: calc(485px * var(--fixed-scale));
+  font-size: calc(25px * var(--fixed-scale));
+  line-height: 1.22;
+  font-weight: 800;
+}
+
+.fullscreen-guide-actions {
+  display: flex;
+  justify-content: center;
+  gap: calc(22px * var(--fixed-scale));
+  margin-top: calc(30px * var(--fixed-scale));
+}
+
+.fullscreen-guide-action {
+  min-width: calc(190px * var(--fixed-scale));
+  min-height: calc(58px * var(--fixed-scale));
+  padding: calc(10px * var(--fixed-scale)) calc(20px * var(--fixed-scale));
+  border: calc(3px * var(--fixed-scale)) solid #fff0a4;
+  border-radius: calc(15px * var(--fixed-scale));
+  color: #fffad0;
+  font-size: calc(21px * var(--fixed-scale));
+  font-weight: 900;
+  cursor: pointer;
+  background: linear-gradient(#47d935, #0b6d18);
+  box-shadow:
+    0 calc(7px * var(--fixed-scale)) 0 rgba(0, 0, 0, 0.35),
+    inset 0 calc(2px * var(--fixed-scale)) 0 rgba(255, 255, 255, 0.55);
+  text-shadow: 0 calc(2px * var(--fixed-scale)) 0 #073600;
+}
+
+.fullscreen-guide-main {
+  background: linear-gradient(#42c8ff, #075abf);
+  text-shadow: 0 calc(2px * var(--fixed-scale)) 0 #003978;
+}
+
+.fullscreen-guide-character {
+  position: fixed;
+  left: calc(var(--fixed-left) + (850px * var(--fixed-scale)));
+  top: calc(var(--fixed-top) + (250px * var(--fixed-scale)));
+  width: calc(285px * var(--fixed-scale));
+  height: auto;
+  transform: scaleX(-1);
+  pointer-events: none;
+  filter: drop-shadow(0 calc(10px * var(--fixed-scale)) calc(8px * var(--fixed-scale)) rgba(0, 0, 0, 0.4));
+  z-index: 3;
+}
+
+.fullscreen-guide-back-btn {
+  left: calc(var(--fixed-left) + (34px * var(--fixed-scale)));
+  top: calc(var(--fixed-top) + (24px * var(--fixed-scale)));
+  width: calc(132px * var(--fixed-scale));
+  height: calc(88px * var(--fixed-scale));
+  z-index: 6;
 }
 
 #learnBlank .learn-map-title {
@@ -3203,6 +3295,7 @@ body {
   #playMode.game1-bg,
   #playMode.game2-bg,
   #playMode.game3-bg,
+  .fullscreen-guide-screen,
   .choose-mode-screen,
   .learn-blank-screen {
     background-size: calc(1280px * var(--fixed-scale)) calc(720px * var(--fixed-scale));
@@ -3212,6 +3305,7 @@ body {
 
   #moduleMap,
   #learnMode,
+  .fullscreen-guide-screen,
   .choose-mode-screen,
   .learn-blank-screen {
     background-image: url("assets/images/bg.png"), url("assets/images/bg.png");
@@ -7786,4 +7880,120 @@ body {
   font-weight: 900;
   line-height: 1.15;
   text-align: center;
+}
+
+/* Phone landscape safety: keep lesson text and typing areas readable inside
+   the parchment without moving the desktop layout. */
+@media (orientation: landscape) and (max-height: 560px) {
+  #learnMode:not(.learn-topic-game) .lesson-box {
+    top: calc(var(--fixed-top) + (96px * var(--fixed-scale))) !important;
+    height: calc(526px * var(--fixed-scale)) !important;
+    padding-top: calc(38px * var(--fixed-scale)) !important;
+    padding-bottom: calc(8px * var(--fixed-scale)) !important;
+  }
+
+  #learnMode:not(.learn-topic-game) #lessonContent {
+    padding-top: calc(4px * var(--fixed-scale)) !important;
+    padding-bottom: calc(6px * var(--fixed-scale)) !important;
+    font-size: max(calc(18px * var(--fixed-scale)), 11px) !important;
+    line-height: 1.12 !important;
+    overflow: hidden !important;
+  }
+
+  #learnMode:not(.learn-topic-game).lesson-overflow-fit #lessonContent,
+  #learnMode:not(.learn-topic-game).lesson-overflow-extra #lessonContent {
+    overflow-y: auto !important;
+    overscroll-behavior: contain !important;
+    scrollbar-width: none !important;
+  }
+
+  #learnMode:not(.learn-topic-game).lesson-overflow-fit #lessonContent::-webkit-scrollbar,
+  #learnMode:not(.learn-topic-game).lesson-overflow-extra #lessonContent::-webkit-scrollbar {
+    width: 0 !important;
+    height: 0 !important;
+  }
+
+  #learnMode:not(.learn-topic-game) #lessonContent h2 {
+    margin-bottom: calc(7px * var(--fixed-scale)) !important;
+    font-size: max(calc(26px * var(--fixed-scale)), 15px) !important;
+    line-height: 1.05 !important;
+  }
+
+  #learnMode:not(.learn-topic-game) #lessonContent p,
+  #learnMode:not(.learn-topic-game) #lessonContent li,
+  #learnMode:not(.learn-topic-game) .lesson-note,
+  #learnMode:not(.learn-topic-game) .lesson-answer-prompt {
+    line-height: 1.12 !important;
+  }
+
+  #learnMode:not(.learn-topic-game) .lesson-answer-list,
+  #learnMode:not(.learn-topic-game) .lesson-answer-list-stacked,
+  #learnMode:not(.learn-topic-game) .lesson-answer-list-many {
+    gap: calc(5px * var(--fixed-scale)) !important;
+    margin-top: calc(4px * var(--fixed-scale)) !important;
+  }
+
+  #learnMode:not(.learn-topic-game) .lesson-answer-item,
+  #learnMode:not(.learn-topic-game) .lesson-answer-list-stacked .lesson-answer-item {
+    grid-template-columns: 1fr !important;
+    gap: calc(3px * var(--fixed-scale)) !important;
+    align-items: stretch !important;
+    padding-top: calc(2px * var(--fixed-scale)) !important;
+    padding-bottom: calc(2px * var(--fixed-scale)) !important;
+  }
+
+  #learnMode:not(.learn-topic-game) .lesson-response-field,
+  #learnMode:not(.learn-topic-game) .lesson-answer-item .lesson-response-field {
+    box-sizing: border-box !important;
+    min-height: max(calc(34px * var(--fixed-scale)), 24px) !important;
+    padding-top: calc(5px * var(--fixed-scale)) !important;
+    padding-bottom: calc(5px * var(--fixed-scale)) !important;
+    font-size: max(calc(15px * var(--fixed-scale)), 11px) !important;
+    line-height: 1.15 !important;
+  }
+
+  #learnMode:not(.learn-topic-game) .lesson-response-field-long,
+  #learnMode:not(.learn-topic-game) .lesson-answer-list-stacked .lesson-response-field-long,
+  #learnMode:not(.learn-topic-game) .lesson-answer-list-many .lesson-response-field-long {
+    height: max(calc(52px * var(--fixed-scale)), 34px) !important;
+  }
+
+  #learnMode:not(.learn-topic-game) .lesson-response-field-short,
+  #learnMode:not(.learn-topic-game) .lesson-inline-answer-field,
+  #learnMode:not(.learn-topic-game) .lesson-activity input {
+    height: max(calc(30px * var(--fixed-scale)), 22px) !important;
+  }
+
+  #learnMode:not(.learn-topic-game) .lesson-activity-row {
+    align-items: center !important;
+  }
+
+  #playMode.game3-bg .game-box {
+    padding-top: calc(238px * var(--fixed-scale)) !important;
+  }
+
+  #playMode.game3-bg .question-card {
+    min-height: calc(218px * var(--fixed-scale)) !important;
+    padding-top: calc(42px * var(--fixed-scale)) !important;
+    padding-bottom: calc(26px * var(--fixed-scale)) !important;
+  }
+
+  #playMode.game3-bg #choices {
+    width: calc(560px * var(--fixed-scale)) !important;
+    gap: calc(8px * var(--fixed-scale)) !important;
+    margin-top: calc(4px * var(--fixed-scale)) !important;
+  }
+
+  #playMode.game3-bg #playerAnswer {
+    min-height: max(calc(42px * var(--fixed-scale)), 28px) !important;
+    margin-bottom: calc(7px * var(--fixed-scale)) !important;
+    padding: calc(8px * var(--fixed-scale)) calc(14px * var(--fixed-scale)) !important;
+    font-size: max(calc(17px * var(--fixed-scale)), 12px) !important;
+    line-height: 1.15 !important;
+  }
+
+  #playMode.game3-bg #choices button {
+    min-height: max(calc(46px * var(--fixed-scale)), 30px) !important;
+    padding: calc(8px * var(--fixed-scale)) calc(14px * var(--fixed-scale)) !important;
+  }
 }

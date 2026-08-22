@@ -187,6 +187,7 @@ function updateFixedLayout() {
   window.requestAnimationFrame(() => {
     fitQuestionTextToCard()
     fitGame1ChoicesToBoard()
+    fitLessonToScroll()
   })
 }
 
@@ -1716,12 +1717,13 @@ function fitQuestionTextToCard() {
   text.style.removeProperty("font-size")
   text.style.removeProperty("line-height")
 
-  if (currentGame !== 1 && currentGame !== 2) return
+  if (![1, 2, 3].includes(currentGame)) return
 
   let fontSize = parseFloat(window.getComputedStyle(card).fontSize) || 20
-  const minSize = Math.max(9, fontSize * (currentGame === 2 ? 0.56 : 0.62))
+  const minRatio = currentGame === 2 ? 0.56 : currentGame === 3 ? 0.58 : 0.62
+  const minSize = Math.max(9, fontSize * minRatio)
   text.style.setProperty("font-size", `${fontSize}px`, "important")
-  text.style.setProperty("line-height", currentGame === 2 ? "1.14" : "1.13", "important")
+  text.style.setProperty("line-height", currentGame === 2 ? "1.14" : currentGame === 3 ? "1.12" : "1.13", "important")
 
   for (let step = 0; step < 18 && fontSize > minSize; step++) {
     if (text.scrollHeight <= card.clientHeight && text.scrollWidth <= card.clientWidth) break
@@ -2106,6 +2108,7 @@ function getPlayerLiveStatus() {
   if (!document.getElementById("learnMode")?.classList.contains("hidden")) return "Learning"
   if (!document.getElementById("moduleMap")?.classList.contains("hidden")) return "Choosing game"
   if (!document.getElementById("learnBlank")?.classList.contains("hidden")) return "Choosing lesson"
+  if (!document.getElementById("fullscreenGuide")?.classList.contains("hidden")) return "Fullscreen guide"
   if (!document.getElementById("chooseMode")?.classList.contains("hidden")) return "Choosing mode"
   if (!document.getElementById("profileHub")?.classList.contains("hidden")) return "Profile"
 
@@ -2557,7 +2560,7 @@ function continuePlayer(profileId) {
 
   applyPlayerProfile(profile)
   writeStoredProfiles()
-  showChooseMode()
+  showFullscreenGuide()
   syncMultiplayerScore("profile")
 }
 
@@ -2597,8 +2600,21 @@ function submitPlayerName() {
   creatingNewPlayer = false
   savePlayerProfile()
   updateGameIdCard()
-  showChooseMode()
+  showFullscreenGuide()
   syncMultiplayerScore("profile")
+}
+
+function showFullscreenGuide() {
+  if (!playerName) {
+    showPlayerSetup()
+    return
+  }
+
+  playMusic()
+  hideAllScreens()
+  document.getElementById("fullscreenGuide").classList.remove("hidden")
+  setGameIdVisibility(true)
+  syncMultiplayerScore("screen")
 }
 
 function showChooseMode() {
@@ -3099,6 +3115,7 @@ function showLesson() {
   updateLessonLayoutClass(lesson)
   updateLessonGuide()
   requestAnimationFrame(fitLessonToScroll)
+  window.setTimeout(fitLessonToScroll, 120)
 
   startReadTimer()
 }
