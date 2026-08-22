@@ -1,0 +1,78 @@
+{
+  "rooms": {
+    "CLASS": [
+      {
+        "name": "e",
+        "score": 40,
+        "badges": 3,
+        "game": "Sentence Sleuths",
+        "level": "Level 1",
+        "updatedAt": 1779871109339
+      }
+    ],
+    "TESTLEARN": [
+      {
+        "name": "TeacherTest",
+        "score": 10,
+        "badges": 0,
+        "game": "Learning",
+        "level": "Slide 20",
+        "updatedAt": 1787331899033
+      }
+    ],
+    "TEACHERTEST": [
+      {
+        "name": "Ben",
+        "score": 95,
+        "badges": 2,
+        "game": "Text Detectives",
+        "level": "",
+        "updatedAt": 1779865556359
+      },
+      {
+        "name": "Ana",
+        "score": 75,
+        "badges": 1,
+        "game": "Sentence Sleuths",
+        "level": "Level 1",
+        "updatedAt": 1779865557389
+      }
+    ],
+    "ROOM55A8": [
+      {
+        "name": "e",
+        "score": 40,
+        "badges": 3,
+        "game": "Sentence Sleuths",
+        "level": "Level 1",
+        "updatedAt": 1779871274867
+      }
+    ],
+    "TESTROOM": [
+      {
+        "name": "Laptop",
+        "score": 65,
+        "badges": 1,
+        "game": "Text Detectives",
+        "level": "",
+        "updatedAt": 1779857793581
+      },
+      {
+        "name": "e",
+        "score": 40,
+        "badges": 3,
+        "game": "Sentence Sleuths",
+        "level": "Level 1",
+        "updatedAt": 1779857929176
+      },
+      {
+        "name": "Phone",
+        "score": 35,
+        "badges": 0,
+        "game": "Sentence Sleuths",
+        "level": "Level 1",
+        "updatedAt": 1779857467729
+      }
+    ]
+  }
+}
