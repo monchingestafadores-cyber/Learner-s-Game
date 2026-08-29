@@ -62,7 +62,7 @@ const DEVELOPER_PASSWORD = "135790"
 const QUESTIONS_PER_RUN = 5
 const PASSING_ANSWERS = 4
 const GAME_1_QUESTIONS_PER_LEVEL = 10
-const GAME_1_PASSING_ANSWERS = 8
+const GAME_1_PASSING_RATE = 0.6
 const BADGE_REQUIRED_CORRECT = 3
 const ALL_BADGES_BONUS = 100
 const BADGE_CAP = 5
@@ -4068,8 +4068,8 @@ function getQuestionLimitForGame(gameNumber = currentGame) {
   return gameNumber === 1 ? GAME_1_QUESTIONS_PER_LEVEL : QUESTIONS_PER_RUN
 }
 
-function getPassingAnswersForGame(gameNumber = currentGame) {
-  return gameNumber === 1 ? GAME_1_PASSING_ANSWERS : PASSING_ANSWERS
+function getPassingAnswersForGame(gameNumber = currentGame, totalQuestions = getQuestionLimitForGame(gameNumber)) {
+  return gameNumber === 1 ? Math.ceil(totalQuestions * GAME_1_PASSING_RATE) : PASSING_ANSWERS
 }
 
 function getCurrentRunTitle() {
@@ -4612,7 +4612,7 @@ function finishGame() {
 
   setGuideState("assets/images/guide-cheer.png", "You finished the game. Let's see your result!")
 
-  const requiredCorrectAnswers = getPassingAnswersForGame(currentGame)
+  const requiredCorrectAnswers = getPassingAnswersForGame(currentGame, questions.length)
 
   if (correctAnswers >= requiredCorrectAnswers) {
     commitCurrentRunAnswers()
@@ -4996,7 +4996,7 @@ function showInstructions() {
         <div class="mechanics-step">
           <span class="mechanics-number">4</span>
           <strong>Unlock</strong>
-          <p>Pass with 8 out of 10 in Game 1, or 4 out of 5 in the other games.</p>
+          <p>Pass with 60% or higher in Game 1, or 4 out of 5 in the other games.</p>
         </div>
       </div>
 
