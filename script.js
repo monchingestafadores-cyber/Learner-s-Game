@@ -61,10 +61,13 @@ const DEVELOPER_PASSWORD = "135790"
 
 const QUESTIONS_PER_RUN = 5
 const PASSING_ANSWERS = 4
+const GAME_1_QUESTIONS_PER_LEVEL = 10
+const GAME_1_PASSING_ANSWERS = 8
 const BADGE_REQUIRED_CORRECT = 3
 const ALL_BADGES_BONUS = 100
 const BADGE_CAP = 5
 const MAX_SAVED_ANSWER_RUNS = 20
+const MAX_CLASSROOM_ANSWER_RUNS = 5
 const MAX_LEARN_RESPONSES = 20
 const MAX_LEARN_RESPONSE_LENGTH = 700
 
@@ -265,19 +268,21 @@ function module1Rows(items, className = "") {
   `).join("")}</div>`
 }
 
-function module1Activity(activityId, directions, items) {
-  return `<div class="lesson-activity" data-activity-id="${activityId}">
-    <p class="lesson-activity-directions">${directions}</p>
+function module1Activity(activityId, directions, items, startNumber = 1, className = "", showCheckButton = true) {
+  const safeClassName = String(className || "").replace(/[^a-z0-9_-]/gi, " ").trim()
+
+  return `<div class="lesson-activity ${safeClassName}" data-activity-id="${activityId}">
+    ${directions ? `<p class="lesson-activity-directions">${directions}</p>` : ""}
     <div class="lesson-activity-items">
       ${items.map((item, index) => `
         <label class="lesson-activity-row">
-          <span class="lesson-activity-prompt"><strong>${index + 1}.</strong> ${item.prompt}</span>
-          <input type="text" maxlength="24" autocomplete="off" data-activity-answer="${item.answer}" data-activity-accept="${item.accept || ""}" aria-label="Answer ${index + 1}" />
+          <span class="lesson-activity-prompt"><strong>${startNumber + index}.</strong> ${item.prompt}</span>
+          <input type="text" maxlength="24" autocomplete="off" data-activity-response-id="${escapeHtml(item.responseId || `${activityId}-activity-${startNumber + index}`)}" data-activity-title="${escapeHtml(directions || "Learning Activity")}" data-activity-prompt="${escapeHtml(item.prompt)}" data-activity-answer="${escapeHtml(item.answer)}" data-activity-accept="${escapeHtml(item.accept || "")}" aria-label="Answer ${startNumber + index}" oninput="saveLessonActivityResponse('${escapeHtml(activityId)}', ${startNumber + index}, this)" />
           <span class="lesson-activity-result" aria-live="polite"></span>
         </label>
       `).join("")}
     </div>
-    <button type="button" class="lesson-check-btn" onclick="sparkButton(this); checkLessonActivity('${activityId}')">Check Answers</button>
+    ${showCheckButton ? `<button type="button" class="lesson-check-btn" onclick="sparkButton(this); checkLessonActivity('${activityId}')">Check Answers</button>` : ""}
   </div>`
 }
 
@@ -308,7 +313,7 @@ function lessonAnswerList(baseId, title, items, className = "") {
     ${items.map((item, index) => {
       const config = typeof item === "string" ? { prompt: item } : item
       return lessonAnswerField(
-        `${baseId}-${index + 1}`,
+        config.id || `${baseId}-${index + 1}`,
         config.title || title,
         config.prompt,
         config.html || escapeHtml(config.prompt),
@@ -418,34 +423,30 @@ const learnModules = {
     },
     {
       title: "Slide 14",
-      content: `<h2>Activity 1: Let's Recall!</h2>${module1Activity("module1-activity1-a", "Directions: Read each statement carefully. Type TRUE if the statement is correct and FALSE if it is incorrect.", [{ prompt: "Literary devices help make literary works more interesting and meaningful.", answer: "TRUE", accept: "T" }, { prompt: "Literary elements and literary techniques are the two categories of literary devices.", answer: "TRUE", accept: "T" }, { prompt: "Simile is an example of a literary element.", answer: "FALSE", accept: "F" }, { prompt: "Mood is an example of a literary element.", answer: "TRUE", accept: "T" }])}`
+      content: `<h2>Activity 1: Let's Recall!</h2>${module1Activity("module1-activity1", "Directions: Read each statement carefully. Type TRUE if the statement is correct and FALSE if it is incorrect.", [{ prompt: "Literary devices help make literary works more interesting and meaningful.", answer: "TRUE", accept: "T", responseId: "module1-activity1-a-activity-1" }, { prompt: "Literary elements and literary techniques are the two categories of literary devices.", answer: "TRUE", accept: "T", responseId: "module1-activity1-a-activity-2" }, { prompt: "Simile is an example of a literary element.", answer: "FALSE", accept: "F", responseId: "module1-activity1-a-activity-3" }, { prompt: "Mood is an example of a literary element.", answer: "TRUE", accept: "T", responseId: "module1-activity1-a-activity-4" }, { prompt: "Literary techniques are used to enhance the artistic quality of a text.", answer: "TRUE", accept: "T", responseId: "module1-activity1-b-activity-1" }, { prompt: "Setting refers to the time and place of a story.", answer: "TRUE", accept: "T", responseId: "module1-activity1-b-activity-2" }, { prompt: "Hyperbole is a literary element.", answer: "FALSE", accept: "F", responseId: "module1-activity1-b-activity-3" }, { prompt: "Writers use literary devices to express ideas and emotions effectively.", answer: "TRUE", accept: "T", responseId: "module1-activity1-b-activity-4" }, { prompt: "Characters are considered literary elements.", answer: "TRUE", accept: "T", responseId: "module1-activity1-b-activity-5" }, { prompt: "Symbolism is a literary technique.", answer: "TRUE", accept: "T", responseId: "module1-activity1-b-activity-6" }], 1, "lesson-activity-merged")}`
     },
     {
       title: "Slide 15",
-      content: `<h2>Activity 1: Continue</h2>${module1Activity("module1-activity1-b", "Type TRUE if the statement is correct and FALSE if it is incorrect.", [{ prompt: "Literary techniques are used to enhance the artistic quality of a text.", answer: "TRUE", accept: "T" }, { prompt: "Setting refers to the time and place of a story.", answer: "TRUE", accept: "T" }, { prompt: "Hyperbole is a literary element.", answer: "FALSE", accept: "F" }, { prompt: "Writers use literary devices to express ideas and emotions effectively.", answer: "TRUE", accept: "T" }, { prompt: "Characters are considered literary elements.", answer: "TRUE", accept: "T" }, { prompt: "Symbolism is a literary technique.", answer: "TRUE", accept: "T" }])}`
-    },
-    {
-      title: "Slide 16",
       content: `<h2>Activity 2: Classify Me!</h2>${module1Activity("module1-activity2", "Directions: Type LE if it is a Literary Element and LT if it is a Literary Technique.", [{ prompt: "Plot", answer: "LE", accept: "LITERARY ELEMENT" }, { prompt: "Simile", answer: "LT", accept: "LITERARY TECHNIQUE" }, { prompt: "Mood", answer: "LE", accept: "LITERARY ELEMENT" }, { prompt: "Metaphor", answer: "LT", accept: "LITERARY TECHNIQUE" }, { prompt: "Theme", answer: "LE", accept: "LITERARY ELEMENT" }, { prompt: "Hyperbole", answer: "LT", accept: "LITERARY TECHNIQUE" }, { prompt: "Setting", answer: "LE", accept: "LITERARY ELEMENT" }, { prompt: "Personification", answer: "LT", accept: "LITERARY TECHNIQUE" }, { prompt: "Tone", answer: "LE", accept: "LITERARY ELEMENT" }, { prompt: "Symbolism", answer: "LT", accept: "LITERARY TECHNIQUE" }])}`
     },
     {
+      title: "Slide 16",
+      content: `<h2>Activity 3: Why Does It Matter?</h2><p>Directions: Read the short paragraph below and answer the questions.</p><div class="lesson-example">The moon smiled down on the sleepy village while the stars twinkled like tiny diamonds. The cool breeze whispered through the trees, making everyone feel peaceful and safe.</div>${lessonAnswerList("module1-slide17-response", "Slide 16: Activity 3", [{ prompt: "Which literary devices can you identify in the paragraph?", placeholder: "Type the devices you noticed.", long: true }, { prompt: "What do these devices add to the paragraph?", placeholder: "Type what they add.", long: true }], "lesson-answer-list-stacked lesson-answer-list-shortpair")}`
+    },
+    {
       title: "Slide 17",
-      content: `<h2>Activity 3: Why Does It Matter?</h2><p>Directions: Read the short paragraph below and answer the questions.</p><div class="lesson-example">The moon smiled down on the sleepy village while the stars twinkled like tiny diamonds. The cool breeze whispered through the trees, making everyone feel peaceful and safe.</div>${lessonAnswerList("module1-slide17-response", "Slide 17: Activity 3", [{ prompt: "Which literary devices can you identify in the paragraph?", placeholder: "Type the devices you noticed.", long: true }, { prompt: "What do these devices add to the paragraph?", placeholder: "Type what they add.", long: true }], "lesson-answer-list-stacked lesson-answer-list-shortpair")}`
+      content: `<h2>Reflection Questions</h2>${lessonAnswerList("module1-slide18-response", "Slide 17: Reflection Questions", [{ prompt: "Which literary devices can you identify in the paragraph?", long: true }, { prompt: "How did these literary devices affect your imagination while reading?", long: true }, { prompt: "How would the paragraph change if the literary devices were removed?", long: true }, { prompt: "Why is it important for writers to use literary devices in literary works?", long: true }, { prompt: "How can understanding literary devices help you appreciate poems, stories, and songs?", long: true }], "lesson-answer-list-stacked lesson-answer-list-many")}`
     },
     {
       title: "Slide 18",
-      content: `<h2>Reflection Questions</h2>${lessonAnswerList("module1-slide18-response", "Slide 18: Reflection Questions", [{ prompt: "Which literary devices can you identify in the paragraph?", long: true }, { prompt: "How did these literary devices affect your imagination while reading?", long: true }, { prompt: "How would the paragraph change if the literary devices were removed?", long: true }, { prompt: "Why is it important for writers to use literary devices in literary works?", long: true }, { prompt: "How can understanding literary devices help you appreciate poems, stories, and songs?", long: true }], "lesson-answer-list-stacked lesson-answer-list-many")}`
+      content: `<h2>My Learning Reflection</h2><p>Directions: Reflect on what you have learned in this module. Answer each question in 2-4 complete sentences.</p>${lessonAnswerList("module1-slide19-response", "Slide 18: My Learning Reflection", [{ prompt: "What did I learn from this module?", html: "<strong>What did I learn from this module?</strong> Describe the most important knowledge or skills you gained about literary devices.", placeholder: "Type your answer.", long: true }, { prompt: "What interested me the most? Why?", html: "<strong>What interested me the most? Why?</strong> Explain which literary device, example, or activity you found most interesting.", placeholder: "Type your answer.", long: true }], "lesson-answer-list-stacked lesson-answer-list-reflection")}`
     },
     {
       title: "Slide 19",
-      content: `<h2>My Learning Reflection</h2><p>Directions: Reflect on what you have learned in this module. Answer each question in 2-4 complete sentences.</p>${lessonAnswerList("module1-slide19-response", "Slide 19: My Learning Reflection", [{ prompt: "What did I learn from this module?", html: "<strong>What did I learn from this module?</strong> Describe the most important knowledge or skills you gained about literary devices.", placeholder: "Type your answer.", long: true }, { prompt: "What interested me the most? Why?", html: "<strong>What interested me the most? Why?</strong> Explain which literary device, example, or activity you found most interesting.", placeholder: "Type your answer.", long: true }], "lesson-answer-list-stacked lesson-answer-list-reflection")}`
+      content: `<h2>My Learning Reflection</h2><p>Answer each question in 2-4 complete sentences.</p>${lessonAnswerList("module1-slide20-response", "Slide 19: My Learning Reflection", [{ prompt: "What do I still need to improve or practice?", html: "<strong>What do I still need to improve or practice?</strong> Identify a concept or skill about literary devices that you found challenging and explain how you can improve.", placeholder: "Type your answer.", long: true }, { prompt: "How can I apply what I learned in real life?", html: "<strong>How can I apply what I learned in real life?</strong> Explain how understanding literary devices can help you become a better reader, writer, or speaker.", placeholder: "Type your answer.", long: true }], "lesson-answer-list-stacked lesson-answer-list-reflection")}`
     },
     {
       title: "Slide 20",
-      content: `<h2>My Learning Reflection</h2><p>Answer each question in 2-4 complete sentences.</p>${lessonAnswerList("module1-slide20-response", "Slide 20: My Learning Reflection", [{ prompt: "What do I still need to improve or practice?", html: "<strong>What do I still need to improve or practice?</strong> Identify a concept or skill about literary devices that you found challenging and explain how you can improve.", placeholder: "Type your answer.", long: true }, { prompt: "How can I apply what I learned in real life?", html: "<strong>How can I apply what I learned in real life?</strong> Explain how understanding literary devices can help you become a better reader, writer, or speaker.", placeholder: "Type your answer.", long: true }], "lesson-answer-list-stacked lesson-answer-list-reflection")}`
-    },
-    {
-      title: "Slide 21",
       content: `<h2>Module Summary</h2><p>Literary devices are tools and techniques that writers use to make literary texts more meaningful, creative, and engaging.</p>${module1Rows([{ label: "Literary Elements", text: "Fundamental parts of a literary work, such as plot, setting, characters, mood, theme, moral, and tone." }, { label: "Literary Techniques", text: "Methods writers use to make writing more expressive, such as simile, metaphor, personification, hyperbole, alliteration, onomatopoeia, imagery, and symbolism." }])}<p>Understanding literary devices helps readers recognize how writers express ideas, create vivid descriptions, communicate emotions, and strengthen stories and poems.</p>`
     }
   ],
@@ -476,7 +477,7 @@ const learnModules = {
     },
     {
       title: "Slide 7",
-      content: `<h2>1. Simile</h2><p>A <strong>simile</strong> compares two unlike things using the words <strong>like</strong> or <strong>as</strong>. It shows how two different things are alike in one way.</p><div class="lesson-example"><strong>Example 1</strong><br>"Her smile was as bright as the sun."</div><p>This is a simile because it uses <strong>as</strong> to compare a smile to the sun.</p>${notice("The word as shows that a comparison is being made. The comparison helps readers imagine how bright, happy, and cheerful her smile is.")}`
+      content: `<h2>Simile: Example 1</h2><p>A <strong>simile</strong> compares two unlike things using the words <strong>like</strong> or <strong>as</strong>. It shows how two different things are alike in one way.</p><div class="lesson-example">"Her smile was as bright as the sun."</div><p>This is a simile because it uses <strong>as</strong> to compare a smile to the sun.</p>${notice("The word as shows that a comparison is being made. The comparison helps readers imagine how bright, happy, and cheerful her smile is.")}`
     },
     {
       title: "Slide 8",
@@ -488,7 +489,7 @@ const learnModules = {
     },
     {
       title: "Slide 10",
-      content: `<h2>2. Metaphor</h2><p>A <strong>metaphor</strong> directly compares two unlike things. It states that one thing is another to create a stronger description.</p><div class="lesson-example"><strong>Example 1</strong><br>"The world is a stage."</div><p>This is a metaphor because it directly compares the world to a stage without using <strong>like</strong> or <strong>as</strong>.</p>${notice("The sentence suggests that people have different roles in life, just as actors have different roles on a stage.")}`
+      content: `<h2>Metaphor: Example 1</h2><p>A <strong>metaphor</strong> directly compares two unlike things. It states that one thing is another to create a stronger description.</p><div class="lesson-example">"The world is a stage."</div><p>This is a metaphor because it directly compares the world to a stage without using <strong>like</strong> or <strong>as</strong>.</p>${notice("The sentence suggests that people have different roles in life, just as actors have different roles on a stage.")}`
     },
     {
       title: "Slide 11",
@@ -500,23 +501,23 @@ const learnModules = {
     },
     {
       title: "Slide 13",
-      content: `<h2>3. Personification</h2><p><strong>Personification</strong> gives human qualities or actions to objects, animals, or ideas.</p><div class="lesson-example"><strong>Example 1 (Object)</strong><br>"The wind whispered through the trees."</div><p>This is personification because the wind is given the human ability to whisper.</p>${notice("The wind cannot really whisper because only people can do that. Giving the wind a human action makes the scene feel calm and peaceful.")}`
+      content: `<h2>Personification: Example 1 (Object)</h2><p><strong>Personification</strong> gives human qualities or actions to objects, animals, or ideas.</p><div class="lesson-example">"The wind whispered through the trees."</div><p>This is personification because the wind is given the human ability to whisper.</p>${notice("The wind cannot really whisper because only people can do that. Giving the wind a human action makes the scene feel calm and peaceful.")}`
     },
     {
       title: "Slide 14",
-      content: `<h2>Personification: Example 2</h2><div class="lesson-example"><strong>Example 2 (Animal)</strong><br>"The playful puppy laughed as it chased its tail."</div><p>This is personification because the puppy is described as laughing.</p>${notice("Dogs do not laugh like people. The sentence gives the puppy a human action to make it seem happy and playful.")}`
+      content: `<h2>Personification: Example 2 (Animal)</h2><div class="lesson-example">"The playful puppy laughed as it chased its tail."</div><p>This is personification because the puppy is described as laughing.</p>${notice("Dogs do not laugh like people. The sentence gives the puppy a human action to make it seem happy and playful.")}`
     },
     {
       title: "Slide 15",
-      content: `<h2>Personification: Example 3</h2><div class="lesson-example"><strong>Example 3 (Idea)</strong><br>"Hope never left her side."</div><p>This is personification because hope is treated like a person.</p>${notice("Hope is an idea, so it cannot stay beside someone. The sentence makes hope seem like a friend who stays with her during difficult times.")}`
+      content: `<h2>Personification: Example 3 (Idea)</h2><div class="lesson-example">"Hope never left her side."</div><p>This is personification because hope is treated like a person.</p>${notice("Hope is an idea, so it cannot stay beside someone. The sentence makes hope seem like a friend who stays with her during difficult times.")}`
     },
     {
       title: "Slide 16",
-      content: `<h2>Personification: Example 4</h2><div class="lesson-example"><strong>Example 4 (Object)</strong><br>"The old clock complained with every tick."</div><p>This is personification because the clock is given the human action of complaining.</p>${notice("A clock cannot really complain. The sentence helps readers imagine its loud, annoying sound and makes the description more interesting.")}`
+      content: `<h2>Personification: Example 4 (Object)</h2><div class="lesson-example">"The old clock complained with every tick."</div><p>This is personification because the clock is given the human action of complaining.</p>${notice("A clock cannot really complain. The sentence helps readers imagine its loud, annoying sound and makes the description more interesting.")}`
     },
     {
       title: "Slide 17",
-      content: `<h2>4. Hyperbole</h2><p><strong>Hyperbole</strong> is an exaggeration used to make an idea or feeling stronger. It is not meant to be taken literally.</p><div class="lesson-example"><strong>Example 1</strong><br>"I'm so hungry I could eat a horse."</div><p>This is hyperbole because it exaggerates how hungry the speaker is.</p>${notice("No one can really eat a whole horse. The exaggeration shows that the speaker is extremely hungry.")}`
+      content: `<h2>Hyperbole: Example 1</h2><p><strong>Hyperbole</strong> is an exaggeration used to make an idea or feeling stronger. It is not meant to be taken literally.</p><div class="lesson-example">"I'm so hungry I could eat a horse."</div><p>This is hyperbole because it exaggerates how hungry the speaker is.</p>${notice("No one can really eat a whole horse. The exaggeration shows that the speaker is extremely hungry.")}`
     },
     {
       title: "Slide 18",
@@ -528,15 +529,15 @@ const learnModules = {
     },
     {
       title: "Slide 20",
-      content: `<h2>5. Symbolism</h2><p><strong>Symbolism</strong> is the use of objects, people, or ideas to represent a deeper meaning.</p><div class="lesson-example"><strong>Example 1 (Object)</strong><br>"A white flag symbolizes peace."</div><p>This is symbolism because the white flag represents peace instead of being just a piece of cloth.</p>${notice("A white flag stands for peace and the desire to stop fighting. People understand this meaning even without saying the word peace.")}`
+      content: `<h2>Symbolism: Example 1 (Object)</h2><p><strong>Symbolism</strong> is the use of objects, people, or ideas to represent a deeper meaning.</p><div class="lesson-example">"A white flag symbolizes peace."</div><p>This is symbolism because the white flag represents peace instead of being just a piece of cloth.</p>${notice("A white flag stands for peace and the desire to stop fighting. People understand this meaning even without saying the word peace.")}`
     },
     {
       title: "Slide 21",
-      content: `<h2>Symbolism: Example 2</h2><div class="lesson-example"><strong>Example 2 (Person)</strong><br>"The king became a symbol of courage for his people."</div><p>This is symbolism because the king represents bravery and strong leadership.</p>${notice("The king is more than just a ruler in this sentence. He stands for courage and inspires his people to be brave.")}`
+      content: `<h2>Symbolism: Example 2 (Person)</h2><div class="lesson-example">"The king became a symbol of courage for his people."</div><p>This is symbolism because the king represents bravery and strong leadership.</p>${notice("The king is more than just a ruler in this sentence. He stands for courage and inspires his people to be brave.")}`
     },
     {
       title: "Slide 22",
-      content: `<h2>Symbolism: Example 3</h2><div class="lesson-example"><strong>Example 3 (Idea)</strong><br>"Light symbolizes hope."</div><p>This is symbolism because light represents a deeper meaning.</p>${notice("Light does not only mean brightness. It can stand for hope, guidance, and a better future.")}`
+      content: `<h2>Symbolism: Example 3 (Idea)</h2><div class="lesson-example">"Light symbolizes hope."</div><p>This is symbolism because light represents a deeper meaning.</p>${notice("Light does not only mean brightness. It can stand for hope, guidance, and a better future.")}`
     },
     {
       title: "Slide 23",
@@ -590,7 +591,7 @@ const learnModules = {
     },
     {
       title: "Slide 6",
-      content: `<h2>1. Alliteration</h2><p><strong>Alliteration</strong> is the repetition of the same beginning consonant sound in nearby words.</p><p>It makes sentences and poems sound smooth, catchy, and easy to remember.</p><div class="lesson-example"><strong>Example 1</strong><br>"Peter Piper picked a peck of pickled peppers."</div><p>This is alliteration because the beginning <strong>/p/</strong> sound is repeated.</p>${notice("The repeated /p/ sound makes the sentence fun to read aloud and creates a pleasant rhythm.")}`
+      content: `<h2>Alliteration: Example 1</h2><p><strong>Alliteration</strong> is the repetition of the same beginning consonant sound in nearby words.</p><p>It makes sentences and poems sound smooth, catchy, and easy to remember.</p><div class="lesson-example">"Peter Piper picked a peck of pickled peppers."</div><p>This is alliteration because the beginning <strong>/p/</strong> sound is repeated.</p>${notice("The repeated /p/ sound makes the sentence fun to read aloud and creates a pleasant rhythm.")}`
     },
     {
       title: "Slide 7",
@@ -598,11 +599,11 @@ const learnModules = {
     },
     {
       title: "Slide 8",
-      content: `<h2>2. Rhyme</h2><p><strong>Rhyme</strong> is the repetition of similar ending sounds in two or more words, usually at the end of lines in a poem.</p><p>Rhyming words give poems a musical sound.</p><div class="lesson-example">The sun rises over the land so bright. (A)<br>Lighting the morning with golden light. (A)<br>The farmers work beneath the sky. (B)<br>As birds above go flying by. (B)</div>${notice("The words bright and light rhyme, while sky and by also rhyme. This creates an AABB rhyme pattern.")}`
+      content: `<h2>Rhyme: Example 1</h2><p><strong>Rhyme</strong> is the repetition of similar ending sounds in two or more words, usually at the end of lines in a poem.</p><p>Rhyming words give poems a musical sound.</p><div class="lesson-example">The sun rises over the land so bright. (A)<br>Lighting the morning with golden light. (A)<br>The farmers work beneath the sky. (B)<br>As birds above go flying by. (B)</div>${notice("The words bright and light rhyme, while sky and by also rhyme. This creates an AABB rhyme pattern.")}`
     },
     {
       title: "Slide 9",
-      content: `<h2>3. Onomatopoeia</h2><p><strong>Onomatopoeia</strong> is the use of words that imitate real sounds. These words help readers imagine and hear sounds in a poem or story.</p><div class="lesson-example"><strong>Example 1</strong><br>"The bees buzzed loudly in the garden."</div><p>This is onomatopoeia because <strong>buzzed</strong> sounds like the noise made by bees.</p>${notice("The word buzzed helps readers imagine the sound of bees and makes the sentence more realistic.")}`
+      content: `<h2>Onomatopoeia: Example 1</h2><p><strong>Onomatopoeia</strong> is the use of words that imitate real sounds. These words help readers imagine and hear sounds in a poem or story.</p><div class="lesson-example">"The bees buzzed loudly in the garden."</div><p>This is onomatopoeia because <strong>buzzed</strong> sounds like the noise made by bees.</p>${notice("The word buzzed helps readers imagine the sound of bees and makes the sentence more realistic.")}`
     },
     {
       title: "Slide 10",
@@ -610,30 +611,26 @@ const learnModules = {
     },
     {
       title: "Slide 11",
-      content: `<h2>Activity 1: Practice Sound Devices</h2><p><strong>Directions:</strong> Follow the instructions in each item. Write sentences or words that use the given sound device.</p>${lessonAnswerList("module3-slide11-response", "Slide 11: Activity 1", [{ prompt: "Write one sentence using alliteration.", html: "<strong>1.</strong> Write one sentence using alliteration.", placeholder: "Type one alliteration sentence.", long: true }], "lesson-answer-list-stacked")}`
+      content: `<h2>Activity 1: Practice Sound Devices</h2><p><strong>Directions:</strong> Follow the instructions in each item. Write sentences or words that use the given sound device.</p>${lessonAnswerList("module3-slide11-response", "Slide 11: Activity 1", [{ id: "module3-slide11-response-1", prompt: "Write one sentence using alliteration.", html: "<strong>1.</strong> Write one sentence using alliteration.", placeholder: "Type one alliteration sentence.", long: true }, { id: "module3-slide12-response-1", prompt: "Write two words that rhyme with light.", html: "<strong>2.</strong> Write two words that rhyme with <strong>light</strong>.", placeholder: "Type two rhyming words.", long: true }, { id: "module3-slide12-response-2", prompt: "Write one sentence using an onomatopoeic word.", html: "<strong>3.</strong> Write one sentence using an onomatopoeic word.", placeholder: "Type your sentence.", long: true }, { id: "module3-slide12-response-3", prompt: "Identify the sound device and sound word in: The leaves rustled as the wind blew.", html: "<strong>4.</strong> Identify the sound device and sound word in: \"The leaves rustled as the wind blew.\"", placeholder: "Type the device and sound word.", long: true }], "lesson-answer-list-stacked lesson-answer-list-merged-activity")}`
     },
     {
       title: "Slide 12",
-      content: `<h2>Activity 1: Continue</h2>${lessonAnswerList("module3-slide12-response", "Slide 12: Activity 1", [{ prompt: "Write two words that rhyme with light.", html: "<strong>2.</strong> Write two words that rhyme with <strong>light</strong>.", placeholder: "Type two rhyming words.", long: true }, { prompt: "Write one sentence using an onomatopoeic word.", html: "<strong>3.</strong> Write one sentence using an onomatopoeic word.", placeholder: "Type your sentence.", long: true }, { prompt: "Identify the sound device and sound word in: The leaves rustled as the wind blew.", html: "<strong>4.</strong> Identify the sound device and sound word in: \"The leaves rustled as the wind blew.\"", placeholder: "Type the device and sound word.", long: true }], "lesson-answer-list-stacked lesson-answer-list-activity3")}`
+      content: `<h2>Activity 2: Nature Sound Verse</h2><p><strong>Directions:</strong> Write a 2-4 line poem about nature using one alliteration, one pair of rhyming words, and one onomatopoeic word.</p>${lessonAnswerList("module3-slide13-response", "Slide 12: Nature Sound Verse", [{ prompt: "Write your 2-4 line nature poem.", placeholder: "Type your poem here.", long: true }], "lesson-answer-list-stacked lesson-answer-list-poem")}`
     },
     {
       title: "Slide 13",
-      content: `<h2>Activity 2: Nature Sound Verse</h2><p><strong>Directions:</strong> Write a 2-4 line poem about nature using one alliteration, one pair of rhyming words, and one onomatopoeic word.</p>${lessonAnswerList("module3-slide13-response", "Slide 13: Nature Sound Verse", [{ prompt: "Write your 2-4 line nature poem.", placeholder: "Type your poem here.", long: true }], "lesson-answer-list-stacked lesson-answer-list-poem")}`
-    },
-    {
-      title: "Slide 14",
       content: `<h2>Analytic Rubric</h2><div class="module3-rubric-table" role="table" aria-label="Analytic Rubric"><div class="rubric-row rubric-head" role="row"><span>Criteria</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="rubric-row" role="row"><strong>Use of Sound Devices</strong><span>Correctly uses all required sound devices.</span><span>Uses most sound devices correctly.</span><span>Uses some sound devices with minor errors.</span><span>Uses only one sound device or several errors.</span><span>Does not correctly use the required sound devices.</span></div><div class="rubric-row" role="row"><strong>Creativity</strong><span>Poem is highly creative and original.</span><span>Poem is creative.</span><span>Poem shows some creativity.</span><span>Poem has limited creativity.</span><span>Poem lacks creativity.</span></div><div class="rubric-row" role="row"><strong>Clarity</strong><span>Ideas are clear and organized.</span><span>Ideas are mostly clear.</span><span>Ideas are understandable.</span><span>Ideas are somewhat unclear.</span><span>Ideas are difficult to understand.</span></div><div class="rubric-row" role="row"><strong>Grammar and Mechanics</strong><span>No grammar, spelling, or punctuation errors.</span><span>One or two minor errors.</span><span>Some errors that do not affect meaning.</span><span>Frequent errors that affect understanding.</span><span>Many errors that make the poem difficult to understand.</span></div><div class="rubric-row" role="row"><strong>Completeness</strong><span>All instructions are followed.</span><span>One minor requirement is missing.</span><span>Two requirements are missing.</span><span>Several requirements are missing.</span><span>Most requirements are not completed.</span></div></div><p><strong>Total Score:</strong> ____ /25</p>`
     },
     {
+      title: "Slide 14",
+      content: `<h2>My Learning Reflection</h2><p><strong>Directions:</strong> Reflect on what you have learned in this module. Answer each question in 2-4 complete sentences.</p>${lessonAnswerList("module3-slide15-response", "Slide 14: Learning Reflection", [{ prompt: "What did I learn from this module?", html: "<strong>1. What did I learn from this module?</strong> Describe what you learned about sound devices.", placeholder: "Type your answer.", long: true }, { prompt: "What interested me the most? Why?", html: "<strong>2. What interested me the most? Why?</strong> Which sound device did you enjoy learning the most? Explain why.", placeholder: "Type your answer.", long: true }], "lesson-answer-list-stacked lesson-answer-list-reflection")}`
+    },
+    {
       title: "Slide 15",
-      content: `<h2>My Learning Reflection</h2><p><strong>Directions:</strong> Reflect on what you have learned in this module. Answer each question in 2-4 complete sentences.</p>${lessonAnswerList("module3-slide15-response", "Slide 15: Learning Reflection", [{ prompt: "What did I learn from this module?", html: "<strong>1. What did I learn from this module?</strong> Describe what you learned about sound devices.", placeholder: "Type your answer.", long: true }, { prompt: "What interested me the most? Why?", html: "<strong>2. What interested me the most? Why?</strong> Which sound device did you enjoy learning the most? Explain why.", placeholder: "Type your answer.", long: true }], "lesson-answer-list-stacked lesson-answer-list-reflection")}`
+      content: `<h2>My Learning Reflection</h2>${lessonAnswerList("module3-slide16-response", "Slide 15: Learning Reflection", [{ prompt: "What do I still need to improve or practice?", html: "<strong>3. What do I still need to improve or practice?</strong> Which sound device do you still need more practice using? Explain your answer.", placeholder: "Type your answer.", long: true }, { prompt: "How can I apply what I learned in real life?", html: "<strong>4. How can I apply what I learned in real life?</strong> Explain how sound devices can improve poems, songs, or creative writing.", placeholder: "Type your answer.", long: true }], "lesson-answer-list-stacked lesson-answer-list-reflection")}`
     },
     {
       title: "Slide 16",
-      content: `<h2>My Learning Reflection</h2>${lessonAnswerList("module3-slide16-response", "Slide 16: Learning Reflection", [{ prompt: "What do I still need to improve or practice?", html: "<strong>3. What do I still need to improve or practice?</strong> Which sound device do you still need more practice using? Explain your answer.", placeholder: "Type your answer.", long: true }, { prompt: "How can I apply what I learned in real life?", html: "<strong>4. How can I apply what I learned in real life?</strong> Explain how sound devices can improve poems, songs, or creative writing.", placeholder: "Type your answer.", long: true }], "lesson-answer-list-stacked lesson-answer-list-reflection")}`
-    },
-    {
-      title: "Slide 17",
       content: `<h2>Module Summary</h2><p>In this module, you learned that sound devices make poems more enjoyable by using interesting sounds.</p><ul class="module1-plain-list"><li><strong>Alliteration</strong> repeats the same beginning consonant sound.</li><li><strong>Rhyme</strong> repeats similar ending sounds.</li><li><strong>Onomatopoeia</strong> uses words that imitate real sounds.</li></ul><p>Understanding these sound devices helps you appreciate how poets make their writing rhythmic, expressive, and enjoyable to read aloud.</p>`
     }
   ]
@@ -695,8 +692,7 @@ const learnGuideMessages = {
     "These examples show common techniques you will meet often.",
     "Sound, imagery, and symbolism also help writers create impact.",
     "This slide shows why literary devices matter to both writers and readers.",
-    "For this activity, decide whether each statement is true or false.",
-    "Continue the recall activity and check each statement carefully.",
+    "For this activity, decide whether each statement is true or false. The numbering continues from 1 to 10.",
     "Classify each term as a literary element or literary technique.",
     "Read the paragraph slowly and look for device clues.",
     "Use these questions to explain how the paragraph changes your imagination.",
@@ -746,8 +742,7 @@ const learnGuideMessages = {
     "Rhyme repeats similar ending sounds and can create a pattern.",
     "Onomatopoeia uses words that imitate real sounds.",
     "Sound words make a scene easier to hear in your imagination.",
-    "Create one alliteration sentence for this activity.",
-    "Continue the activity with rhyme, onomatopoeia, and sound identification.",
+    "Complete each Activity 1 item: alliteration, rhyme, onomatopoeia, and sound identification.",
     "Write your nature poem using all three sound devices.",
     "Use this rubric to check your poem before submitting.",
     "Reflect on what you learned and what interested you most.",
@@ -1864,11 +1859,13 @@ function sanitizeSavedAnswerRuns(runs) {
     .map((run, runIndex) => {
       const safeRun = run && typeof run === "object" ? run : {}
       const answers = Array.isArray(safeRun.answers) ? safeRun.answers : []
+      const gameNumber = clampNumber(safeRun.game, 1, 3, 1)
+      const answerLimit = getQuestionLimitForGame(gameNumber)
 
       return {
         id: sanitizeAnswerText(safeRun.id, 80, `answers-${Date.now()}-${runIndex}`),
         title: sanitizeAnswerText(safeRun.title, 80, "Completed Game"),
-        game: clampNumber(safeRun.game, 1, 3, 1),
+        game: gameNumber,
         level: safeRun.level === null || safeRun.level === undefined
           ? null
           : clampNumber(safeRun.level, 1, 3, 1),
@@ -1876,7 +1873,7 @@ function sanitizeSavedAnswerRuns(runs) {
         score: Math.max(0, Number(safeRun.score) || 0),
         correctAnswers: Math.max(0, Number(safeRun.correctAnswers) || 0),
         totalQuestions: Math.max(0, Number(safeRun.totalQuestions) || answers.length),
-        answers: answers.slice(0, QUESTIONS_PER_RUN).map((answer, index) => {
+        answers: answers.slice(0, answerLimit).map((answer, index) => {
           const safeAnswer = answer && typeof answer === "object" ? answer : {}
 
           return {
@@ -1922,6 +1919,10 @@ function createLearnResponseMap(responses) {
 
 function getLearnResponsesForPayload() {
   return sanitizeLearnResponses(Object.values(learnResponses))
+}
+
+function getGameAnswersForPayload() {
+  return sanitizeSavedAnswerRuns(savedAnswerRuns).slice(0, MAX_CLASSROOM_ANSWER_RUNS)
 }
 
 function sanitizePlayerProfile(profile) {
@@ -2127,6 +2128,7 @@ function getMultiplayerPayload() {
     game: gameTitles[currentGame] || "Lobby",
     level: currentGame === 1 ? `Level ${currentSentenceLevel}` : "",
     status: getPlayerLiveStatus(),
+    gameAnswers: getGameAnswersForPayload(),
     learnAnswers: getLearnResponsesForPayload()
   }
 }
@@ -3103,21 +3105,584 @@ function getActiveLessons() {
   return activeLessons || modules[currentModule] || []
 }
 
+function getLessonHeaderAndBody(lesson) {
+  const fallbackTitle = lesson?.title || "Lesson"
+  const content = lesson?.content || ""
+
+  if (!/^slide\s+\d+$/i.test(fallbackTitle)) {
+    return { title: fallbackTitle, body: content }
+  }
+
+  const wrapper = document.createElement("div")
+  wrapper.innerHTML = content
+  const heading = wrapper.querySelector("h2")
+  const headingText = heading?.textContent?.replace(/\s+/g, " ").trim()
+
+  if (!headingText) return { title: fallbackTitle, body: content }
+
+  heading.remove()
+  return {
+    title: headingText,
+    body: wrapper.innerHTML.trim()
+  }
+}
+
 function showLesson() {
   const lessons = getActiveLessons()
   const lesson = lessons[lessonIndex]
   if (!lesson) return
+  const renderedLesson = getLessonHeaderAndBody(lesson)
 
-  document.getElementById("lessonTitle").innerText = lesson.title
+  document.getElementById("lessonTitle").innerText = renderedLesson.title
   document.getElementById("lessonPage").innerText = `${lessonIndex + 1}/${lessons.length}`
-  document.getElementById("lessonContent").innerHTML = lesson.content
+  document.getElementById("lessonContent").innerHTML = renderedLesson.body
   restoreLessonResponses()
+  ensureLessonReadabilityStyles()
   updateLessonLayoutClass(lesson)
   updateLessonGuide()
   requestAnimationFrame(fitLessonToScroll)
   window.setTimeout(fitLessonToScroll, 120)
 
   startReadTimer()
+}
+
+function ensureLessonReadabilityStyles() {
+  if (document.getElementById("lessonReadabilityStyles")) return
+
+  const style = document.createElement("style")
+  style.id = "lessonReadabilityStyles"
+  style.textContent = `
+#learnMode.lesson-balanced:not(.lesson-overflow-fit) #lessonContent {
+  font-size: var(--lesson-dynamic-font-size, max(calc(23px * var(--fixed-scale)), 14px)) !important;
+  line-height: 1.2 !important;
+}
+
+#learnMode.lesson-readable-column #lessonContent {
+  left: calc(58px * var(--fixed-scale)) !important;
+  right: calc(58px * var(--fixed-scale)) !important;
+  padding-left: calc(24px * var(--fixed-scale)) !important;
+  padding-right: calc(24px * var(--fixed-scale)) !important;
+  padding-bottom: calc(44px * var(--fixed-scale)) !important;
+  font-size: var(--lesson-dynamic-font-size, max(calc(24px * var(--fixed-scale)), 14px)) !important;
+  line-height: 1.2 !important;
+}
+
+#learnMode.lesson-readable-column #lessonContent p {
+  margin-bottom: calc(12px * var(--fixed-scale)) !important;
+}
+
+#learnMode.lesson-two-column-list #lessonContent {
+  justify-content: center !important;
+  padding-bottom: calc(48px * var(--fixed-scale)) !important;
+  font-size: var(--lesson-dynamic-font-size, max(calc(24px * var(--fixed-scale)), 14px)) !important;
+  line-height: 1.18 !important;
+}
+
+#learnMode.lesson-two-column-list .module1-plain-list,
+#learnMode.lesson-two-column-list .lesson-list {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  column-gap: calc(62px * var(--fixed-scale)) !important;
+  row-gap: calc(10px * var(--fixed-scale)) !important;
+  width: 94% !important;
+  margin: calc(10px * var(--fixed-scale)) auto calc(12px * var(--fixed-scale)) !important;
+  padding-left: calc(24px * var(--fixed-scale)) !important;
+}
+
+#learnMode.lesson-two-column-list .module1-plain-list li,
+#learnMode.lesson-two-column-list .lesson-list li {
+  margin: 0 !important;
+  font-size: 1em !important;
+  line-height: 1.18 !important;
+  break-inside: avoid !important;
+}
+
+#learnMode.lesson-compact-activity #lessonContent {
+  justify-content: center !important;
+  padding-bottom: calc(50px * var(--fixed-scale)) !important;
+  font-size: var(--lesson-dynamic-font-size, max(calc(19px * var(--fixed-scale)), 12px)) !important;
+  line-height: 1.12 !important;
+}
+
+#learnMode.lesson-compact-activity #lessonContent h2 {
+  margin-bottom: calc(8px * var(--fixed-scale)) !important;
+  font-size: max(calc(28px * var(--fixed-scale)), 16px) !important;
+}
+
+#learnMode.lesson-compact-activity .lesson-activity {
+  gap: calc(9px * var(--fixed-scale)) !important;
+  margin-top: calc(4px * var(--fixed-scale)) !important;
+}
+
+#learnMode.lesson-compact-activity .lesson-activity-directions {
+  margin-bottom: calc(8px * var(--fixed-scale)) !important;
+  font-size: max(calc(18px * var(--fixed-scale)), 11.5px) !important;
+  line-height: 1.12 !important;
+}
+
+#learnMode.lesson-compact-activity .lesson-activity-items {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: calc(8px * var(--fixed-scale)) calc(14px * var(--fixed-scale)) !important;
+}
+
+#learnMode.lesson-compact-activity .lesson-activity-row {
+  grid-template-columns: minmax(0, 1fr) calc(70px * var(--fixed-scale)) calc(74px * var(--fixed-scale)) !important;
+  min-height: calc(40px * var(--fixed-scale)) !important;
+  padding: calc(5px * var(--fixed-scale)) calc(6px * var(--fixed-scale)) !important;
+  gap: calc(6px * var(--fixed-scale)) !important;
+}
+
+#learnMode.lesson-compact-activity .lesson-activity-prompt {
+  font-size: max(calc(14.5px * var(--fixed-scale)), 10px) !important;
+  line-height: 1.08 !important;
+}
+
+#learnMode.lesson-compact-activity .lesson-activity input {
+  height: max(calc(27px * var(--fixed-scale)), 20px) !important;
+  font-size: max(calc(14px * var(--fixed-scale)), 10px) !important;
+}
+
+#learnMode.lesson-compact-activity .lesson-activity-result {
+  font-size: max(calc(12px * var(--fixed-scale)), 8.8px) !important;
+}
+
+#learnMode.lesson-compact-activity .lesson-check-btn {
+  min-height: max(calc(32px * var(--fixed-scale)), 22px) !important;
+  margin-top: calc(4px * var(--fixed-scale)) !important;
+  font-size: max(calc(17px * var(--fixed-scale)), 11px) !important;
+}
+
+#learnMode.lesson-reflection-page:not(.learn-topic-game) #lessonContent {
+  bottom: calc(116px * var(--fixed-scale)) !important;
+  justify-content: flex-start !important;
+  padding-top: calc(4px * var(--fixed-scale)) !important;
+  padding-bottom: calc(18px * var(--fixed-scale)) !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain !important;
+  scrollbar-width: none !important;
+  font-size: var(--lesson-dynamic-font-size, max(calc(20px * var(--fixed-scale)), 12px)) !important;
+  line-height: 1.12 !important;
+}
+
+#learnMode.lesson-reflection-page #lessonContent::-webkit-scrollbar {
+  width: 0 !important;
+  height: 0 !important;
+}
+
+#learnMode.lesson-reflection-page:not(.learn-topic-game) #lessonContent h2 {
+  margin-bottom: calc(6px * var(--fixed-scale)) !important;
+  font-size: max(calc(27px * var(--fixed-scale)), 15.5px) !important;
+}
+
+#learnMode.lesson-reflection-page:not(.learn-topic-game) .lesson-answer-list-stacked,
+#learnMode.lesson-reflection-page:not(.learn-topic-game) .lesson-answer-list-many,
+#learnMode.lesson-reflection-page:not(.learn-topic-game) .lesson-answer-list-reflection,
+#learnMode.lesson-reflection-page:not(.learn-topic-game) .lesson-answer-list-poem,
+#learnMode.lesson-reflection-page:not(.learn-topic-game) .lesson-answer-list-merged-activity {
+  gap: calc(8px * var(--fixed-scale)) !important;
+  margin-top: calc(4px * var(--fixed-scale)) !important;
+  margin-bottom: calc(10px * var(--fixed-scale)) !important;
+}
+
+#learnMode.lesson-reflection-page:not(.learn-topic-game) .lesson-answer-item,
+#learnMode.lesson-reflection-page:not(.learn-topic-game) .lesson-answer-list-stacked .lesson-answer-item {
+  grid-template-columns: 1fr !important;
+  gap: calc(4px * var(--fixed-scale)) !important;
+  padding-top: calc(2px * var(--fixed-scale)) !important;
+  padding-bottom: calc(2px * var(--fixed-scale)) !important;
+}
+
+#learnMode.lesson-reflection-page:not(.learn-topic-game) .lesson-answer-prompt {
+  font-size: max(calc(16px * var(--fixed-scale)), 10.5px) !important;
+  line-height: 1.08 !important;
+}
+
+#learnMode.lesson-reflection-page:not(.learn-topic-game) .lesson-response-field-long,
+#learnMode.lesson-reflection-page:not(.learn-topic-game) .lesson-answer-list-stacked .lesson-response-field-long,
+#learnMode.lesson-reflection-page:not(.learn-topic-game) .lesson-answer-list-many .lesson-response-field-long,
+#learnMode.lesson-reflection-page:not(.learn-topic-game) .lesson-answer-list-reflection .lesson-response-field-long {
+  height: max(calc(70px * var(--fixed-scale)), 42px) !important;
+  min-height: max(calc(70px * var(--fixed-scale)), 42px) !important;
+  font-size: max(calc(15.5px * var(--fixed-scale)), 11px) !important;
+  line-height: 1.15 !important;
+}
+
+#learnMode.learn-topic-module1.lesson-slide-17.lesson-reflection-page .lesson-response-field-long,
+#learnMode.learn-topic-module2.lesson-slide-25.lesson-reflection-page .lesson-response-field-long {
+  height: max(calc(44px * var(--fixed-scale)), 30px) !important;
+  min-height: max(calc(44px * var(--fixed-scale)), 30px) !important;
+}
+
+#learnMode.lesson-rubric-page:not(.lesson-overflow-extra) #lessonContent {
+  justify-content: center !important;
+  padding-top: calc(4px * var(--fixed-scale)) !important;
+  padding-bottom: calc(48px * var(--fixed-scale)) !important;
+  overflow: hidden !important;
+  font-size: var(--lesson-dynamic-font-size, max(calc(18.5px * var(--fixed-scale)), 11px)) !important;
+  line-height: 1.08 !important;
+}
+
+#learnMode.lesson-rubric-page:not(.lesson-overflow-extra) #lessonContent h2 {
+  margin-bottom: calc(8px * var(--fixed-scale)) !important;
+  font-size: max(calc(27px * var(--fixed-scale)), 16px) !important;
+}
+
+#learnMode.lesson-rubric-page:not(.lesson-overflow-extra) .module3-rubric-table {
+  width: 96% !important;
+  margin: calc(8px * var(--fixed-scale)) auto calc(12px * var(--fixed-scale)) !important;
+  font-size: max(calc(13px * var(--fixed-scale)), 9.6px) !important;
+  line-height: 1.07 !important;
+}
+
+#learnMode.lesson-rubric-page:not(.lesson-overflow-extra) .rubric-row > span,
+#learnMode.lesson-rubric-page:not(.lesson-overflow-extra) .rubric-row > strong {
+  padding: calc(4px * var(--fixed-scale)) calc(5px * var(--fixed-scale)) !important;
+  line-height: 1.07 !important;
+}
+
+#learnMode.lesson-rubric-page:not(.lesson-overflow-extra) #lessonContent p {
+  width: 96% !important;
+  margin: calc(10px * var(--fixed-scale)) auto 0 !important;
+  font-size: max(calc(24px * var(--fixed-scale)), 13px) !important;
+  line-height: 1.1 !important;
+}
+
+@media (orientation: landscape) and (max-height: 560px) {
+  #learnMode.lesson-readable-column #lessonContent,
+  #learnMode.lesson-two-column-list #lessonContent {
+    padding-bottom: calc(24px * var(--fixed-scale)) !important;
+    font-size: var(--lesson-dynamic-font-size, max(calc(23px * var(--fixed-scale)), 13.5px)) !important;
+  }
+
+  #learnMode.lesson-compact-activity #lessonContent {
+    padding-bottom: calc(28px * var(--fixed-scale)) !important;
+    font-size: var(--lesson-dynamic-font-size, max(calc(19px * var(--fixed-scale)), 12px)) !important;
+  }
+
+  #learnMode.lesson-compact-activity .lesson-activity-row {
+    min-height: calc(32px * var(--fixed-scale)) !important;
+    padding-top: calc(3px * var(--fixed-scale)) !important;
+    padding-bottom: calc(3px * var(--fixed-scale)) !important;
+  }
+
+  #learnMode.lesson-reflection-page:not(.learn-topic-game) #lessonContent {
+    bottom: calc(104px * var(--fixed-scale)) !important;
+    padding-bottom: calc(14px * var(--fixed-scale)) !important;
+  }
+
+  #learnMode.lesson-reflection-page:not(.learn-topic-game) .lesson-response-field-long,
+  #learnMode.lesson-reflection-page:not(.learn-topic-game) .lesson-answer-list-stacked .lesson-response-field-long,
+  #learnMode.lesson-reflection-page:not(.learn-topic-game) .lesson-answer-list-many .lesson-response-field-long,
+  #learnMode.lesson-reflection-page:not(.learn-topic-game) .lesson-answer-list-reflection .lesson-response-field-long {
+    height: max(calc(56px * var(--fixed-scale)), 34px) !important;
+    min-height: max(calc(56px * var(--fixed-scale)), 34px) !important;
+  }
+
+  #learnMode.learn-topic-module1.lesson-slide-17.lesson-reflection-page .lesson-response-field-long,
+  #learnMode.learn-topic-module2.lesson-slide-25.lesson-reflection-page .lesson-response-field-long {
+    height: max(calc(36px * var(--fixed-scale)), 25px) !important;
+    min-height: max(calc(36px * var(--fixed-scale)), 25px) !important;
+  }
+
+  #learnMode.lesson-rubric-page:not(.lesson-overflow-extra) #lessonContent {
+    padding-bottom: calc(26px * var(--fixed-scale)) !important;
+    font-size: var(--lesson-dynamic-font-size, max(calc(16.5px * var(--fixed-scale)), 10px)) !important;
+  }
+
+  #learnMode.lesson-rubric-page:not(.lesson-overflow-extra) .module3-rubric-table {
+    font-size: max(calc(11.8px * var(--fixed-scale)), 8.8px) !important;
+  }
+}
+`
+  style.textContent += `
+/* Final high-specificity Learn readability pass. */
+#learnMode#learnMode.lesson-readable-column #lessonContent,
+#learnMode#learnMode.lesson-two-column-list #lessonContent {
+  font-size: max(calc(24px * var(--fixed-scale)), 14px) !important;
+  line-height: 1.2 !important;
+}
+
+#learnMode#learnMode.lesson-two-column-list .module1-plain-list,
+#learnMode#learnMode.lesson-two-column-list .lesson-list {
+  row-gap: calc(12px * var(--fixed-scale)) !important;
+}
+
+#learnMode#learnMode.lesson-two-column-list .module1-plain-list li,
+#learnMode#learnMode.lesson-two-column-list .lesson-list li,
+#learnMode#learnMode.lesson-readable-column .module1-plain-list li,
+#learnMode#learnMode.lesson-readable-column .lesson-list li {
+  font-size: max(calc(21px * var(--fixed-scale)), 12.5px) !important;
+  line-height: 1.18 !important;
+}
+
+#learnMode#learnMode.lesson-compact-activity #lessonContent {
+  justify-content: center !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain !important;
+  scrollbar-width: none !important;
+  font-size: max(calc(20px * var(--fixed-scale)), 12.5px) !important;
+  line-height: 1.12 !important;
+}
+
+#learnMode#learnMode.lesson-compact-activity #lessonContent::-webkit-scrollbar {
+  width: 0 !important;
+  height: 0 !important;
+}
+
+#learnMode#learnMode.lesson-compact-activity .lesson-activity-directions {
+  font-size: max(calc(18.5px * var(--fixed-scale)), 12px) !important;
+  line-height: 1.12 !important;
+}
+
+#learnMode#learnMode.lesson-compact-activity .lesson-activity-row {
+  min-height: max(calc(38px * var(--fixed-scale)), 27px) !important;
+  padding: calc(4px * var(--fixed-scale)) calc(5px * var(--fixed-scale)) !important;
+}
+
+#learnMode#learnMode.lesson-compact-activity .lesson-activity-prompt {
+  font-size: max(calc(16px * var(--fixed-scale)), 10.5px) !important;
+  line-height: 1.08 !important;
+}
+
+#learnMode#learnMode.lesson-compact-activity .lesson-activity input {
+  height: max(calc(27px * var(--fixed-scale)), 20px) !important;
+  font-size: max(calc(14px * var(--fixed-scale)), 10.5px) !important;
+}
+
+#learnMode#learnMode.lesson-reflection-page #lessonContent {
+  overflow-y: auto !important;
+  font-size: max(calc(20.5px * var(--fixed-scale)), 12.2px) !important;
+}
+
+#learnMode#learnMode.lesson-reflection-page .lesson-answer-prompt {
+  font-size: max(calc(16.5px * var(--fixed-scale)), 11px) !important;
+  line-height: 1.08 !important;
+}
+
+#learnMode#learnMode.lesson-reflection-page .lesson-response-field-long {
+  height: max(calc(64px * var(--fixed-scale)), 38px) !important;
+  min-height: max(calc(64px * var(--fixed-scale)), 38px) !important;
+  font-size: max(calc(15.5px * var(--fixed-scale)), 11px) !important;
+}
+
+#learnMode#learnMode.learn-topic-module1.lesson-slide-17.lesson-reflection-page .lesson-response-field-long,
+#learnMode#learnMode.learn-topic-module2.lesson-slide-25.lesson-reflection-page .lesson-response-field-long {
+  height: max(calc(42px * var(--fixed-scale)), 31px) !important;
+  min-height: max(calc(42px * var(--fixed-scale)), 31px) !important;
+}
+
+#learnMode#learnMode.lesson-rubric-page #lessonContent {
+  justify-content: center !important;
+  font-size: max(calc(19px * var(--fixed-scale)), 12px) !important;
+  line-height: 1.08 !important;
+}
+
+#learnMode#learnMode.lesson-rubric-page .module3-rubric-table {
+  width: 96% !important;
+  font-size: max(calc(13px * var(--fixed-scale)), 9.8px) !important;
+  line-height: 1.07 !important;
+}
+
+#learnMode#learnMode.lesson-rubric-page .rubric-row > span,
+#learnMode#learnMode.lesson-rubric-page .rubric-row > strong {
+  padding: calc(4px * var(--fixed-scale)) calc(5px * var(--fixed-scale)) !important;
+  line-height: 1.07 !important;
+}
+`
+  style.textContent += `
+/* Final content-window clearance pass. */
+#learnMode#learnMode.lesson-reflection-page #lessonContent {
+  bottom: calc(94px * var(--fixed-scale)) !important;
+}
+
+#learnMode#learnMode.lesson-rubric-page #lessonContent {
+  bottom: calc(72px * var(--fixed-scale)) !important;
+  padding-bottom: calc(30px * var(--fixed-scale)) !important;
+}
+`
+  style.textContent += `
+/* Final activity width and height pass. */
+#learnMode#learnMode.lesson-compact-activity #lessonContent {
+  bottom: calc(52px * var(--fixed-scale)) !important;
+}
+
+#learnMode#learnMode.lesson-compact-activity .lesson-activity-row {
+  grid-template-columns: minmax(0, 1fr) max(calc(70px * var(--fixed-scale)), 54px) !important;
+}
+
+#learnMode#learnMode.lesson-compact-activity .lesson-activity-prompt {
+  font-size: max(calc(17px * var(--fixed-scale)), 11px) !important;
+}
+
+#learnMode#learnMode.lesson-compact-activity .lesson-activity-result {
+  display: none !important;
+  grid-column: 1 / -1 !important;
+}
+
+#learnMode#learnMode.lesson-compact-activity .lesson-activity-result.is-correct,
+#learnMode#learnMode.lesson-compact-activity .lesson-activity-result.is-wrong {
+  display: block !important;
+}
+`
+  style.textContent += `
+/* Final one-pile activities and parchment fill pass. */
+#learnMode#learnMode.lesson-compact-activity #lessonContent {
+  bottom: calc(50px * var(--fixed-scale)) !important;
+  justify-content: center !important;
+}
+
+#learnMode#learnMode.lesson-compact-activity .lesson-activity-items {
+  grid-template-columns: 1fr !important;
+  width: min(100%, calc(660px * var(--fixed-scale))) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  gap: calc(8px * var(--fixed-scale)) !important;
+}
+
+#learnMode#learnMode.lesson-compact-activity .lesson-activity-row {
+  grid-template-columns: minmax(0, 1fr) max(calc(76px * var(--fixed-scale)), 56px) !important;
+}
+
+#learnMode#learnMode.lesson-short-activity .lesson-activity-items {
+  gap: calc(10px * var(--fixed-scale)) !important;
+}
+
+#learnMode#learnMode.lesson-short-activity .lesson-activity-row {
+  min-height: max(calc(52px * var(--fixed-scale)), 36px) !important;
+  padding: calc(6px * var(--fixed-scale)) calc(8px * var(--fixed-scale)) !important;
+}
+
+#learnMode#learnMode.lesson-short-activity .lesson-activity-prompt {
+  font-size: max(calc(18.5px * var(--fixed-scale)), 12.5px) !important;
+  line-height: 1.1 !important;
+}
+
+#learnMode#learnMode.lesson-long-activity #lessonContent {
+  justify-content: flex-start !important;
+  overflow-y: auto !important;
+}
+
+#learnMode#learnMode.lesson-long-activity .lesson-activity-items {
+  width: 100% !important;
+  gap: calc(6px * var(--fixed-scale)) !important;
+}
+
+#learnMode#learnMode.lesson-long-activity .lesson-activity-row {
+  min-height: max(calc(38px * var(--fixed-scale)), 28px) !important;
+  padding: calc(4px * var(--fixed-scale)) calc(6px * var(--fixed-scale)) !important;
+}
+
+#learnMode#learnMode.lesson-long-activity .lesson-activity-prompt {
+  font-size: max(calc(15.5px * var(--fixed-scale)), 10.5px) !important;
+  line-height: 1.08 !important;
+}
+
+#learnMode#learnMode.lesson-readable-column #lessonContent {
+  bottom: calc(76px * var(--fixed-scale)) !important;
+  justify-content: center !important;
+  padding-bottom: calc(48px * var(--fixed-scale)) !important;
+}
+
+#learnMode#learnMode.lesson-readable-column #lessonContent p,
+#learnMode#learnMode.lesson-readable-column .lesson-notice,
+#learnMode#learnMode.learn-topic-module1.lesson-slide-20 #lessonContent p {
+  text-align: left !important;
+  text-align-last: left !important;
+}
+
+#learnMode#learnMode.lesson-readable-column #lessonContent p,
+#learnMode#learnMode.lesson-readable-column .lesson-notice {
+  margin-bottom: calc(13px * var(--fixed-scale)) !important;
+}
+
+#learnMode#learnMode.learn-topic-module1.lesson-slide-20 #lessonContent {
+  bottom: calc(76px * var(--fixed-scale)) !important;
+  justify-content: center !important;
+  gap: calc(11px * var(--fixed-scale)) !important;
+  padding-bottom: calc(48px * var(--fixed-scale)) !important;
+  font-size: max(calc(23.5px * var(--fixed-scale)), 14px) !important;
+  line-height: 1.18 !important;
+}
+
+#learnMode#learnMode.learn-topic-module1.lesson-slide-20 .module1-row-list {
+  gap: calc(13px * var(--fixed-scale)) !important;
+  margin-top: calc(10px * var(--fixed-scale)) !important;
+  margin-bottom: calc(12px * var(--fixed-scale)) !important;
+}
+
+#learnMode#learnMode.learn-topic-module1.lesson-slide-20 .module1-row {
+  align-items: center !important;
+  min-height: max(calc(72px * var(--fixed-scale)), 48px) !important;
+  padding-top: calc(8px * var(--fixed-scale)) !important;
+  padding-bottom: calc(8px * var(--fixed-scale)) !important;
+}
+
+#learnMode#learnMode.learn-topic-module1.lesson-slide-20 .module1-row strong {
+  font-size: max(calc(21px * var(--fixed-scale)), 13px) !important;
+  line-height: 1.08 !important;
+}
+
+#learnMode#learnMode.learn-topic-module1.lesson-slide-20 .module1-row span {
+  font-size: max(calc(21px * var(--fixed-scale)), 13px) !important;
+  line-height: 1.08 !important;
+  text-align: left !important;
+  text-align-last: left !important;
+}
+`
+  style.textContent += `
+/* Final short-page fill pass. */
+#learnMode#learnMode.lesson-tiny-activity .lesson-activity {
+  gap: calc(12px * var(--fixed-scale)) !important;
+}
+
+#learnMode#learnMode.lesson-tiny-activity .lesson-activity-items {
+  gap: calc(14px * var(--fixed-scale)) !important;
+  width: min(100%, calc(675px * var(--fixed-scale))) !important;
+}
+
+#learnMode#learnMode.lesson-tiny-activity .lesson-activity-row {
+  min-height: max(calc(92px * var(--fixed-scale)), 58px) !important;
+  padding: calc(8px * var(--fixed-scale)) calc(10px * var(--fixed-scale)) !important;
+}
+
+#learnMode#learnMode.lesson-tiny-activity .lesson-activity-prompt {
+  font-size: max(calc(20px * var(--fixed-scale)), 13px) !important;
+  line-height: 1.12 !important;
+}
+
+#learnMode#learnMode.learn-topic-module2.lesson-slide-5 #lessonContent,
+#learnMode#learnMode.learn-topic-module3.lesson-slide-8 #lessonContent {
+  font-size: max(calc(27px * var(--fixed-scale)), 16px) !important;
+  line-height: 1.2 !important;
+}
+
+#learnMode#learnMode.learn-topic-module2.lesson-slide-5 #lessonContent p,
+#learnMode#learnMode.learn-topic-module3.lesson-slide-8 #lessonContent p {
+  margin-bottom: calc(16px * var(--fixed-scale)) !important;
+}
+
+#learnMode#learnMode.learn-topic-module3.lesson-slide-8 .lesson-example {
+  margin-top: calc(12px * var(--fixed-scale)) !important;
+  margin-bottom: calc(14px * var(--fixed-scale)) !important;
+  line-height: 1.14 !important;
+}
+`
+  style.textContent += `
+/* Final long-activity clean-scroll pass. */
+#learnMode#learnMode.lesson-long-activity #lessonContent {
+  bottom: calc(58px * var(--fixed-scale)) !important;
+  padding-bottom: calc(14px * var(--fixed-scale)) !important;
+}
+`
+  document.head.appendChild(style)
+}
+function resetLessonFit(learnMode, content) {
+  learnMode.style.removeProperty("--lesson-dynamic-font-size")
+  learnMode.style.removeProperty("--lesson-dynamic-gap")
+  learnMode.style.removeProperty("--lesson-dynamic-top-offset")
+  content.querySelectorAll(".lesson-response-field-long").forEach(field => {
+    field.style.removeProperty("height")
+  })
 }
 
 function updateLessonLayoutClass(lesson) {
@@ -3128,15 +3693,37 @@ function updateLessonLayoutClass(lesson) {
   const plainText = content.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim()
   const listCount = (content.match(/<li\b/g) || []).length
   const blockCount = (content.match(/<(p|li|div|h2)\b/g) || []).length
+  const hasResponse = /lesson-answer-list|lesson-activity|lesson-response-field|lesson-inline-answer|lessonInlineAnswer/.test(content)
+  const hasActivity = /lesson-activity/.test(content)
+  const activityItemCount = (content.match(/lesson-activity-row/g) || []).length
+  const hasReflectionFields = /lesson-answer-list-many|lesson-answer-list-reflection|lesson-answer-list-poem|lesson-answer-list-merged-activity/.test(content)
+  const hasLargeTable = /module3-rubric-table/.test(content)
+  const hasPlainList = /module1-plain-list|lesson-list/.test(content)
+  const hasStructuredLayout = /module1-row-list|module1-compare-grid|module3-rubric-table|lesson-mini-grid|lesson-two-kinds|lesson-options|lesson-activity/.test(content)
   const isBulleted = listCount > 0
-  const isLong = plainText.length > 285 || listCount >= 5 || blockCount >= 8
-  const isDense = plainText.length > 210 || listCount >= 4 || blockCount >= 6
-  const isShort = !isBulleted && plainText.length < 170 && blockCount <= 4
+  const isLong = hasLargeTable || plainText.length > 820 || blockCount >= 22 || (hasResponse && plainText.length > 1050)
+  const isDense = hasResponse || plainText.length > 430 || listCount >= 6 || blockCount >= 9 || hasLargeTable
+  const isShort = !hasResponse && plainText.length < 420 && blockCount <= 5
+  const isBalanced = !hasResponse && !hasLargeTable && plainText.length < 900 && blockCount <= 13
+  const isFormBalanced = hasResponse && !hasLargeTable && plainText.length < 1100 && blockCount <= 28
+  const usesTwoColumnList = !hasResponse && hasPlainList && listCount >= 6 && plainText.length < 900
+  const usesReadableColumn = isBalanced && !hasStructuredLayout
 
   learnMode.classList.toggle("lesson-long", isLong)
   learnMode.classList.toggle("lesson-dense", isDense)
   learnMode.classList.toggle("lesson-bulleted", isBulleted)
   learnMode.classList.toggle("lesson-short", !isLong && isShort)
+  learnMode.classList.toggle("lesson-balanced", !isLong && isBalanced)
+  learnMode.classList.toggle("lesson-form-balanced", !isLong && isFormBalanced)
+  learnMode.classList.toggle("lesson-readable-column", !isLong && usesReadableColumn)
+  learnMode.classList.toggle("lesson-structured", hasStructuredLayout)
+  learnMode.classList.toggle("lesson-two-column-list", !isLong && usesTwoColumnList)
+  learnMode.classList.toggle("lesson-compact-activity", !isLong && hasActivity)
+  learnMode.classList.toggle("lesson-short-activity", !isLong && hasActivity && activityItemCount <= 5)
+  learnMode.classList.toggle("lesson-tiny-activity", !isLong && hasActivity && activityItemCount <= 3)
+  learnMode.classList.toggle("lesson-long-activity", !isLong && hasActivity && activityItemCount > 5)
+  learnMode.classList.toggle("lesson-reflection-page", !isLong && hasReflectionFields)
+  learnMode.classList.toggle("lesson-rubric-page", hasLargeTable)
   learnMode.classList.remove("lesson-overflow-fit", "lesson-overflow-extra")
   ;[...learnMode.classList]
     .filter(className => className.startsWith("lesson-slide-"))
@@ -3144,19 +3731,129 @@ function updateLessonLayoutClass(lesson) {
   learnMode.classList.add(`lesson-slide-${lessonIndex + 1}`)
 }
 
-function fitLessonToScroll() {
+function getLessonContentMetrics(content) {
+  const contentRect = content.getBoundingClientRect()
+  const visibleChildren = [...content.children].filter(child => {
+    const style = window.getComputedStyle(child)
+    return style.display !== "none" && style.visibility !== "hidden"
+  })
+
+  if (!visibleChildren.length) {
+    return {
+      available: content.clientHeight,
+      used: Math.min(content.scrollHeight, content.clientHeight),
+      overflowing: false
+    }
+  }
+
+  const childRects = visibleChildren.map(child => child.getBoundingClientRect())
+  const top = Math.min(...childRects.map(rect => rect.top))
+  const bottom = Math.max(...childRects.map(rect => rect.bottom))
+  const used = Math.max(0, bottom - top)
+  const overflowing = content.scrollHeight > content.clientHeight + 2 ||
+    top < contentRect.top - 2 ||
+    bottom > contentRect.bottom + 2
+
+  return {
+    available: contentRect.height,
+    used,
+    overflowing
+  }
+}
+
+function fitLessonToScroll(attempt = 0) {
   const learnMode = document.getElementById("learnMode")
   const content = document.getElementById("lessonContent")
   if (!learnMode || !content || learnMode.classList.contains("hidden")) return
 
-  const hasOverflow = content.scrollHeight > content.clientHeight + 2
+  if (attempt === 0) {
+    resetLessonFit(learnMode, content)
+    learnMode.classList.remove("lesson-overflow-fit", "lesson-overflow-extra")
+  }
+
+  const metrics = getLessonContentMetrics(content)
+  const hasOverflow = metrics.overflowing
   learnMode.classList.toggle("lesson-overflow-fit", hasOverflow)
 
   if (hasOverflow) {
+    if (attempt > 0) {
+      resetLessonFit(learnMode, content)
+      learnMode.classList.add("lesson-overflow-fit")
+    }
+
     requestAnimationFrame(() => {
-      const stillOverflowing = content.scrollHeight > content.clientHeight + 2
+      const stillOverflowing = getLessonContentMetrics(content).overflowing
       learnMode.classList.toggle("lesson-overflow-extra", stillOverflowing)
     })
+    return
+  }
+
+  learnMode.classList.remove("lesson-overflow-extra")
+
+  if (attempt >= 2) return
+
+  const unused = metrics.available - metrics.used
+  if (unused < Math.max(36, metrics.available * 0.11)) return
+
+  const computed = window.getComputedStyle(content)
+  const currentFontSize = parseFloat(computed.fontSize) || 18
+  const isLong = learnMode.classList.contains("lesson-long")
+  const isDense = learnMode.classList.contains("lesson-dense")
+  const isBalanced = learnMode.classList.contains("lesson-balanced")
+  const isFormBalanced = learnMode.classList.contains("lesson-form-balanced")
+  const isReflectionPage = learnMode.classList.contains("lesson-reflection-page")
+  const isRubricPage = learnMode.classList.contains("lesson-rubric-page")
+  const maxIncrease = isRubricPage ? 1.8 : isLong ? 1.2 : isReflectionPage ? 2.2 : isDense ? 3.2 : 5
+  const maxScale = isRubricPage ? 1.08 : isLong ? 1.04 : isReflectionPage ? 1.08 : isDense ? 1.12 : 1.18
+  const targetFill = content.querySelector(".lesson-answer-list, .lesson-activity")
+    ? isReflectionPage ? 0.88 : 0.84
+    : isRubricPage
+      ? 0.76
+    : isBalanced
+      ? 0.82
+      : 0.86
+  const desiredScale = Math.sqrt((metrics.available * targetFill) / Math.max(metrics.used, 1))
+  const scale = Math.min(maxScale, desiredScale)
+
+  if (attempt === 0 && scale > 1.015) {
+    const nextFontSize = Math.min(currentFontSize * scale, currentFontSize + maxIncrease)
+    learnMode.style.setProperty("--lesson-dynamic-font-size", `${nextFontSize.toFixed(2)}px`)
+    requestAnimationFrame(() => fitLessonToScroll(attempt + 1))
+    return
+  }
+
+  const longFields = [...content.querySelectorAll(".lesson-response-field-long")]
+  const visibleChildren = [...content.children].filter(child => {
+    const style = window.getComputedStyle(child)
+    return style.display !== "none" && style.visibility !== "hidden"
+  })
+
+  let adjustedSpacing = false
+
+  if (unused > 44) {
+    const topOffset = isBalanced || isFormBalanced
+      ? 0
+      : Math.min(isRubricPage ? 6 : isLong ? 8 : isDense ? 14 : 28, Math.max(0, unused * 0.1))
+    const gapCap = isRubricPage ? 12 : isLong ? 8 : isReflectionPage ? 14 : isFormBalanced ? 22 : isBalanced ? 34 : isDense ? 14 : 18
+    const gapFactor = isRubricPage ? 0.1 : isBalanced ? 0.14 : isFormBalanced ? 0.1 : 0.06
+    const gap = visibleChildren.length > 1
+      ? Math.min(gapCap, Math.max(0, unused * gapFactor))
+      : 0
+
+    learnMode.style.setProperty("--lesson-dynamic-top-offset", `${topOffset.toFixed(1)}px`)
+    learnMode.style.setProperty("--lesson-dynamic-gap", `${gap.toFixed(1)}px`)
+    adjustedSpacing = true
+  }
+
+  if (longFields.length && unused > 28) {
+    const growBy = Math.min(isReflectionPage ? 90 : isFormBalanced ? 68 : 40, Math.max(10, (unused * (isReflectionPage ? 0.72 : 0.56)) / longFields.length))
+    longFields.forEach(field => {
+      const height = parseFloat(window.getComputedStyle(field).height) || field.clientHeight
+      field.style.setProperty("height", `${height + growBy}px`, "important")
+    })
+    requestAnimationFrame(() => fitLessonToScroll(attempt + 1))
+  } else if (adjustedSpacing) {
+    requestAnimationFrame(() => fitLessonToScroll(attempt + 1))
   } else {
     learnMode.classList.remove("lesson-overflow-extra")
   }
@@ -3171,6 +3868,11 @@ function restoreLessonResponses() {
   document.querySelectorAll(".lesson-response-field").forEach(field => {
     const wrapper = field.closest("[data-lesson-response]")
     const responseId = wrapper?.dataset.lessonResponse || field.id
+    field.value = learnResponses[responseId]?.answer || ""
+  })
+
+  document.querySelectorAll("[data-activity-response-id]").forEach(field => {
+    const responseId = field.dataset.activityResponseId
     field.value = learnResponses[responseId]?.answer || ""
   })
 }
@@ -3197,6 +3899,32 @@ function saveLessonResponse(responseId, value) {
       savePlayerProfile()
     } else {
       syncMultiplayerScore("learn-answer")
+    }
+  }, 350)
+}
+
+function saveLessonActivityResponse(activityId, itemNumber, input) {
+  const responseId = input?.dataset.activityResponseId || `${activityId}-activity-${itemNumber}`
+  const answer = sanitizeAnswerText(input?.value, MAX_LEARN_RESPONSE_LENGTH)
+
+  if (answer) {
+    learnResponses[responseId] = {
+      id: responseId,
+      title: sanitizeAnswerText(input?.dataset.activityTitle, 80, "Learning Activity"),
+      prompt: sanitizeAnswerText(input?.dataset.activityPrompt, 160, `Activity item ${itemNumber}`),
+      answer,
+      updatedAt: Date.now()
+    }
+  } else {
+    delete learnResponses[responseId]
+  }
+
+  clearTimeout(learnResponseSaveTimer)
+  learnResponseSaveTimer = setTimeout(() => {
+    if (playerName) {
+      savePlayerProfile()
+    } else {
+      syncMultiplayerScore("learn-activity-answer")
     }
   }, 350)
 }
@@ -3336,6 +4064,14 @@ function getSentenceSleuthLevel(levelNumber = currentSentenceLevel) {
   return sentenceSleuthLevels.find(level => level.level === levelNumber) || sentenceSleuthLevels[0]
 }
 
+function getQuestionLimitForGame(gameNumber = currentGame) {
+  return gameNumber === 1 ? GAME_1_QUESTIONS_PER_LEVEL : QUESTIONS_PER_RUN
+}
+
+function getPassingAnswersForGame(gameNumber = currentGame) {
+  return gameNumber === 1 ? GAME_1_PASSING_ANSWERS : PASSING_ANSWERS
+}
+
 function getCurrentRunTitle() {
   if (currentGame === 1) return `${gameTitles[1]} Level ${currentSentenceLevel}`
   return gameTitles[currentGame] || `Game ${currentGame}`
@@ -3418,7 +4154,7 @@ function startGame(gameNumber, resetCarriedStats = false, sentenceLevel = 1) {
 
   if (currentGame === 1) {
     const activeSentenceLevel = getSentenceSleuthLevel()
-    questions = shuffle(activeSentenceLevel.questions).slice(0, QUESTIONS_PER_RUN)
+    questions = shuffle(activeSentenceLevel.questions).slice(0, getQuestionLimitForGame(1))
     questionDuration = 15
     playMode.classList.add("game1-bg")
   } else if (currentGame === 2) {
@@ -3876,7 +4612,9 @@ function finishGame() {
 
   setGuideState("assets/images/guide-cheer.png", "You finished the game. Let's see your result!")
 
-  if (correctAnswers >= PASSING_ANSWERS) {
+  const requiredCorrectAnswers = getPassingAnswersForGame(currentGame)
+
+  if (correctAnswers >= requiredCorrectAnswers) {
     commitCurrentRunAnswers()
     carryScore = score
     carryStreak = streak
@@ -3907,7 +4645,7 @@ function finishGame() {
     }
   } else {
     rollbackCurrentRunProgress()
-    showPopup("Try Again", `You got ${correctAnswers}/${questions.length}. You need ${PASSING_ANSWERS}/${questions.length} to proceed. Please review this game again.`)
+    showPopup("Try Again", `You got ${correctAnswers}/${questions.length}. You need ${requiredCorrectAnswers}/${questions.length} to proceed. Please review this game again.`)
     if (currentGame === 1) {
       startGame(1, false, currentSentenceLevel)
     } else {
@@ -4258,7 +4996,7 @@ function showInstructions() {
         <div class="mechanics-step">
           <span class="mechanics-number">4</span>
           <strong>Unlock</strong>
-          <p>Pass with 4 out of 5 to open the next level or game.</p>
+          <p>Pass with 8 out of 10 in Game 1, or 4 out of 5 in the other games.</p>
         </div>
       </div>
 
@@ -4322,11 +5060,30 @@ function updateFullscreenButton() {
   updateFixedLayout()
 }
 
+function lockLandscapeIfPossible() {
+  const orientation = window.screen?.orientation
+  if (!orientation?.lock) return
+
+  const lockRequest = orientation.lock("landscape")
+  if (lockRequest?.catch) lockRequest.catch(() => {})
+}
+
+function unlockOrientationIfPossible() {
+  const orientation = window.screen?.orientation
+  if (!orientation?.unlock) return
+  try {
+    orientation.unlock()
+  } catch {
+    // Some mobile browsers only allow locking, not explicit unlocking.
+  }
+}
+
 function toggleFullscreen() {
   const activeElement = getFullscreenElement()
 
   if (activeElement) {
     const exitFullscreen = document.exitFullscreen || document.webkitExitFullscreen || document.msExitFullscreen
+    unlockOrientationIfPossible()
     if (exitFullscreen) exitFullscreen.call(document)
     return
   }
@@ -4339,8 +5096,10 @@ function toggleFullscreen() {
   }
 
   const request = requestFullscreen.call(target, { navigationUI: "hide" })
-  if (request && request.catch) {
-    request.catch(() => {})
+  if (request?.then) {
+    request.then(lockLandscapeIfPossible).catch(() => {})
+  } else {
+    lockLandscapeIfPossible()
   }
 }
 

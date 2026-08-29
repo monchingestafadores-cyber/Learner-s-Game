@@ -7997,3 +7997,1122 @@ body {
     padding: calc(8px * var(--fixed-scale)) calc(14px * var(--fixed-scale)) !important;
   }
 }
+
+/* Final phone guide and lesson safety. Keep the desktop stage intact while
+   preventing phone browsers from slicing text and answer fields. */
+.fullscreen-guide-board {
+  left: calc(var(--fixed-left) + (300px * var(--fixed-scale))) !important;
+  top: calc(var(--fixed-top) + (118px * var(--fixed-scale))) !important;
+  width: calc(560px * var(--fixed-scale)) !important;
+  height: calc(560px * var(--fixed-scale)) !important;
+  min-height: 0 !important;
+  padding: calc(96px * var(--fixed-scale)) calc(86px * var(--fixed-scale)) calc(70px * var(--fixed-scale)) !important;
+  background-size: contain !important;
+  background-repeat: no-repeat !important;
+}
+
+.fullscreen-guide-board h1 {
+  margin-bottom: calc(18px * var(--fixed-scale)) !important;
+  font-size: calc(39px * var(--fixed-scale)) !important;
+}
+
+.fullscreen-guide-board p {
+  max-width: calc(390px * var(--fixed-scale)) !important;
+  margin: calc(9px * var(--fixed-scale)) auto !important;
+  font-size: calc(21px * var(--fixed-scale)) !important;
+  line-height: 1.18 !important;
+}
+
+.fullscreen-guide-actions {
+  gap: calc(16px * var(--fixed-scale)) !important;
+  margin-top: calc(24px * var(--fixed-scale)) !important;
+}
+
+.fullscreen-guide-action {
+  min-width: calc(165px * var(--fixed-scale)) !important;
+  min-height: calc(52px * var(--fixed-scale)) !important;
+  font-size: calc(18px * var(--fixed-scale)) !important;
+}
+
+.fullscreen-guide-character {
+  left: calc(var(--fixed-left) + (790px * var(--fixed-scale))) !important;
+  top: calc(var(--fixed-top) + (260px * var(--fixed-scale))) !important;
+  width: calc(275px * var(--fixed-scale)) !important;
+}
+
+#learnMode .lesson-box h1,
+#learnMode.learn-topic-game .lesson-box h1 {
+  transform: translateY(calc(-34px * var(--fixed-scale))) !important;
+}
+
+#learnMode #lessonPage,
+#learnMode.learn-topic-game #lessonPage {
+  margin-bottom: calc(4px * var(--fixed-scale)) !important;
+  transform: translateY(calc(-34px * var(--fixed-scale))) !important;
+}
+
+#learnMode #lessonContent,
+#learnMode.learn-topic-game #lessonContent,
+#learnMode:not(.learn-topic-game) #lessonContent {
+  padding-top: calc(4px * var(--fixed-scale)) !important;
+}
+
+@media (orientation: landscape) and (max-height: 560px) {
+  #learnMode .lesson-box,
+  #learnMode.learn-topic-game .lesson-box,
+  #learnMode:not(.learn-topic-game) .lesson-box {
+    top: calc(var(--fixed-top) + (88px * var(--fixed-scale))) !important;
+    height: calc(542px * var(--fixed-scale)) !important;
+    padding-top: calc(34px * var(--fixed-scale)) !important;
+    padding-bottom: calc(12px * var(--fixed-scale)) !important;
+  }
+
+  #learnMode .lesson-box h1,
+  #learnMode.learn-topic-game .lesson-box h1 {
+    transform: translateY(calc(-38px * var(--fixed-scale))) !important;
+  }
+
+  #learnMode #lessonPage,
+  #learnMode.learn-topic-game #lessonPage {
+    transform: translateY(calc(-38px * var(--fixed-scale))) !important;
+    margin-bottom: calc(2px * var(--fixed-scale)) !important;
+  }
+
+  #learnMode #lessonContent,
+  #learnMode.learn-topic-game #lessonContent,
+  #learnMode:not(.learn-topic-game) #lessonContent {
+    padding-top: calc(2px * var(--fixed-scale)) !important;
+    padding-bottom: calc(18px * var(--fixed-scale)) !important;
+    overflow-y: auto !important;
+    overscroll-behavior: contain !important;
+    scrollbar-width: none !important;
+  }
+
+  #learnMode #lessonContent::-webkit-scrollbar {
+    width: 0 !important;
+    height: 0 !important;
+  }
+
+  #learnMode .lesson-response-field,
+  #learnMode .lesson-answer-item .lesson-response-field {
+    min-height: max(calc(42px * var(--fixed-scale)), 30px) !important;
+    line-height: 1.18 !important;
+  }
+
+  #learnMode .lesson-response-field-long,
+  #learnMode .lesson-answer-list-stacked .lesson-response-field-long,
+  #learnMode .lesson-answer-list-many .lesson-response-field-long {
+    min-height: max(calc(68px * var(--fixed-scale)), 44px) !important;
+  }
+
+  #learnMode .lesson-response-field-short,
+  #learnMode .lesson-inline-answer-field,
+  #learnMode .lesson-activity input {
+    min-height: max(calc(36px * var(--fixed-scale)), 26px) !important;
+  }
+}
+
+/* Final lesson header pass: use the real slide heading as the top title and
+   give the parchment body more usable space. */
+.fullscreen-guide-logo {
+  top: calc(var(--fixed-top) + (-14px * var(--fixed-scale))) !important;
+}
+
+.fullscreen-guide-board {
+  top: calc(var(--fixed-top) + (98px * var(--fixed-scale))) !important;
+  padding-top: calc(76px * var(--fixed-scale)) !important;
+  padding-bottom: calc(58px * var(--fixed-scale)) !important;
+}
+
+.fullscreen-guide-board h1 {
+  margin-bottom: calc(14px * var(--fixed-scale)) !important;
+}
+
+#learnMode .lesson-box,
+#learnMode.learn-topic-game .lesson-box,
+#learnMode:not(.learn-topic-game) .lesson-box {
+  padding-top: calc(18px * var(--fixed-scale)) !important;
+  padding-bottom: calc(12px * var(--fixed-scale)) !important;
+  gap: calc(2px * var(--fixed-scale)) !important;
+}
+
+#learnMode .lesson-box h1,
+#learnMode.learn-topic-game .lesson-box h1 {
+  min-height: calc(34px * var(--fixed-scale)) !important;
+  margin: 0 !important;
+  transform: none !important;
+  font-size: max(calc(30px * var(--fixed-scale)), 17px) !important;
+  line-height: 1.02 !important;
+}
+
+#learnMode #lessonPage,
+#learnMode.learn-topic-game #lessonPage {
+  align-self: flex-end !important;
+  margin: calc(-3px * var(--fixed-scale)) calc(40px * var(--fixed-scale)) calc(1px * var(--fixed-scale)) 0 !important;
+  transform: none !important;
+  font-size: max(calc(15px * var(--fixed-scale)), 10px) !important;
+  line-height: 1 !important;
+  opacity: 0.78 !important;
+}
+
+#learnMode #lessonContent,
+#learnMode.learn-topic-game #lessonContent,
+#learnMode:not(.learn-topic-game) #lessonContent {
+  padding-top: calc(0px * var(--fixed-scale)) !important;
+  padding-bottom: calc(4px * var(--fixed-scale)) !important;
+}
+
+@media (orientation: landscape) and (max-height: 560px) {
+  .fullscreen-guide-logo {
+    top: calc(var(--fixed-top) + (-20px * var(--fixed-scale))) !important;
+  }
+
+  .fullscreen-guide-board {
+    top: calc(var(--fixed-top) + (84px * var(--fixed-scale))) !important;
+    padding-top: calc(72px * var(--fixed-scale)) !important;
+  }
+
+  #learnMode .lesson-box,
+  #learnMode.learn-topic-game .lesson-box,
+  #learnMode:not(.learn-topic-game) .lesson-box {
+    top: calc(var(--fixed-top) + (78px * var(--fixed-scale))) !important;
+    height: calc(556px * var(--fixed-scale)) !important;
+    padding-top: calc(16px * var(--fixed-scale)) !important;
+  }
+
+  #learnMode .lesson-box h1,
+  #learnMode.learn-topic-game .lesson-box h1 {
+    min-height: calc(30px * var(--fixed-scale)) !important;
+    transform: none !important;
+    font-size: max(calc(28px * var(--fixed-scale)), 15px) !important;
+  }
+
+  #learnMode #lessonPage,
+  #learnMode.learn-topic-game #lessonPage {
+    margin-bottom: 0 !important;
+    transform: none !important;
+    font-size: max(calc(14px * var(--fixed-scale)), 9px) !important;
+  }
+}
+
+/* Final Phone Setup composition: match the wider fixed-stage look used by the
+   other screens and keep the logo clear of the title. */
+#fullscreenGuide {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  height: 100dvh !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  background-image: url("assets/images/bg.png") !important;
+  background-size: calc(1280px * var(--fixed-scale)) calc(720px * var(--fixed-scale)) !important;
+  background-position: var(--fixed-left) var(--fixed-top) !important;
+  background-repeat: no-repeat !important;
+}
+
+.fullscreen-guide-logo {
+  left: calc(var(--fixed-left) + (440px * var(--fixed-scale))) !important;
+  top: calc(var(--fixed-top) + (-72px * var(--fixed-scale))) !important;
+  width: calc(400px * var(--fixed-scale)) !important;
+  z-index: 5 !important;
+}
+
+.fullscreen-guide-board {
+  left: calc(var(--fixed-left) + (205px * var(--fixed-scale))) !important;
+  top: calc(var(--fixed-top) + (118px * var(--fixed-scale))) !important;
+  width: calc(760px * var(--fixed-scale)) !important;
+  height: calc(552px * var(--fixed-scale)) !important;
+  min-height: 0 !important;
+  padding: calc(76px * var(--fixed-scale)) calc(120px * var(--fixed-scale)) calc(62px * var(--fixed-scale)) !important;
+  background-size: 100% 100% !important;
+}
+
+.fullscreen-guide-board h1 {
+  margin-bottom: calc(16px * var(--fixed-scale)) !important;
+  font-size: calc(41px * var(--fixed-scale)) !important;
+}
+
+.fullscreen-guide-board p {
+  max-width: calc(500px * var(--fixed-scale)) !important;
+  margin: calc(10px * var(--fixed-scale)) auto !important;
+  font-size: calc(23px * var(--fixed-scale)) !important;
+  line-height: 1.18 !important;
+}
+
+.fullscreen-guide-actions {
+  margin-top: calc(26px * var(--fixed-scale)) !important;
+}
+
+.fullscreen-guide-character {
+  left: calc(var(--fixed-left) + (872px * var(--fixed-scale))) !important;
+  top: calc(var(--fixed-top) + (262px * var(--fixed-scale))) !important;
+  width: calc(265px * var(--fixed-scale)) !important;
+}
+
+@media (orientation: landscape) and (max-height: 560px) {
+  .fullscreen-guide-logo {
+    top: calc(var(--fixed-top) + (-82px * var(--fixed-scale))) !important;
+    width: calc(390px * var(--fixed-scale)) !important;
+  }
+
+  .fullscreen-guide-board {
+    top: calc(var(--fixed-top) + (108px * var(--fixed-scale))) !important;
+    padding-top: calc(72px * var(--fixed-scale)) !important;
+  }
+}
+
+/* Final phone setup and lesson-space pass. Keep the same fixed-stage geometry
+   while giving the scroll content more room and preventing merged activities
+   from clipping on small landscape phones. */
+.fullscreen-guide-logo {
+  top: calc(var(--fixed-top) + (-44px * var(--fixed-scale))) !important;
+  width: calc(382px * var(--fixed-scale)) !important;
+}
+
+.fullscreen-guide-board {
+  top: calc(var(--fixed-top) + (112px * var(--fixed-scale))) !important;
+  padding-top: calc(58px * var(--fixed-scale)) !important;
+}
+
+.fullscreen-guide-board h1 {
+  margin-bottom: calc(10px * var(--fixed-scale)) !important;
+  transform: translateY(calc(-10px * var(--fixed-scale))) !important;
+}
+
+#learnMode .lesson-box,
+#learnMode.learn-topic-game .lesson-box,
+#learnMode:not(.learn-topic-game) .lesson-box {
+  top: calc(var(--fixed-top) + (72px * var(--fixed-scale))) !important;
+  height: calc(594px * var(--fixed-scale)) !important;
+  padding-top: calc(4px * var(--fixed-scale)) !important;
+  padding-bottom: calc(6px * var(--fixed-scale)) !important;
+  gap: calc(2px * var(--fixed-scale)) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: flex-start !important;
+}
+
+#learnMode .lesson-box h1,
+#learnMode.learn-topic-game .lesson-box h1 {
+  min-height: calc(38px * var(--fixed-scale)) !important;
+  font-size: max(calc(31px * var(--fixed-scale)), 17px) !important;
+}
+
+#learnMode #lessonPage,
+#learnMode.learn-topic-game #lessonPage {
+  margin: calc(-3px * var(--fixed-scale)) 0 calc(3px * var(--fixed-scale)) !important;
+  font-size: max(calc(19px * var(--fixed-scale)), 11px) !important;
+}
+
+#learnMode #lessonContent,
+#learnMode.learn-topic-game #lessonContent,
+#learnMode:not(.learn-topic-game) #lessonContent {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  padding: calc(4px * var(--fixed-scale)) calc(24px * var(--fixed-scale)) calc(6px * var(--fixed-scale)) !important;
+  overflow: hidden !important;
+}
+
+#learnMode.lesson-overflow-fit #lessonContent,
+#learnMode.lesson-overflow-extra #lessonContent {
+  overflow-y: auto !important;
+  overscroll-behavior: contain !important;
+  scrollbar-width: none !important;
+}
+
+#learnMode.lesson-overflow-fit #lessonContent::-webkit-scrollbar,
+#learnMode.lesson-overflow-extra #lessonContent::-webkit-scrollbar {
+  width: 0 !important;
+  height: 0 !important;
+}
+
+#learnMode:not(.learn-topic-game).lesson-short #lessonContent {
+  justify-content: center !important;
+}
+
+#learnMode #lessonContent p {
+  text-align: justify !important;
+  text-align-last: left !important;
+}
+
+#learnMode #lessonContent h2 {
+  text-align: center !important;
+  text-align-last: center !important;
+}
+
+#learnMode .lesson-list li,
+#learnMode .module1-plain-list li,
+#learnMode .module1-row,
+#learnMode .lesson-answer-prompt,
+#learnMode .lesson-activity-prompt {
+  text-align: left !important;
+  text-align-last: left !important;
+}
+
+#learnMode.learn-topic-module1.lesson-slide-14 #lessonContent,
+#learnMode.learn-topic-module1.lesson-slide-15 #lessonContent {
+  justify-content: flex-start !important;
+  padding-top: 0 !important;
+  font-size: max(calc(17px * var(--fixed-scale)), 10.5px) !important;
+  line-height: 1.05 !important;
+}
+
+#learnMode.learn-topic-module1.lesson-slide-14 #lessonContent h2,
+#learnMode.learn-topic-module1.lesson-slide-15 #lessonContent h2 {
+  margin-bottom: calc(3px * var(--fixed-scale)) !important;
+  font-size: max(calc(25px * var(--fixed-scale)), 14px) !important;
+  line-height: 1.02 !important;
+}
+
+#learnMode.learn-topic-module1.lesson-slide-14 .lesson-activity-directions,
+#learnMode.learn-topic-module1.lesson-slide-15 .lesson-activity-directions {
+  margin-bottom: calc(3px * var(--fixed-scale)) !important;
+  font-size: max(calc(13px * var(--fixed-scale)), 9px) !important;
+  line-height: 1.05 !important;
+}
+
+#learnMode.learn-topic-module1.lesson-slide-14 .lesson-activity-items,
+#learnMode.learn-topic-module1.lesson-slide-15 .lesson-activity-items {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: calc(3px * var(--fixed-scale)) calc(9px * var(--fixed-scale)) !important;
+}
+
+#learnMode.learn-topic-module1.lesson-slide-14 .lesson-activity-row,
+#learnMode.learn-topic-module1.lesson-slide-15 .lesson-activity-row {
+  grid-template-columns: minmax(0, 1fr) calc(54px * var(--fixed-scale)) calc(72px * var(--fixed-scale)) !important;
+  min-height: calc(29px * var(--fixed-scale)) !important;
+  padding: calc(2px * var(--fixed-scale)) calc(4px * var(--fixed-scale)) !important;
+  gap: calc(4px * var(--fixed-scale)) !important;
+}
+
+#learnMode.learn-topic-module1.lesson-slide-14 .lesson-activity-prompt,
+#learnMode.learn-topic-module1.lesson-slide-15 .lesson-activity-prompt {
+  font-size: max(calc(12px * var(--fixed-scale)), 8.8px) !important;
+  line-height: 1.02 !important;
+}
+
+#learnMode.learn-topic-module1.lesson-slide-14 .lesson-activity input,
+#learnMode.learn-topic-module1.lesson-slide-15 .lesson-activity input {
+  height: max(calc(23px * var(--fixed-scale)), 17px) !important;
+  font-size: max(calc(12px * var(--fixed-scale)), 8.8px) !important;
+}
+
+#learnMode.learn-topic-module1.lesson-slide-14 .lesson-activity-result,
+#learnMode.learn-topic-module1.lesson-slide-15 .lesson-activity-result {
+  font-size: max(calc(11px * var(--fixed-scale)), 8px) !important;
+  line-height: 1 !important;
+}
+
+#learnMode.learn-topic-module1.lesson-slide-14 .lesson-check-btn,
+#learnMode.learn-topic-module1.lesson-slide-15 .lesson-check-btn {
+  min-height: max(calc(27px * var(--fixed-scale)), 19px) !important;
+  margin-top: calc(2px * var(--fixed-scale)) !important;
+  font-size: max(calc(14px * var(--fixed-scale)), 10px) !important;
+}
+
+#learnMode.learn-topic-module1.lesson-slide-16 #lessonContent,
+#learnMode.learn-topic-module1.lesson-slide-17 #lessonContent,
+#learnMode.learn-topic-module1.lesson-slide-18 #lessonContent,
+#learnMode.learn-topic-module1.lesson-slide-19 #lessonContent,
+#learnMode.learn-topic-module1.lesson-slide-20 #lessonContent {
+  justify-content: flex-start !important;
+}
+
+#learnMode.learn-topic-module1.lesson-slide-16 .lesson-answer-list-shortpair .lesson-response-field-long {
+  height: max(calc(56px * var(--fixed-scale)), 34px) !important;
+}
+
+#learnMode.learn-topic-module1.lesson-slide-17 .lesson-answer-list-many .lesson-response-field-long {
+  height: max(calc(36px * var(--fixed-scale)), 24px) !important;
+}
+
+#learnMode.learn-topic-module1.lesson-slide-18 .lesson-answer-list-reflection .lesson-response-field-long,
+#learnMode.learn-topic-module1.lesson-slide-19 .lesson-answer-list-reflection .lesson-response-field-long {
+  height: max(calc(66px * var(--fixed-scale)), 38px) !important;
+}
+
+#learnMode.learn-topic-module1.lesson-slide-20 #lessonContent .module1-row-list {
+  margin-top: calc(8px * var(--fixed-scale)) !important;
+  margin-bottom: calc(8px * var(--fixed-scale)) !important;
+}
+
+#learnMode.learn-topic-module3.lesson-slide-11 #lessonContent {
+  justify-content: flex-start !important;
+  padding-top: 0 !important;
+  font-size: max(calc(17px * var(--fixed-scale)), 10.5px) !important;
+  line-height: 1.05 !important;
+}
+
+#learnMode.learn-topic-module3.lesson-slide-11 #lessonContent h2 {
+  margin-bottom: calc(3px * var(--fixed-scale)) !important;
+  font-size: max(calc(25px * var(--fixed-scale)), 14px) !important;
+}
+
+#learnMode.learn-topic-module3.lesson-slide-11 #lessonContent p {
+  margin-bottom: calc(4px * var(--fixed-scale)) !important;
+  font-size: max(calc(13px * var(--fixed-scale)), 9.2px) !important;
+  line-height: 1.06 !important;
+}
+
+#learnMode .lesson-answer-list-merged-activity {
+  gap: calc(4px * var(--fixed-scale)) !important;
+  margin-top: calc(2px * var(--fixed-scale)) !important;
+}
+
+#learnMode .lesson-answer-list-merged-activity .lesson-answer-item {
+  grid-template-columns: 1fr !important;
+  gap: calc(2px * var(--fixed-scale)) !important;
+  padding-top: calc(1px * var(--fixed-scale)) !important;
+  padding-bottom: calc(1px * var(--fixed-scale)) !important;
+}
+
+#learnMode .lesson-answer-list-merged-activity .lesson-answer-prompt {
+  font-size: max(calc(13px * var(--fixed-scale)), 9px) !important;
+  line-height: 1.02 !important;
+}
+
+#learnMode .lesson-answer-list-merged-activity .lesson-response-field-long {
+  height: max(calc(39px * var(--fixed-scale)), 24px) !important;
+  font-size: max(calc(13px * var(--fixed-scale)), 9.5px) !important;
+}
+
+#learnMode.learn-topic-module3.lesson-slide-12 .lesson-answer-list-poem .lesson-response-field-long {
+  height: max(calc(142px * var(--fixed-scale)), 80px) !important;
+}
+
+#learnMode.learn-topic-module3.lesson-slide-13 #lessonContent {
+  padding-top: 0 !important;
+  font-size: max(calc(16px * var(--fixed-scale)), 9.5px) !important;
+  line-height: 1.02 !important;
+}
+
+#learnMode.learn-topic-module3.lesson-slide-13 #lessonContent h2 {
+  margin-bottom: calc(2px * var(--fixed-scale)) !important;
+  font-size: max(calc(24px * var(--fixed-scale)), 13.5px) !important;
+}
+
+#learnMode.learn-topic-module3.lesson-slide-13 .module3-rubric-table {
+  margin-top: 0 !important;
+  font-size: max(calc(11px * var(--fixed-scale)), 8.5px) !important;
+}
+
+#learnMode.learn-topic-module3.lesson-slide-13 .rubric-row > span,
+#learnMode.learn-topic-module3.lesson-slide-13 .rubric-row > strong {
+  padding: calc(2px * var(--fixed-scale)) !important;
+  line-height: 1.02 !important;
+}
+
+#learnMode.learn-topic-module3.lesson-slide-14 .lesson-answer-list-reflection .lesson-response-field-long,
+#learnMode.learn-topic-module3.lesson-slide-15 .lesson-answer-list-reflection .lesson-response-field-long {
+  height: max(calc(74px * var(--fixed-scale)), 42px) !important;
+}
+
+#learnMode.learn-topic-module3.lesson-slide-16 #lessonContent {
+  justify-content: center !important;
+}
+
+@media (orientation: landscape) and (max-height: 560px) {
+  .fullscreen-guide-logo {
+    top: calc(var(--fixed-top) + (-46px * var(--fixed-scale))) !important;
+    width: calc(372px * var(--fixed-scale)) !important;
+  }
+
+  .fullscreen-guide-board {
+    top: calc(var(--fixed-top) + (104px * var(--fixed-scale))) !important;
+    padding-top: calc(54px * var(--fixed-scale)) !important;
+  }
+
+  #learnMode .lesson-box,
+  #learnMode.learn-topic-game .lesson-box,
+  #learnMode:not(.learn-topic-game) .lesson-box {
+    top: calc(var(--fixed-top) + (68px * var(--fixed-scale))) !important;
+    height: calc(600px * var(--fixed-scale)) !important;
+    padding-top: calc(3px * var(--fixed-scale)) !important;
+    padding-bottom: calc(5px * var(--fixed-scale)) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+  }
+
+  #learnMode .lesson-box h1,
+  #learnMode.learn-topic-game .lesson-box h1,
+  #learnMode:not(.learn-topic-game) .lesson-box h1 {
+    position: relative !important;
+    left: auto !important;
+    right: auto !important;
+    top: auto !important;
+    height: auto !important;
+    min-height: calc(34px * var(--fixed-scale)) !important;
+  }
+
+  #learnMode #lessonPage,
+  #learnMode.learn-topic-game #lessonPage,
+  #learnMode:not(.learn-topic-game) #lessonPage {
+    position: relative !important;
+    left: auto !important;
+    right: auto !important;
+    top: auto !important;
+    height: auto !important;
+    margin: calc(-3px * var(--fixed-scale)) 0 calc(2px * var(--fixed-scale)) !important;
+  }
+
+  #learnMode #lessonContent,
+  #learnMode.learn-topic-game #lessonContent,
+  #learnMode:not(.learn-topic-game) #lessonContent {
+    position: relative !important;
+    left: auto !important;
+    right: auto !important;
+    top: auto !important;
+    bottom: auto !important;
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    padding-top: calc(2px * var(--fixed-scale)) !important;
+    padding-bottom: calc(4px * var(--fixed-scale)) !important;
+  }
+}
+
+/* Final v349: phone guide spacing and fuller lesson scroll usage. */
+.fullscreen-guide-logo {
+  top: calc(var(--fixed-top) + (-20px * var(--fixed-scale))) !important;
+  width: calc(382px * var(--fixed-scale)) !important;
+}
+
+.fullscreen-guide-board p:first-of-type {
+  margin-top: calc(28px * var(--fixed-scale)) !important;
+}
+
+.fullscreen-guide-board p {
+  margin-top: calc(15px * var(--fixed-scale)) !important;
+  margin-bottom: calc(15px * var(--fixed-scale)) !important;
+}
+
+.fullscreen-guide-actions {
+  margin-top: calc(28px * var(--fixed-scale)) !important;
+}
+
+#learnMode .scroll-board-art {
+  top: calc(var(--fixed-top) + (4px * var(--fixed-scale))) !important;
+  height: calc(690px * var(--fixed-scale)) !important;
+}
+
+#learnMode .lesson-box,
+#learnMode.learn-topic-game .lesson-box,
+#learnMode:not(.learn-topic-game) .lesson-box {
+  top: calc(var(--fixed-top) + (62px * var(--fixed-scale))) !important;
+  height: calc(614px * var(--fixed-scale)) !important;
+  padding-top: calc(2px * var(--fixed-scale)) !important;
+  padding-bottom: calc(4px * var(--fixed-scale)) !important;
+}
+
+#learnMode .lesson-box h1,
+#learnMode.learn-topic-game .lesson-box h1,
+#learnMode:not(.learn-topic-game) .lesson-box h1 {
+  min-height: calc(36px * var(--fixed-scale)) !important;
+  margin-bottom: calc(1px * var(--fixed-scale)) !important;
+}
+
+#learnMode #lessonPage,
+#learnMode.learn-topic-game #lessonPage,
+#learnMode:not(.learn-topic-game) #lessonPage {
+  margin: calc(-4px * var(--fixed-scale)) 0 calc(1px * var(--fixed-scale)) !important;
+}
+
+#learnMode #lessonContent,
+#learnMode.learn-topic-game #lessonContent,
+#learnMode:not(.learn-topic-game) #lessonContent {
+  padding-top: calc(2px * var(--fixed-scale)) !important;
+  padding-bottom: calc(3px * var(--fixed-scale)) !important;
+}
+
+#learnMode #lessonContent p,
+#learnMode:not(.learn-topic-game) #lessonContent p {
+  margin-bottom: calc(10px * var(--fixed-scale)) !important;
+}
+
+#learnMode #lessonContent .lesson-notice {
+  margin-top: calc(16px * var(--fixed-scale)) !important;
+}
+
+@media (orientation: landscape) and (max-height: 560px) {
+  .fullscreen-guide-logo {
+    top: calc(var(--fixed-top) + (-24px * var(--fixed-scale))) !important;
+    width: calc(372px * var(--fixed-scale)) !important;
+  }
+
+  .fullscreen-guide-board p:first-of-type {
+    margin-top: calc(24px * var(--fixed-scale)) !important;
+  }
+
+  .fullscreen-guide-board p {
+    margin-top: calc(12px * var(--fixed-scale)) !important;
+    margin-bottom: calc(12px * var(--fixed-scale)) !important;
+  }
+
+  .fullscreen-guide-actions {
+    margin-top: calc(23px * var(--fixed-scale)) !important;
+  }
+
+  #learnMode .scroll-board-art {
+    top: calc(var(--fixed-top) + (2px * var(--fixed-scale))) !important;
+    height: calc(696px * var(--fixed-scale)) !important;
+  }
+
+  #learnMode .lesson-box,
+  #learnMode.learn-topic-game .lesson-box,
+  #learnMode:not(.learn-topic-game) .lesson-box {
+    top: calc(var(--fixed-top) + (56px * var(--fixed-scale))) !important;
+    height: calc(624px * var(--fixed-scale)) !important;
+  }
+}
+
+/* Final v351: restore phone guide logo and use lesson space without forced gaps. */
+.fullscreen-guide-logo {
+  top: calc(var(--fixed-top) + (-20px * var(--fixed-scale))) !important;
+  width: calc(382px * var(--fixed-scale)) !important;
+}
+
+.fullscreen-guide-board h1 {
+  display: none !important;
+}
+
+.fullscreen-guide-board p:first-of-type {
+  margin-top: calc(72px * var(--fixed-scale)) !important;
+}
+
+.fullscreen-guide-board p {
+  max-width: calc(520px * var(--fixed-scale)) !important;
+  margin-top: calc(14px * var(--fixed-scale)) !important;
+  margin-bottom: calc(14px * var(--fixed-scale)) !important;
+  font-size: calc(23px * var(--fixed-scale)) !important;
+  line-height: 1.18 !important;
+}
+
+.fullscreen-guide-actions {
+  margin-top: calc(30px * var(--fixed-scale)) !important;
+}
+
+#learnMode .scroll-board-art {
+  top: calc(var(--fixed-top) + (0px * var(--fixed-scale))) !important;
+  height: calc(704px * var(--fixed-scale)) !important;
+}
+
+#learnMode .lesson-box,
+#learnMode.learn-topic-game .lesson-box,
+#learnMode:not(.learn-topic-game) .lesson-box {
+  top: calc(var(--fixed-top) + (50px * var(--fixed-scale))) !important;
+  height: calc(642px * var(--fixed-scale)) !important;
+  padding-top: 0 !important;
+  padding-bottom: calc(2px * var(--fixed-scale)) !important;
+}
+
+#learnMode .lesson-box h1,
+#learnMode.learn-topic-game .lesson-box h1,
+#learnMode:not(.learn-topic-game) .lesson-box h1 {
+  min-height: calc(34px * var(--fixed-scale)) !important;
+  font-size: max(calc(31px * var(--fixed-scale)), 16px) !important;
+  line-height: 1 !important;
+}
+
+#learnMode #lessonPage,
+#learnMode.learn-topic-game #lessonPage,
+#learnMode:not(.learn-topic-game) #lessonPage {
+  margin: calc(-6px * var(--fixed-scale)) 0 0 !important;
+  font-size: max(calc(18px * var(--fixed-scale)), 10px) !important;
+}
+
+#learnMode #lessonContent,
+#learnMode.learn-topic-game #lessonContent,
+#learnMode:not(.learn-topic-game) #lessonContent,
+#learnMode.learn-topic-module1 #lessonContent,
+#learnMode.learn-topic-module2 #lessonContent,
+#learnMode.learn-topic-module3 #lessonContent {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  padding-top: calc(8px * var(--fixed-scale)) !important;
+  padding-bottom: calc(10px * var(--fixed-scale)) !important;
+  justify-content: flex-start !important;
+  gap: var(--lesson-dynamic-gap, calc(5px * var(--fixed-scale))) !important;
+  font-size: var(--lesson-dynamic-font-size, max(calc(23px * var(--fixed-scale)), 13px)) !important;
+  line-height: 1.22 !important;
+}
+
+#learnMode #lessonContent > :first-child {
+  margin-top: var(--lesson-dynamic-top-offset, 0px) !important;
+}
+
+#learnMode.lesson-dense #lessonContent,
+#learnMode.lesson-dense.learn-topic-game #lessonContent,
+#learnMode.lesson-dense:not(.learn-topic-game) #lessonContent {
+  justify-content: flex-start !important;
+  font-size: var(--lesson-dynamic-font-size, max(calc(21px * var(--fixed-scale)), 12px)) !important;
+  line-height: 1.16 !important;
+}
+
+#learnMode.lesson-long #lessonContent,
+#learnMode.lesson-long.learn-topic-game #lessonContent,
+#learnMode.lesson-long:not(.learn-topic-game) #lessonContent,
+#learnMode.lesson-overflow-fit #lessonContent,
+#learnMode.lesson-overflow-extra #lessonContent {
+  justify-content: flex-start !important;
+  font-size: var(--lesson-dynamic-font-size, max(calc(18px * var(--fixed-scale)), 10.5px)) !important;
+  line-height: 1.12 !important;
+}
+
+#learnMode #lessonContent p,
+#learnMode:not(.learn-topic-game) #lessonContent p,
+#learnMode.learn-topic-module1 #lessonContent p,
+#learnMode.learn-topic-module2 #lessonContent p,
+#learnMode.learn-topic-module3 #lessonContent p {
+  margin-top: 0 !important;
+  margin-bottom: calc(11px * var(--fixed-scale)) !important;
+}
+
+#learnMode #lessonContent > :last-child {
+  margin-bottom: 0 !important;
+}
+
+#learnMode .lesson-example,
+#learnMode .lesson-notice,
+#learnMode .lesson-answer-list,
+#learnMode .lesson-activity,
+#learnMode .module3-rubric-table {
+  margin-bottom: calc(8px * var(--fixed-scale)) !important;
+}
+
+@media (orientation: landscape) and (max-height: 560px) {
+  .fullscreen-guide-logo {
+    top: calc(var(--fixed-top) + (-24px * var(--fixed-scale))) !important;
+    width: calc(372px * var(--fixed-scale)) !important;
+  }
+
+  .fullscreen-guide-board p:first-of-type {
+    margin-top: calc(62px * var(--fixed-scale)) !important;
+  }
+
+  .fullscreen-guide-board p {
+    font-size: calc(22px * var(--fixed-scale)) !important;
+    margin-top: calc(13px * var(--fixed-scale)) !important;
+    margin-bottom: calc(13px * var(--fixed-scale)) !important;
+  }
+
+  #learnMode .scroll-board-art {
+    top: calc(var(--fixed-top) + (-2px * var(--fixed-scale))) !important;
+    height: calc(708px * var(--fixed-scale)) !important;
+  }
+
+  #learnMode .lesson-box,
+  #learnMode.learn-topic-game .lesson-box,
+  #learnMode:not(.learn-topic-game) .lesson-box {
+    top: calc(var(--fixed-top) + (46px * var(--fixed-scale))) !important;
+    height: calc(650px * var(--fixed-scale)) !important;
+  }
+}
+
+/* Final v353: fixed scroll zones for Learn and tutorial pages.
+   Header/page stay on the upper roll; content starts on the flat parchment. */
+#learnMode .scroll-board-art {
+  left: calc(var(--fixed-left) + (72px * var(--fixed-scale))) !important;
+  top: calc(var(--fixed-top) + (0px * var(--fixed-scale))) !important;
+  width: calc(930px * var(--fixed-scale)) !important;
+  height: calc(704px * var(--fixed-scale)) !important;
+  object-fit: fill !important;
+  opacity: 1 !important;
+  mix-blend-mode: normal !important;
+  filter: drop-shadow(0 calc(12px * var(--fixed-scale)) calc(16px * var(--fixed-scale)) rgba(31, 14, 0, 0.36)) !important;
+}
+
+#learnMode .lesson-box,
+#learnMode.learn-topic-game .lesson-box,
+#learnMode:not(.learn-topic-game) .lesson-box {
+  position: fixed !important;
+  left: calc(var(--fixed-left) + (160px * var(--fixed-scale))) !important;
+  top: calc(var(--fixed-top) + (30px * var(--fixed-scale))) !important;
+  width: calc(754px * var(--fixed-scale)) !important;
+  height: calc(650px * var(--fixed-scale)) !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  display: block !important;
+  overflow: visible !important;
+  box-sizing: border-box !important;
+}
+
+#learnMode .lesson-box h1,
+#learnMode.learn-topic-game .lesson-box h1,
+#learnMode:not(.learn-topic-game) .lesson-box h1 {
+  position: absolute !important;
+  left: calc(72px * var(--fixed-scale)) !important;
+  top: calc(28px * var(--fixed-scale)) !important;
+  width: calc(610px * var(--fixed-scale)) !important;
+  height: calc(62px * var(--fixed-scale)) !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 calc(22px * var(--fixed-scale)) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-sizing: border-box !important;
+  transform: none !important;
+  text-align: center !important;
+  text-align-last: center !important;
+  font-size: max(calc(31px * var(--fixed-scale)), 16px) !important;
+  line-height: 1.04 !important;
+  z-index: 4 !important;
+}
+
+#learnMode #lessonPage,
+#learnMode.learn-topic-game #lessonPage,
+#learnMode:not(.learn-topic-game) #lessonPage {
+  position: absolute !important;
+  right: calc(22px * var(--fixed-scale)) !important;
+  top: calc(56px * var(--fixed-scale)) !important;
+  width: calc(82px * var(--fixed-scale)) !important;
+  height: calc(28px * var(--fixed-scale)) !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  background: transparent !important;
+  transform: none !important;
+  opacity: 0.82 !important;
+  font-size: max(calc(18px * var(--fixed-scale)), 10px) !important;
+  line-height: 1 !important;
+  text-align: right !important;
+  z-index: 5 !important;
+}
+
+#learnMode #lessonContent,
+#learnMode.learn-topic-game #lessonContent,
+#learnMode:not(.learn-topic-game) #lessonContent,
+#learnMode.learn-topic-module1 #lessonContent,
+#learnMode.learn-topic-module2 #lessonContent,
+#learnMode.learn-topic-module3 #lessonContent {
+  position: absolute !important;
+  left: calc(40px * var(--fixed-scale)) !important;
+  right: calc(40px * var(--fixed-scale)) !important;
+  top: calc(124px * var(--fixed-scale)) !important;
+  bottom: calc(96px * var(--fixed-scale)) !important;
+  width: auto !important;
+  height: auto !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 calc(12px * var(--fixed-scale)) calc(4px * var(--fixed-scale)) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: flex-start !important;
+  align-items: stretch !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
+  gap: var(--lesson-dynamic-gap, calc(7px * var(--fixed-scale))) !important;
+  font-size: var(--lesson-dynamic-font-size, max(calc(22px * var(--fixed-scale)), 13px)) !important;
+  line-height: 1.2 !important;
+  text-align: justify !important;
+  text-align-last: left !important;
+}
+
+#learnMode #lessonContent > :first-child {
+  margin-top: var(--lesson-dynamic-top-offset, 0px) !important;
+}
+
+#learnMode.lesson-dense #lessonContent,
+#learnMode.lesson-dense.learn-topic-game #lessonContent,
+#learnMode.lesson-dense:not(.learn-topic-game) #lessonContent {
+  gap: var(--lesson-dynamic-gap, calc(5px * var(--fixed-scale))) !important;
+  font-size: var(--lesson-dynamic-font-size, max(calc(20px * var(--fixed-scale)), 12px)) !important;
+  line-height: 1.15 !important;
+}
+
+#learnMode.lesson-long #lessonContent,
+#learnMode.lesson-long.learn-topic-game #lessonContent,
+#learnMode.lesson-long:not(.learn-topic-game) #lessonContent,
+#learnMode.lesson-overflow-fit #lessonContent,
+#learnMode.lesson-overflow-extra #lessonContent {
+  gap: var(--lesson-dynamic-gap, calc(4px * var(--fixed-scale))) !important;
+  font-size: var(--lesson-dynamic-font-size, max(calc(17.5px * var(--fixed-scale)), 10.5px)) !important;
+  line-height: 1.1 !important;
+}
+
+#learnMode.lesson-short:not(.lesson-bulleted):not(.lesson-long):not(.lesson-overflow-fit) #lessonContent {
+  justify-content: center !important;
+  padding-bottom: calc(34px * var(--fixed-scale)) !important;
+}
+
+#learnMode.lesson-balanced:not(.lesson-overflow-fit) #lessonContent {
+  justify-content: center !important;
+  gap: var(--lesson-dynamic-gap, calc(18px * var(--fixed-scale))) !important;
+  padding-top: calc(10px * var(--fixed-scale)) !important;
+  padding-bottom: calc(42px * var(--fixed-scale)) !important;
+}
+
+#learnMode.lesson-form-balanced:not(.lesson-overflow-fit) #lessonContent {
+  justify-content: center !important;
+  gap: var(--lesson-dynamic-gap, calc(12px * var(--fixed-scale))) !important;
+  padding-top: calc(6px * var(--fixed-scale)) !important;
+  padding-bottom: calc(32px * var(--fixed-scale)) !important;
+}
+
+#learnMode.lesson-overflow-fit #lessonContent,
+#learnMode.lesson-overflow-extra #lessonContent {
+  overflow-y: auto !important;
+  overscroll-behavior: contain !important;
+  scrollbar-width: none !important;
+}
+
+#learnMode.lesson-overflow-fit #lessonContent::-webkit-scrollbar,
+#learnMode.lesson-overflow-extra #lessonContent::-webkit-scrollbar {
+  width: 0 !important;
+  height: 0 !important;
+}
+
+#learnMode .read-timer {
+  display: none !important;
+}
+
+#learnMode .nav-buttons,
+#learnMode.learn-topic-game .nav-buttons,
+#learnMode:not(.learn-topic-game) .nav-buttons {
+  position: absolute !important;
+  left: 50% !important;
+  right: auto !important;
+  bottom: calc(18px * var(--fixed-scale)) !important;
+  width: calc(390px * var(--fixed-scale)) !important;
+  height: calc(58px * var(--fixed-scale)) !important;
+  margin: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: calc(54px * var(--fixed-scale)) !important;
+  transform: translateX(-50%) !important;
+  z-index: 4 !important;
+}
+
+#learnMode #lessonContent h2,
+#learnMode:not(.learn-topic-game) #lessonContent h2 {
+  margin: 0 0 calc(12px * var(--fixed-scale)) !important;
+  font-size: max(calc(28px * var(--fixed-scale)), 15px) !important;
+  line-height: 1.08 !important;
+  text-align: center !important;
+  text-align-last: center !important;
+}
+
+#learnMode #lessonContent p,
+#learnMode:not(.learn-topic-game) #lessonContent p,
+#learnMode.learn-topic-module1 #lessonContent p,
+#learnMode.learn-topic-module2 #lessonContent p,
+#learnMode.learn-topic-module3 #lessonContent p {
+  margin-top: 0 !important;
+  margin-bottom: calc(9px * var(--fixed-scale)) !important;
+  line-height: inherit !important;
+  text-align: justify !important;
+  text-align-last: left !important;
+}
+
+#learnMode #lessonContent > :last-child {
+  margin-bottom: 0 !important;
+}
+
+#learnMode .lesson-list,
+#learnMode .lesson-center-list,
+#learnMode .module1-plain-list,
+#learnMode .lesson-answer-list,
+#learnMode .lesson-answer-list-stacked,
+#learnMode .lesson-answer-list-many,
+#learnMode .lesson-activity-items {
+  margin-top: calc(4px * var(--fixed-scale)) !important;
+  margin-bottom: calc(8px * var(--fixed-scale)) !important;
+}
+
+#learnMode .lesson-example,
+#learnMode .lesson-notice,
+#learnMode .lesson-activity,
+#learnMode .module3-rubric-table,
+#learnMode .module1-row-list {
+  margin-bottom: calc(8px * var(--fixed-scale)) !important;
+}
+
+#learnMode.lesson-balanced #lessonContent p,
+#learnMode.lesson-balanced #lessonContent li {
+  margin-bottom: calc(10px * var(--fixed-scale)) !important;
+}
+
+#learnMode.lesson-balanced .lesson-list,
+#learnMode.lesson-balanced .module1-plain-list,
+#learnMode.lesson-balanced .module1-row-list,
+#learnMode.lesson-balanced .module1-compare-grid,
+#learnMode.lesson-balanced .lesson-mini-grid {
+  margin-top: calc(8px * var(--fixed-scale)) !important;
+  margin-bottom: calc(10px * var(--fixed-scale)) !important;
+}
+
+#learnMode.lesson-form-balanced .lesson-activity,
+#learnMode.lesson-form-balanced .lesson-answer-list {
+  margin-top: calc(8px * var(--fixed-scale)) !important;
+  margin-bottom: calc(8px * var(--fixed-scale)) !important;
+}
+
+#learnMode.lesson-form-balanced .lesson-activity-items,
+#learnMode.lesson-form-balanced .lesson-answer-list-stacked,
+#learnMode.lesson-form-balanced .lesson-answer-list-many {
+  gap: calc(8px * var(--fixed-scale)) !important;
+}
+
+#learnMode.lesson-form-balanced .lesson-response-field-long,
+#learnMode.lesson-form-balanced .lesson-answer-list-stacked .lesson-response-field-long,
+#learnMode.lesson-form-balanced .lesson-answer-list-many .lesson-response-field-long {
+  min-height: calc(58px * var(--fixed-scale)) !important;
+}
+
+/* Final v355: reduce dead parchment space without oversized text. */
+#learnMode.lesson-readable-column:not(.lesson-overflow-fit) #lessonContent {
+  left: calc(82px * var(--fixed-scale)) !important;
+  right: calc(82px * var(--fixed-scale)) !important;
+  padding-left: calc(34px * var(--fixed-scale)) !important;
+  padding-right: calc(34px * var(--fixed-scale)) !important;
+  justify-content: center !important;
+  gap: var(--lesson-dynamic-gap, calc(22px * var(--fixed-scale))) !important;
+  line-height: 1.24 !important;
+}
+
+#learnMode.lesson-readable-column:not(.lesson-overflow-fit) #lessonContent p {
+  margin-bottom: calc(14px * var(--fixed-scale)) !important;
+}
+
+#learnMode.lesson-readable-column:not(.lesson-overflow-fit) .lesson-list,
+#learnMode.lesson-readable-column:not(.lesson-overflow-fit) .module1-plain-list {
+  display: grid !important;
+  gap: calc(9px * var(--fixed-scale)) !important;
+  margin-top: calc(10px * var(--fixed-scale)) !important;
+  margin-bottom: calc(14px * var(--fixed-scale)) !important;
+}
+
+#learnMode.lesson-balanced.lesson-structured:not(.lesson-overflow-fit) #lessonContent {
+  justify-content: center !important;
+  gap: var(--lesson-dynamic-gap, calc(16px * var(--fixed-scale))) !important;
+  padding-top: calc(8px * var(--fixed-scale)) !important;
+  padding-bottom: calc(34px * var(--fixed-scale)) !important;
+}
+
+#learnMode .module1-row {
+  grid-template-columns: minmax(calc(176px * var(--fixed-scale)), 29%) minmax(0, 1fr) !important;
+  gap: calc(18px * var(--fixed-scale)) !important;
+}
+
+#learnMode .module1-row strong {
+  overflow-wrap: anywhere !important;
+}
+
+#learnMode.lesson-form-balanced:not(.lesson-overflow-fit) #lessonContent {
+  justify-content: center !important;
+  padding-bottom: calc(40px * var(--fixed-scale)) !important;
+}
+
+#learnMode.lesson-form-balanced .lesson-activity-items,
+#learnMode.lesson-form-balanced .lesson-answer-list-stacked,
+#learnMode.lesson-form-balanced .lesson-answer-list-many {
+  gap: calc(10px * var(--fixed-scale)) !important;
+}
