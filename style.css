@@ -3082,6 +3082,7 @@ body {
 }
 
 .fullscreen-guide-back-btn {
+  position: fixed !important;
   left: calc(var(--fixed-left) + (34px * var(--fixed-scale)));
   top: calc(var(--fixed-top) + (24px * var(--fixed-scale)));
   width: calc(132px * var(--fixed-scale));
@@ -9115,4 +9116,22 @@ body {
 #learnMode.lesson-form-balanced .lesson-answer-list-stacked,
 #learnMode.lesson-form-balanced .lesson-answer-list-many {
   gap: calc(10px * var(--fixed-scale)) !important;
+}
+
+/* Final v361: keep Games 2 and 3 guide fully visible on short phone landscape screens. */
+@media (orientation: landscape) and (max-height: 560px) {
+  #playMode.game2-bg .guide-presenter,
+  #playMode.game3-bg .guide-presenter {
+    width: calc(285px * var(--fixed-scale)) !important;
+    bottom: auto !important;
+  }
+
+  #playMode.game2-bg .game-guide,
+  #playMode.game3-bg .game-guide {
+    width: calc(210px * var(--fixed-scale)) !important;
+  }
+
+  #playMode.game3-bg .guide-presenter {
+    top: calc(var(--fixed-top) + (350px * var(--fixed-scale))) !important;
+  }
 }
