@@ -91,6 +91,7 @@ let multiplayerRoomCode = getInitialMultiplayerRoomCode()
 let classroomApiBase = getInitialClassroomApiBase()
 
 let multiplayerClientId = ""
+let multiplayerClientKey = ""
 let multiplayerConnected = false
 let multiplayerEventSource = null
 let multiplayerScoreTimer = null
@@ -1779,6 +1780,8 @@ function resetMultiplayerConnection() {
   multiplayerHeartbeatTimer = null
   multiplayerScoreTimer = null
   multiplayerConnected = false
+  liveScorePlayerOrder = []
+  liveScoreLeaderOrder = []
 }
 
 function setClassroomRoomCode(code, syncNow = true) {
@@ -2219,18 +2222,35 @@ function repairDeveloperBypassProfiles() {
   }
 }
 
+function getMultiplayerClientStorageKey() {
+  const profileKey = activeProfileId || normalizePlayerName(playerName).toLowerCase()
+  return profileKey ? `${multiplayerClientStorageKey}:${profileKey}` : multiplayerClientStorageKey
+}
+
+function createMultiplayerClientId(storageKey = multiplayerClientStorageKey) {
+  const owner = storageKey
+    .replace(multiplayerClientStorageKey, "")
+    .replace(/[^a-zA-Z0-9-]/g, "")
+    .slice(0, 18) || "guest"
+
+  return `client-${owner}-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`
+}
+
 function getMultiplayerClientId() {
-  if (multiplayerClientId) return multiplayerClientId
+  const storageKey = getMultiplayerClientStorageKey()
+  if (multiplayerClientId && multiplayerClientKey === storageKey) return multiplayerClientId
+
+  multiplayerClientKey = storageKey
 
   try {
-    multiplayerClientId = localStorage.getItem(multiplayerClientStorageKey) || ""
+    multiplayerClientId = localStorage.getItem(storageKey) || ""
 
     if (!multiplayerClientId) {
-      multiplayerClientId = `client-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`
-      localStorage.setItem(multiplayerClientStorageKey, multiplayerClientId)
+      multiplayerClientId = createMultiplayerClientId(storageKey)
+      localStorage.setItem(storageKey, multiplayerClientId)
     }
   } catch {
-    multiplayerClientId = `client-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`
+    multiplayerClientId = createMultiplayerClientId(storageKey)
   }
 
   return multiplayerClientId
@@ -6346,5 +6366,6 @@ document.addEventListener("click", event => {
 
   createGlitterBurst(event.clientX, event.clientY)
 })
+
 
 

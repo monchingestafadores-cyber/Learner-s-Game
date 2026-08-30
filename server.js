@@ -226,13 +226,7 @@ function getRoomSnapshot(room) {
     }
   }
 
-  const players = [...room.players.values()]
-    .sort((a, b) => {
-      if (b.score !== a.score) return b.score - a.score
-      if (b.badges !== a.badges) return b.badges - a.badges
-      return a.name.localeCompare(b.name)
-    })
-    .slice(0, 50)
+  const players = [...room.players.values()].slice(0, 50)
 
   return {
     roomCode: room.code,
@@ -421,3 +415,4 @@ server.listen(port, "0.0.0.0", () => {
     console.log(`Teacher Scoreboard: ${urls.teacher}`)
   })
 })
+
