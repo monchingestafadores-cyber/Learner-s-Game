@@ -69,7 +69,7 @@ const ALL_BADGES_BONUS = 100
 const BADGE_CAP = 5
 const MAX_SAVED_ANSWER_RUNS = 20
 const MAX_CLASSROOM_ANSWER_RUNS = 5
-const MAX_LEARN_RESPONSES = 60
+const MAX_LEARN_RESPONSES = 120
 const MAX_LEARN_RESPONSE_LENGTH = 700
 
 const learnTopicClasses = [
@@ -2668,11 +2668,12 @@ function formatSavedAnswerDate(timestamp) {
   })
 }
 
-function renderSavedAnswers(runs) {
+function renderSavedAnswers(runs, learnAnswers = []) {
   const safeRuns = sanitizeSavedAnswerRuns(runs)
+  const safeLearnAnswers = sanitizeLearnResponses(learnAnswers)
 
-  if (!safeRuns.length) {
-    return `<p class="saved-answers-empty">No finished-game answers saved yet. Passed rounds will appear here automatically.</p>`
+  if (!safeRuns.length && !safeLearnAnswers.length) {
+    return `<p class="saved-answers-empty">No saved answers yet. Finished games and typed learning responses will appear here automatically.</p>`
   }
 
   return `
@@ -2697,6 +2698,24 @@ function renderSavedAnswers(runs) {
           </ol>
         </section>
       `).join("")}
+      ${safeLearnAnswers.length ? `
+        <section class="saved-answer-run saved-learning-run">
+          <h3>Learning Responses</h3>
+          <p class="saved-answer-meta">Typed activities, reflections, poems, and lesson answers</p>
+          <ol class="saved-answer-list saved-learning-list">
+            ${safeLearnAnswers.map((answer, index) => `
+              <li class="saved-learning-answer">
+                <span class="saved-answer-number">${index + 1}</span>
+                <div>
+                  <strong>${escapeHtml(answer.title)}</strong>
+                  <span>${escapeHtml(answer.prompt)}</span>
+                  <span>Your answer: ${escapeHtml(answer.answer)}</span>
+                </div>
+              </li>
+            `).join("")}
+          </ol>
+        </section>
+      ` : ""}
     </div>
   `
 }
@@ -2715,7 +2734,7 @@ function showSavedAnswers(profileId = activeProfileId) {
   document.getElementById("popupTitle").innerText = profile
     ? `${profile.name}'s Saved Answers`
     : "Saved Answers"
-  document.getElementById("popupMessage").innerHTML = renderSavedAnswers(profile?.answerRuns || savedAnswerRuns)
+  document.getElementById("popupMessage").innerHTML = renderSavedAnswers(profile?.answerRuns || savedAnswerRuns, profile?.learnResponses || getLearnResponsesForPayload())
   document.getElementById("popupPanel").classList.remove("hidden")
 }
 

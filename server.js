@@ -8,6 +8,7 @@ const port = Number(process.env.PORT || process.argv[2]) || 8000
 const rooms = new Map()
 const stalePlayerMs = 1000 * 60 * 20
 const highScoreLimit = 10
+const learnAnswerLimit = 120
 const scoreStorePath = path.join(rootDir, "classroom-scores.json")
 let savedScoreStore = loadScoreStore()
 let scoreSaveTimer = null
@@ -71,7 +72,7 @@ function sanitizeLearnAnswers(value) {
   if (!Array.isArray(value)) return []
 
   return value
-    .slice(0, 20)
+    .slice(0, learnAnswerLimit)
     .map((answer, index) => {
       const safeAnswer = answer && typeof answer === "object" ? answer : {}
 
@@ -84,6 +85,42 @@ function sanitizeLearnAnswers(value) {
       }
     })
     .filter(answer => answer.answer)
+}
+
+function sanitizeGameAnswers(value) {
+  if (!Array.isArray(value)) return []
+
+  return value
+    .slice(0, 5)
+    .map((run, runIndex) => {
+      const safeRun = run && typeof run === "object" ? run : {}
+      const answers = Array.isArray(safeRun.answers) ? safeRun.answers : []
+
+      return {
+        id: sanitizeText(safeRun.id, 80, `game-${runIndex}`),
+        title: sanitizeText(safeRun.title, 80, "Finished Game"),
+        game: sanitizeNumber(safeRun.game, 1, 3),
+        level: safeRun.level === null || safeRun.level === undefined
+          ? null
+          : sanitizeNumber(safeRun.level, 1, 3),
+        completedAt: sanitizeNumber(safeRun.completedAt, 0, Date.now()),
+        score: sanitizeNumber(safeRun.score),
+        correctAnswers: sanitizeNumber(safeRun.correctAnswers, 0, 99),
+        totalQuestions: sanitizeNumber(safeRun.totalQuestions, 0, 99),
+        answers: answers.slice(0, 5).map((answer, index) => {
+          const safeAnswer = answer && typeof answer === "object" ? answer : {}
+
+          return {
+            number: sanitizeNumber(safeAnswer.number, 1, 99) || index + 1,
+            question: sanitizeText(safeAnswer.question, 360, "Question"),
+            playerAnswer: sanitizeText(safeAnswer.playerAnswer, 180, "No answer"),
+            correctAnswer: sanitizeText(safeAnswer.correctAnswer, 180, "N/A"),
+            isCorrect: Boolean(safeAnswer.isCorrect)
+          }
+        })
+      }
+    })
+    .filter(run => run.answers.length > 0)
 }
 
 function loadScoreStore() {
@@ -292,6 +329,7 @@ async function handleScore(req, res) {
       game: sanitizeText(body.game, 32, previous.game || "Lobby"),
       level: sanitizeText(body.level, 18, previous.level || ""),
       status: sanitizeText(body.status, 36, previous.status || "Playing"),
+      gameAnswers: sanitizeGameAnswers(body.gameAnswers || previous.gameAnswers || []),
       learnAnswers: sanitizeLearnAnswers(body.learnAnswers || previous.learnAnswers || []),
       updatedAt: now
     }
