@@ -43,6 +43,7 @@ let activeProfileId = ""
 let creatingNewPlayer = false
 let allBadgesBonusAwarded = false
 let activeGame2Text = null
+let activeGame2ReadingPart = 0
 let badgeRunSnapshot = null
 let savedAnswerRuns = []
 let currentRunAnswers = []
@@ -68,7 +69,7 @@ const ALL_BADGES_BONUS = 100
 const BADGE_CAP = 5
 const MAX_SAVED_ANSWER_RUNS = 20
 const MAX_CLASSROOM_ANSWER_RUNS = 5
-const MAX_LEARN_RESPONSES = 20
+const MAX_LEARN_RESPONSES = 60
 const MAX_LEARN_RESPONSE_LENGTH = 700
 
 const learnTopicClasses = [
@@ -76,7 +77,8 @@ const learnTopicClasses = [
   "learn-topic-overview",
   "learn-topic-module1",
   "learn-topic-module2",
-  "learn-topic-module3"
+  "learn-topic-module3",
+  "learn-topic-module4"
 ]
 
 const playerProfileStorageKey = "figurativeForcePlayerProfile"
@@ -259,6 +261,10 @@ function notice(text) {
   return `<p class="lesson-notice"><strong>Notice:</strong> ${text}</p>`
 }
 
+function keyPoint(text) {
+  return `<p class="lesson-notice"><strong>Key Point:</strong> ${text}</p>`
+}
+
 function module1Rows(items, className = "") {
   return `<div class="module1-row-list ${className}">${items.map(item => `
     <div class="module1-row">
@@ -423,27 +429,39 @@ const learnModules = {
     },
     {
       title: "Slide 14",
-      content: `<h2>Activity 1: Let's Recall!</h2>${module1Activity("module1-activity1", "Directions: Read each statement carefully. Type TRUE if the statement is correct and FALSE if it is incorrect.", [{ prompt: "Literary devices help make literary works more interesting and meaningful.", answer: "TRUE", accept: "T", responseId: "module1-activity1-a-activity-1" }, { prompt: "Literary elements and literary techniques are the two categories of literary devices.", answer: "TRUE", accept: "T", responseId: "module1-activity1-a-activity-2" }, { prompt: "Simile is an example of a literary element.", answer: "FALSE", accept: "F", responseId: "module1-activity1-a-activity-3" }, { prompt: "Mood is an example of a literary element.", answer: "TRUE", accept: "T", responseId: "module1-activity1-a-activity-4" }, { prompt: "Literary techniques are used to enhance the artistic quality of a text.", answer: "TRUE", accept: "T", responseId: "module1-activity1-b-activity-1" }, { prompt: "Setting refers to the time and place of a story.", answer: "TRUE", accept: "T", responseId: "module1-activity1-b-activity-2" }, { prompt: "Hyperbole is a literary element.", answer: "FALSE", accept: "F", responseId: "module1-activity1-b-activity-3" }, { prompt: "Writers use literary devices to express ideas and emotions effectively.", answer: "TRUE", accept: "T", responseId: "module1-activity1-b-activity-4" }, { prompt: "Characters are considered literary elements.", answer: "TRUE", accept: "T", responseId: "module1-activity1-b-activity-5" }, { prompt: "Symbolism is a literary technique.", answer: "TRUE", accept: "T", responseId: "module1-activity1-b-activity-6" }], 1, "lesson-activity-merged")}`
+      content: `<h2>Activity 1: Let's Recall! (1-5)</h2>${module1Activity("module1-activity1", "Directions: Read each statement carefully. Type TRUE if the statement is correct and FALSE if it is incorrect.", [{ prompt: "Literary devices help make literary works more interesting and meaningful.", answer: "TRUE", accept: "T", responseId: "module1-activity1-a-activity-1" }, { prompt: "Literary elements and literary techniques are the two categories of literary devices.", answer: "TRUE", accept: "T", responseId: "module1-activity1-a-activity-2" }, { prompt: "Simile is an example of a literary element.", answer: "FALSE", accept: "F", responseId: "module1-activity1-a-activity-3" }, { prompt: "Mood is an example of a literary element.", answer: "TRUE", accept: "T", responseId: "module1-activity1-a-activity-4" }, { prompt: "Literary techniques are used to enhance the artistic quality of a text.", answer: "TRUE", accept: "T", responseId: "module1-activity1-b-activity-1" }], 1, "lesson-activity-merged lesson-activity-split")}`
     },
     {
       title: "Slide 15",
-      content: `<h2>Activity 2: Classify Me!</h2>${module1Activity("module1-activity2", "Directions: Type LE if it is a Literary Element and LT if it is a Literary Technique.", [{ prompt: "Plot", answer: "LE", accept: "LITERARY ELEMENT" }, { prompt: "Simile", answer: "LT", accept: "LITERARY TECHNIQUE" }, { prompt: "Mood", answer: "LE", accept: "LITERARY ELEMENT" }, { prompt: "Metaphor", answer: "LT", accept: "LITERARY TECHNIQUE" }, { prompt: "Theme", answer: "LE", accept: "LITERARY ELEMENT" }, { prompt: "Hyperbole", answer: "LT", accept: "LITERARY TECHNIQUE" }, { prompt: "Setting", answer: "LE", accept: "LITERARY ELEMENT" }, { prompt: "Personification", answer: "LT", accept: "LITERARY TECHNIQUE" }, { prompt: "Tone", answer: "LE", accept: "LITERARY ELEMENT" }, { prompt: "Symbolism", answer: "LT", accept: "LITERARY TECHNIQUE" }])}`
+      content: `<h2>Activity 1: Let's Recall! (6-10)</h2>${module1Activity("module1-activity1", "Directions: Continue Activity 1. Type TRUE if the statement is correct and FALSE if it is incorrect.", [{ prompt: "Setting refers to the time and place of a story.", answer: "TRUE", accept: "T", responseId: "module1-activity1-b-activity-2" }, { prompt: "Hyperbole is a literary element.", answer: "FALSE", accept: "F", responseId: "module1-activity1-b-activity-3" }, { prompt: "Writers use literary devices to express ideas and emotions effectively.", answer: "TRUE", accept: "T", responseId: "module1-activity1-b-activity-4" }, { prompt: "Characters are considered literary elements.", answer: "TRUE", accept: "T", responseId: "module1-activity1-b-activity-5" }, { prompt: "Symbolism is a literary technique.", answer: "TRUE", accept: "T", responseId: "module1-activity1-b-activity-6" }], 6, "lesson-activity-merged lesson-activity-split")}`
+    },
+    {
+      title: "Slide 16",
+      content: `<h2>Activity 2: Classify Me! (1-5)</h2>${module1Activity("module1-activity2", "Directions: Type LE if it is a Literary Element and LT if it is a Literary Technique.", [{ prompt: "Plot", answer: "LE", accept: "LITERARY ELEMENT" }, { prompt: "Simile", answer: "LT", accept: "LITERARY TECHNIQUE" }, { prompt: "Mood", answer: "LE", accept: "LITERARY ELEMENT" }, { prompt: "Metaphor", answer: "LT", accept: "LITERARY TECHNIQUE" }, { prompt: "Theme", answer: "LE", accept: "LITERARY ELEMENT" }], 1, "lesson-activity-split")}`
+    },
+    {
+      title: "Slide 17",
+      content: `<h2>Activity 2: Classify Me! (6-10)</h2>${module1Activity("module1-activity2", "Directions: Continue Activity 2. Type LE for Literary Element and LT for Literary Technique.", [{ prompt: "Hyperbole", answer: "LT", accept: "LITERARY TECHNIQUE" }, { prompt: "Setting", answer: "LE", accept: "LITERARY ELEMENT" }, { prompt: "Personification", answer: "LT", accept: "LITERARY TECHNIQUE" }, { prompt: "Tone", answer: "LE", accept: "LITERARY ELEMENT" }, { prompt: "Symbolism", answer: "LT", accept: "LITERARY TECHNIQUE" }], 6, "lesson-activity-split")}`
     },
     {
       title: "Slide 16",
       content: `<h2>Activity 3: Why Does It Matter?</h2><p>Directions: Read the short paragraph below and answer the questions.</p><div class="lesson-example">The moon smiled down on the sleepy village while the stars twinkled like tiny diamonds. The cool breeze whispered through the trees, making everyone feel peaceful and safe.</div>${lessonAnswerList("module1-slide17-response", "Slide 16: Activity 3", [{ prompt: "Which literary devices can you identify in the paragraph?", placeholder: "Type the devices you noticed.", long: true }, { prompt: "What do these devices add to the paragraph?", placeholder: "Type what they add.", long: true }], "lesson-answer-list-stacked lesson-answer-list-shortpair")}`
     },
     {
-      title: "Slide 17",
-      content: `<h2>Reflection Questions</h2>${lessonAnswerList("module1-slide18-response", "Slide 17: Reflection Questions", [{ prompt: "Which literary devices can you identify in the paragraph?", long: true }, { prompt: "How did these literary devices affect your imagination while reading?", long: true }, { prompt: "How would the paragraph change if the literary devices were removed?", long: true }, { prompt: "Why is it important for writers to use literary devices in literary works?", long: true }, { prompt: "How can understanding literary devices help you appreciate poems, stories, and songs?", long: true }], "lesson-answer-list-stacked lesson-answer-list-many")}`
+      title: "Slide 19",
+      content: `<h2>Reflection Questions (1-3)</h2>${lessonAnswerList("module1-slide18-response", "Slide 19: Reflection Questions", [{ id: "module1-slide18-response-1", prompt: "Which literary devices can you identify in the paragraph?", long: true }, { id: "module1-slide18-response-2", prompt: "How did these literary devices affect your imagination while reading?", long: true }, { id: "module1-slide18-response-3", prompt: "How would the paragraph change if the literary devices were removed?", long: true }], "lesson-answer-list-stacked lesson-answer-list-many lesson-answer-list-reflection-split")}`
+    },
+    {
+      title: "Slide 20",
+      content: `<h2>Reflection Questions (4-5)</h2>${lessonAnswerList("module1-slide18-response", "Slide 20: Reflection Questions", [{ id: "module1-slide18-response-4", prompt: "Why is it important for writers to use literary devices in literary works?", long: true }, { id: "module1-slide18-response-5", prompt: "How can understanding literary devices help you appreciate poems, stories, and songs?", long: true }], "lesson-answer-list-stacked lesson-answer-list-many lesson-answer-list-reflection-split")}`
     },
     {
       title: "Slide 18",
-      content: `<h2>My Learning Reflection</h2><p>Directions: Reflect on what you have learned in this module. Answer each question in 2-4 complete sentences.</p>${lessonAnswerList("module1-slide19-response", "Slide 18: My Learning Reflection", [{ prompt: "What did I learn from this module?", html: "<strong>What did I learn from this module?</strong> Describe the most important knowledge or skills you gained about literary devices.", placeholder: "Type your answer.", long: true }, { prompt: "What interested me the most? Why?", html: "<strong>What interested me the most? Why?</strong> Explain which literary device, example, or activity you found most interesting.", placeholder: "Type your answer.", long: true }], "lesson-answer-list-stacked lesson-answer-list-reflection")}`
+      content: `<h2>My Learning Reflection</h2><p>Directions: Reflect on what you have learned in this module. Answer each question in 2-4 complete sentences.</p>${lessonAnswerList("module1-slide19-response", "Slide 21: My Learning Reflection", [{ prompt: "What did I learn from this module?", html: "<strong>What did I learn from this module?</strong> Describe the most important knowledge or skills you gained about literary devices.", placeholder: "Type your answer.", long: true }, { prompt: "What interested me the most? Why?", html: "<strong>What interested me the most? Why?</strong> Explain which literary device, example, or activity you found most interesting.", placeholder: "Type your answer.", long: true }], "lesson-answer-list-stacked lesson-answer-list-reflection")}`
     },
     {
       title: "Slide 19",
-      content: `<h2>My Learning Reflection</h2><p>Answer each question in 2-4 complete sentences.</p>${lessonAnswerList("module1-slide20-response", "Slide 19: My Learning Reflection", [{ prompt: "What do I still need to improve or practice?", html: "<strong>What do I still need to improve or practice?</strong> Identify a concept or skill about literary devices that you found challenging and explain how you can improve.", placeholder: "Type your answer.", long: true }, { prompt: "How can I apply what I learned in real life?", html: "<strong>How can I apply what I learned in real life?</strong> Explain how understanding literary devices can help you become a better reader, writer, or speaker.", placeholder: "Type your answer.", long: true }], "lesson-answer-list-stacked lesson-answer-list-reflection")}`
+      content: `<h2>My Learning Reflection</h2><p>Answer each question in 2-4 complete sentences.</p>${lessonAnswerList("module1-slide20-response", "Slide 22: My Learning Reflection", [{ prompt: "What do I still need to improve or practice?", html: "<strong>What do I still need to improve or practice?</strong> Identify a concept or skill about literary devices that you found challenging and explain how you can improve.", placeholder: "Type your answer.", long: true }, { prompt: "How can I apply what I learned in real life?", html: "<strong>How can I apply what I learned in real life?</strong> Explain how understanding literary devices can help you become a better reader, writer, or speaker.", placeholder: "Type your answer.", long: true }], "lesson-answer-list-stacked lesson-answer-list-reflection")}`
     },
     {
       title: "Slide 20",
@@ -633,6 +651,112 @@ const learnModules = {
       title: "Slide 16",
       content: `<h2>Module Summary</h2><p>In this module, you learned that sound devices make poems more enjoyable by using interesting sounds.</p><ul class="module1-plain-list"><li><strong>Alliteration</strong> repeats the same beginning consonant sound.</li><li><strong>Rhyme</strong> repeats similar ending sounds.</li><li><strong>Onomatopoeia</strong> uses words that imitate real sounds.</li></ul><p>Understanding these sound devices helps you appreciate how poets make their writing rhythmic, expressive, and enjoyable to read aloud.</p>`
     }
+  ],
+  module4: [
+    {
+      title: "Slide 1",
+      content: `<h2>Overview</h2><p>In your previous lesson, you learned about sound devices and how writers use the sounds of words to make literary texts more interesting and enjoyable.</p><p>Now you will focus on <strong>imagery</strong>, which uses descriptive language to create vivid mental pictures and sensory experiences.</p><p>You will explore visual, olfactory, auditory, gustatory, and tactile imagery, then practice using sensory details to make descriptions clear and vivid.</p>`
+    },
+    {
+      title: "Slide 2",
+      content: `<h2>Brain Booster: Mystery Box</h2><p><strong>Directions:</strong> Imagine that you opened a mystery box. Read the clues and guess what might be inside.</p><ul class="lesson-list"><li>It is bright yellow and has smooth, soft skin.</li><li>It has a sweet smell and tastes juicy and refreshing.</li><li>When you touch it, it feels cool and smooth.</li></ul>${lessonAnswerList("module4-slide2-response", "Slide 2: Mystery Box", [{ prompt: "What do you think is inside the box?", placeholder: "Type your guess." }, { prompt: "What words helped you imagine the object?", placeholder: "Type the clue words." }], "lesson-answer-list-stacked lesson-answer-list-shortpair")}`
+    },
+    {
+      title: "Slide 3",
+      content: `<h2>Learning Objectives</h2><p>At the end of the module, the learners should be able to:</p><ul class="module1-plain-list"><li><strong>Cognitive:</strong> Identify and explain the use of imagery in literary texts.</li><li><strong>Affective:</strong> Value the role of sensory devices in helping readers imagine and connect with literary texts.</li><li><strong>Psychomotor:</strong> Write simple descriptive expressions using different types of imagery.</li></ul>`
+    },
+    {
+      title: "Slide 4",
+      content: `<h2>What is Imagery?</h2><p><strong>Imagery</strong> is the use of descriptive language that appeals to the senses, creating vivid mental pictures and sensory experiences for the reader.</p><p>Through imagery, writers help readers see, hear, smell, taste, or feel what is being described, making a text more engaging and meaningful.</p>`
+    },
+    {
+      title: "Slide 5",
+      content: `<h2>Types of Imagery</h2><p>In this module, you will learn five types of imagery:</p><ul class="lesson-list"><li>Visual Imagery (Sight)</li><li>Olfactory Imagery (Smell)</li><li>Auditory Imagery (Hearing)</li><li>Gustatory Imagery (Taste)</li><li>Tactile Imagery (Touch)</li></ul>`
+    },
+    {
+      title: "Slide 6",
+      content: `<h2>Visual Imagery: Example 1</h2><p><strong>Visual imagery</strong> appeals to sight. It describes colors, shapes, sizes, patterns, and appearances.</p><div class="lesson-example">"The car gleamed a vibrant cherry red under the afternoon sun."</div><p>The words <strong>vibrant cherry red</strong> and <strong>gleamed</strong> help readers see the car's bright color and shine.</p>${keyPoint("Readers can clearly picture the red car reflecting sunlight.")}`
+    },
+    {
+      title: "Slide 7",
+      content: `<h2>Visual Imagery: Example 2</h2><div class="lesson-example">"The starry night sky looked so beautiful that it kept me awake."</div><p>This is visual imagery because it describes something that can be seen. The words <strong>starry night sky</strong> and <strong>beautiful</strong> help readers imagine a clear night filled with shining stars.</p>${keyPoint("The description allows readers to picture the beauty of the night sky and shows how captivating the scene is.")}`
+    },
+    {
+      title: "Slide 8",
+      content: `<h2>Visual Imagery: Example 3</h2><div class="lesson-example">"The golden leaves shimmered beneath the bright autumn sun."</div><p>This is visual imagery because it describes something that can be seen. The words <strong>golden leaves</strong>, <strong>shimmered</strong>, and <strong>bright autumn sun</strong> help readers picture a colorful outdoor scene.</p>${keyPoint("The description helps readers visualize the vibrant colors and brightness of the autumn landscape.")}`
+    },
+    {
+      title: "Slide 9",
+      content: `<h2>Olfactory Imagery: Example 1</h2><p><strong>Olfactory imagery</strong> appeals to smell. It describes fragrances, scents, and odors.</p><div class="lesson-example">"The kitchen filled with the warm, comforting aroma of cinnamon and freshly baked bread."</div><p>The phrase <strong>warm, comforting aroma</strong> helps readers imagine the pleasant smell of baked food.</p>${keyPoint("Readers can sense the inviting fragrance from the kitchen.")}`
+    },
+    {
+      title: "Slide 10",
+      content: `<h2>Olfactory Imagery: Example 2</h2><div class="lesson-example">"The sweet scent of freshly picked roses drifted through the garden."</div><p>This is olfactory imagery because it describes a smell. The phrase <strong>sweet scent of freshly picked roses</strong> helps readers imagine the pleasant fragrance filling the garden.</p>${keyPoint("The words sweet scent create a fresh sensory image, making the garden feel vivid and inviting.")}`
+    },
+    {
+      title: "Slide 11",
+      content: `<h2>Olfactory Imagery: Example 3</h2><div class="lesson-example">"The scent of freshly brewed coffee filled the room every morning."</div><p>This is olfactory imagery because it describes a smell. The phrase <strong>scent of freshly brewed coffee</strong> helps readers imagine the rich aroma spreading throughout the room.</p>${keyPoint("The description creates a comforting smell that readers can imagine clearly.")}`
+    },
+    {
+      title: "Slide 12",
+      content: `<h2>Auditory Imagery: Example 1</h2><p><strong>Auditory imagery</strong> appeals to hearing. It describes sounds, music, voices, silence, or noise.</p><div class="lesson-example">"The bass throbbed in my chest, a pulsating rhythm that shook the floor."</div><p>The words <strong>throbbed</strong> and <strong>pulsating rhythm</strong> help readers imagine the strong beat of the music.</p>${keyPoint("The music feels so loud it can almost be heard and felt.")}`
+    },
+    {
+      title: "Slide 13",
+      content: `<h2>Auditory Imagery: Example 2</h2><div class="lesson-example">"We were welcomed by the chirping of the birds."</div><p>This is auditory imagery because it describes a sound that can be heard. The word <strong>chirping</strong> helps readers imagine the pleasant sounds made by birds.</p>${keyPoint("The sound creates a peaceful and welcoming atmosphere, making the scene feel lively and pleasant.")}`
+    },
+    {
+      title: "Slide 14",
+      content: `<h2>Auditory Imagery: Example 3</h2><div class="lesson-example">"The thunder rumbled loudly across the dark sky."</div><p>This is auditory imagery because it describes a sound. The word <strong>rumbled</strong> helps readers imagine the deep, booming noise made by thunder.</p>${keyPoint("The description allows readers to mentally hear the powerful sound, making the scene more vivid and realistic.")}`
+    },
+    {
+      title: "Slide 15",
+      content: `<h2>Gustatory Imagery: Example 1</h2><p><strong>Gustatory imagery</strong> appeals to taste. It describes flavors such as sweet, sour, bitter, salty, or spicy.</p><div class="lesson-example">"The lemon's juice exploded on my tongue, a tart burst of citrus."</div><p>The phrase <strong>tart burst of citrus</strong> helps readers imagine the sour taste of the lemon.</p>${keyPoint("Readers can mentally experience the lemon's sharp, tangy flavor.")}`
+    },
+    {
+      title: "Slide 16",
+      content: `<h2>Gustatory Imagery: Example 2</h2><div class="lesson-example">"Last night, I ate the sweetest mango in my whole life."</div><p>This is gustatory imagery because it describes a taste. The phrase <strong>the sweetest mango</strong> helps readers imagine the deliciously sweet flavor of the fruit.</p>${keyPoint("The word sweetest emphasizes how flavorful and memorable the mango was for the speaker.")}`
+    },
+    {
+      title: "Slide 17",
+      content: `<h2>Gustatory Imagery: Example 3</h2><div class="lesson-example">"The rich chocolate cake melted in my mouth with every bite."</div><p>This is gustatory imagery because it describes taste. The phrase <strong>rich chocolate cake</strong> helps readers imagine the sweet and flavorful taste of the dessert.</p>${keyPoint("The description helps readers mentally experience the delicious flavor and smooth texture of the cake.")}`
+    },
+    {
+      title: "Slide 18",
+      content: `<h2>Tactile Imagery: Example 1</h2><p><strong>Tactile imagery</strong> appeals to touch. It describes texture, temperature, pressure, and physical sensations.</p><div class="lesson-example">"The rock's surface was gritty and cool beneath my fingertips."</div><p>The words <strong>gritty</strong> and <strong>cool</strong> help readers imagine the rock's texture and temperature.</p>${keyPoint("Readers can mentally feel the rough, cool rock.")}`
+    },
+    {
+      title: "Slide 19",
+      content: `<h2>Tactile Imagery: Example 2</h2><div class="lesson-example">"The softness of the silk caressed my skin."</div><p>This is tactile imagery because it describes a physical sensation that can be felt through touch. The words <strong>softness</strong> and <strong>caressed my skin</strong> help readers imagine the smooth and gentle texture of the silk.</p>${keyPoint("The words emphasize the fabric's smooth and delicate texture, creating a comforting sensory experience.")}`
+    },
+    {
+      title: "Slide 20",
+      content: `<h2>Tactile Imagery: Example 3</h2><div class="lesson-example">"The icy wind brushed against my cheeks on the winter morning."</div><p>This is tactile imagery because it describes a physical sensation that can be felt. The phrase <strong>icy wind</strong> helps readers imagine the cold feeling against the skin.</p>${keyPoint("The description allows readers to mentally experience the chilly sensation of the winter air.")}`
+    },
+    {
+      title: "Slide 21",
+      content: `<h2>Activity 1: Sensory Description</h2><p><strong>Directions:</strong> Imagine that you are visiting a beautiful garden. Write one sentence for each sense.</p>${lessonAnswerList("module4-slide21-response", "Slide 21: Sensory Description", [{ prompt: "Sight / Visual Imagery", html: "<strong>1.</strong> Sight <em>(Visual Imagery)</em>", placeholder: "What do you see?" }, { prompt: "Smell / Olfactory Imagery", html: "<strong>2.</strong> Smell <em>(Olfactory Imagery)</em>", placeholder: "What do you smell?" }, { prompt: "Hearing / Auditory Imagery", html: "<strong>3.</strong> Hearing <em>(Auditory Imagery)</em>", placeholder: "What do you hear?" }, { prompt: "Touch / Tactile Imagery", html: "<strong>4.</strong> Touch <em>(Tactile Imagery)</em>", placeholder: "What do you feel?" }, { prompt: "Taste / Gustatory Imagery", html: "<strong>5.</strong> Taste <em>(Gustatory Imagery)</em>", placeholder: "What do you taste?" }], "lesson-answer-list-stacked lesson-answer-list-many module4-sensory-grid")}`
+    },
+    {
+      title: "Slide 22",
+      content: `<h2>Activity 2: Picture Your Future</h2><p><strong>Directions:</strong> Write a descriptive paragraph of 4-5 sentences about what you imagine your life will be like five years from now.</p><p>Include at least three sensory details that appeal to different senses, and use clear descriptions that help the reader imagine your future life.</p>${lessonAnswerList("module4-slide22-response", "Slide 22: Picture Your Future", [{ prompt: "Write your 4-5 sentence descriptive paragraph.", placeholder: "Type your paragraph here.", long: true }], "lesson-answer-list-stacked lesson-answer-list-poem")}`
+    },
+    {
+      title: "Slide 23",
+      content: `<h2>Analytical Rubric</h2><div class="module3-rubric-table module4-rubric-table" role="table" aria-label="Analytical Rubric for Activity 2"><div class="rubric-row rubric-head" role="row"><span>Criteria</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="rubric-row" role="row"><strong>Use of Sensory Details</strong><span>Uses three or more vivid sensory details.</span><span>Uses three clear sensory details.</span><span>Uses two sensory details.</span><span>Uses one limited sensory detail.</span><span>Uses no sensory details.</span></div><div class="rubric-row" role="row"><strong>Description</strong><span>Clear, detailed, and interesting.</span><span>Clear with enough details.</span><span>Basic with some details.</span><span>Limited or unclear.</span><span>Little or no description.</span></div><div class="rubric-row" role="row"><strong>Organization</strong><span>4-5 complete sentences, well organized.</span><span>4-5 sentences with minor errors.</span><span>Somewhat organized.</span><span>Lacks organization or has incomplete sentences.</span><span>Disorganized and hard to understand.</span></div><div class="rubric-row" role="row"><strong>Grammar and Mechanics</strong><span>No or very few errors.</span><span>A few minor errors.</span><span>Some errors affect understanding.</span><span>Several errors make meaning unclear.</span><span>Many errors make it hard to understand.</span></div></div><p><strong>Total Score:</strong> ____ /20</p>`
+    },
+    {
+      title: "Slide 24",
+      content: `<h2>My Learning Reflection</h2><p><strong>Directions:</strong> Reflect on what you have learned in this module. Answer each question in 2-4 complete sentences.</p>${lessonAnswerList("module4-slide24-response", "Slide 24: Learning Reflection", [{ prompt: "What did I learn from this module?", html: "<strong>1. What did I learn from this module?</strong> Describe what you learned about imagery and how it helps readers understand literary texts.", placeholder: "Type your answer.", long: true }, { prompt: "What interested me the most? Why?", html: "<strong>2. What interested me the most? Why?</strong> Which type of imagery did you find most interesting? Explain your answer.", placeholder: "Type your answer.", long: true }], "lesson-answer-list-stacked lesson-answer-list-reflection")}`
+    },
+    {
+      title: "Slide 25",
+      content: `<h2>My Learning Reflection</h2>${lessonAnswerList("module4-slide25-response", "Slide 25: Learning Reflection", [{ prompt: "What do I still need to improve or practice?", html: "<strong>3. What do I still need to improve or practice?</strong> Which type of imagery do you still need to practice? Explain how you can improve.", placeholder: "Type your answer.", long: true }, { prompt: "How can I apply what I learned in real life?", html: "<strong>4. How can I apply what I learned in real life?</strong> Explain how using imagery can help you write more vivid descriptions or better understand what you read.", placeholder: "Type your answer.", long: true }], "lesson-answer-list-stacked lesson-answer-list-reflection")}`
+    },
+    {
+      title: "Slide 26",
+      content: `<h2>Module Summary</h2><p>Imagery uses descriptive language to appeal to the five senses and help readers create vivid mental pictures.</p><ul class="module1-plain-list"><li><strong>Visual Imagery</strong> appeals to sight.</li><li><strong>Auditory Imagery</strong> appeals to hearing.</li><li><strong>Olfactory Imagery</strong> appeals to smell.</li><li><strong>Gustatory Imagery</strong> appeals to taste.</li><li><strong>Tactile Imagery</strong> appeals to touch.</li></ul><p>Sensory details make descriptions clearer, more engaging, and more meaningful.</p>`
+    }
   ]
 }
 
@@ -692,10 +816,13 @@ const learnGuideMessages = {
     "These examples show common techniques you will meet often.",
     "Sound, imagery, and symbolism also help writers create impact.",
     "This slide shows why literary devices matter to both writers and readers.",
-    "For this activity, decide whether each statement is true or false. The numbering continues from 1 to 10.",
-    "Classify each term as a literary element or literary technique.",
+    "For Activity 1, answer items 1 to 5 as TRUE or FALSE.",
+    "Continue Activity 1 with items 6 to 10.",
+    "For Activity 2, classify items 1 to 5 as LE or LT.",
+    "Continue Activity 2 with items 6 to 10.",
     "Read the paragraph slowly and look for device clues.",
-    "Use these questions to explain how the paragraph changes your imagination.",
+    "Use the first reflection questions to explain what you noticed in the paragraph.",
+    "Continue the reflection questions by explaining why literary devices matter.",
     "Reflect on what you learned and what interested you most.",
     "Think about what you still need to practice and how you can use this skill.",
     "Review the summary before moving to the next module."
@@ -748,6 +875,34 @@ const learnGuideMessages = {
     "Reflect on what you learned and what interested you most.",
     "Think about what still needs practice and how you can use sound devices.",
     "Review the three sound devices before moving on."
+  ],
+  module4: [
+    "This module focuses on imagery and sensory details.",
+    "Use the Mystery Box clues to notice how sensory words help you imagine an object.",
+    "These are the skills you should build before the end of the module.",
+    "Imagery helps readers see, hear, smell, taste, or feel what is described.",
+    "Remember the five senses: sight, smell, hearing, taste, and touch.",
+    "Visual imagery helps readers picture colors, shapes, and appearances.",
+    "Look for words that help you see the starry sky in your mind.",
+    "Golden, shimmered, and bright all help create a visual picture.",
+    "Olfactory imagery focuses on scents and aromas.",
+    "The rose scent makes the garden feel fresh and inviting.",
+    "Coffee aroma is a smell detail that can make a room feel comforting.",
+    "Auditory imagery lets readers imagine sounds and music.",
+    "Chirping helps readers hear the birds in the scene.",
+    "Rumbled helps readers hear the deep sound of thunder.",
+    "Gustatory imagery helps readers imagine flavor.",
+    "The sweetest mango gives readers a clear taste detail.",
+    "Chocolate cake can suggest both flavor and texture.",
+    "Tactile imagery focuses on texture, temperature, and touch.",
+    "Softness and caressed help readers imagine the silk against skin.",
+    "Icy wind helps readers feel the cold air in the scene.",
+    "Write one garden sentence for each sense.",
+    "Use at least three sensory details in your future paragraph.",
+    "Use this rubric to check your paragraph before submitting.",
+    "Reflect on what you learned and what interested you most.",
+    "Think about what still needs practice and how imagery can help you.",
+    "Review the five types of imagery before moving on."
   ]
 }
 
@@ -2934,6 +3089,7 @@ function developerPreviewPoem(textIndex = 0) {
   questions = []
   alreadyAnswered = true
   activeGame2Text = game2LiteraryTexts[Math.max(0, Math.min(game2LiteraryTexts.length - 1, textIndex))] || game2LiteraryTexts[0]
+  activeGame2ReadingPart = 0
   questionDuration = 15
 
   const playMode = document.getElementById("playMode")
@@ -3127,6 +3283,23 @@ function getLessonHeaderAndBody(lesson) {
   }
 }
 
+function fitLessonTitleToOneLine() {
+  const learnMode = document.getElementById("learnMode")
+  const title = document.getElementById("lessonTitle")
+  if (!learnMode || !title || learnMode.classList.contains("hidden")) return
+
+  title.style.removeProperty("--lesson-title-dynamic-font-size")
+
+  const computed = window.getComputedStyle(title)
+  const padding = (parseFloat(computed.paddingLeft) || 0) + (parseFloat(computed.paddingRight) || 0)
+  const availableWidth = Math.max(24, title.clientWidth - padding - 2)
+  const fullWidth = Math.max(1, title.scrollWidth - padding)
+  if (fullWidth <= availableWidth) return
+
+  const currentFontSize = parseFloat(computed.fontSize) || 28
+  const targetFontSize = Math.max(11, Math.floor(currentFontSize * (availableWidth / fullWidth) * 0.98))
+  title.style.setProperty("--lesson-title-dynamic-font-size", `${targetFontSize}px`)
+}
 function showLesson() {
   const lessons = getActiveLessons()
   const lesson = lessons[lessonIndex]
@@ -3140,7 +3313,9 @@ function showLesson() {
   ensureLessonReadabilityStyles()
   updateLessonLayoutClass(lesson)
   updateLessonGuide()
+  requestAnimationFrame(fitLessonTitleToOneLine)
   requestAnimationFrame(fitLessonToScroll)
+  window.setTimeout(fitLessonTitleToOneLine, 120)
   window.setTimeout(fitLessonToScroll, 120)
 
   startReadTimer()
@@ -3674,6 +3849,260 @@ function ensureLessonReadabilityStyles() {
   padding-bottom: calc(14px * var(--fixed-scale)) !important;
 }
 `
+  style.textContent += `
+/* Final runtime v370: keep split pages fitted and discussion justified. */
+#learnMode#learnMode#learnMode.learn-topic-module1 #lessonContent > p,
+#learnMode#learnMode#learnMode.learn-topic-module2 #lessonContent > p,
+#learnMode#learnMode#learnMode.learn-topic-module3 #lessonContent > p,
+#learnMode#learnMode#learnMode.learn-topic-module4 #lessonContent > p,
+#learnMode#learnMode#learnMode.learn-topic-module1 .lesson-notice,
+#learnMode#learnMode#learnMode.learn-topic-module2 .lesson-notice,
+#learnMode#learnMode#learnMode.learn-topic-module3 .lesson-notice,
+#learnMode#learnMode#learnMode.learn-topic-module4 .lesson-notice {
+  text-align: justify !important;
+  text-align-last: left !important;
+}
+
+@media (orientation: landscape) and (max-height: 560px) {
+  #learnMode#learnMode#learnMode.learn-topic-module1.lesson-slide-14 #lessonContent,
+  #learnMode#learnMode#learnMode.learn-topic-module1.lesson-slide-15 #lessonContent,
+  #learnMode#learnMode#learnMode.learn-topic-module1.lesson-slide-16 #lessonContent,
+  #learnMode#learnMode#learnMode.learn-topic-module1.lesson-slide-17 #lessonContent {
+    padding-top: calc(1px * var(--fixed-scale)) !important;
+    padding-bottom: calc(8px * var(--fixed-scale)) !important;
+    font-size: max(calc(16px * var(--fixed-scale)), 9.5px) !important;
+    line-height: 1.06 !important;
+  }
+
+  #learnMode#learnMode#learnMode.learn-topic-module1.lesson-slide-14 .lesson-activity,
+  #learnMode#learnMode#learnMode.learn-topic-module1.lesson-slide-15 .lesson-activity,
+  #learnMode#learnMode#learnMode.learn-topic-module1.lesson-slide-16 .lesson-activity,
+  #learnMode#learnMode#learnMode.learn-topic-module1.lesson-slide-17 .lesson-activity {
+    gap: calc(4px * var(--fixed-scale)) !important;
+  }
+
+  #learnMode#learnMode#learnMode.learn-topic-module1.lesson-slide-14 .lesson-activity-directions,
+  #learnMode#learnMode#learnMode.learn-topic-module1.lesson-slide-15 .lesson-activity-directions,
+  #learnMode#learnMode#learnMode.learn-topic-module1.lesson-slide-16 .lesson-activity-directions,
+  #learnMode#learnMode#learnMode.learn-topic-module1.lesson-slide-17 .lesson-activity-directions {
+    margin-bottom: calc(4px * var(--fixed-scale)) !important;
+    font-size: max(calc(14px * var(--fixed-scale)), 8.8px) !important;
+    line-height: 1.04 !important;
+  }
+
+  #learnMode#learnMode#learnMode.learn-topic-module1.lesson-slide-14 .lesson-activity-items,
+  #learnMode#learnMode#learnMode.learn-topic-module1.lesson-slide-15 .lesson-activity-items,
+  #learnMode#learnMode#learnMode.learn-topic-module1.lesson-slide-16 .lesson-activity-items,
+  #learnMode#learnMode#learnMode.learn-topic-module1.lesson-slide-17 .lesson-activity-items {
+    gap: calc(5px * var(--fixed-scale)) !important;
+  }
+
+  #learnMode#learnMode#learnMode.learn-topic-module1.lesson-slide-14 .lesson-activity-row,
+  #learnMode#learnMode#learnMode.learn-topic-module1.lesson-slide-15 .lesson-activity-row,
+  #learnMode#learnMode#learnMode.learn-topic-module1.lesson-slide-16 .lesson-activity-row,
+  #learnMode#learnMode#learnMode.learn-topic-module1.lesson-slide-17 .lesson-activity-row {
+    min-height: max(calc(36px * var(--fixed-scale)), 24px) !important;
+    padding: calc(3px * var(--fixed-scale)) calc(5px * var(--fixed-scale)) !important;
+    gap: calc(5px * var(--fixed-scale)) !important;
+  }
+
+  #learnMode#learnMode#learnMode.learn-topic-module1.lesson-slide-14 .lesson-activity-prompt,
+  #learnMode#learnMode#learnMode.learn-topic-module1.lesson-slide-15 .lesson-activity-prompt,
+  #learnMode#learnMode#learnMode.learn-topic-module1.lesson-slide-16 .lesson-activity-prompt,
+  #learnMode#learnMode#learnMode.learn-topic-module1.lesson-slide-17 .lesson-activity-prompt {
+    font-size: max(calc(13.5px * var(--fixed-scale)), 8.8px) !important;
+    line-height: 1.04 !important;
+  }
+
+  #learnMode#learnMode#learnMode.learn-topic-module1.lesson-slide-14 .lesson-activity input,
+  #learnMode#learnMode#learnMode.learn-topic-module1.lesson-slide-15 .lesson-activity input,
+  #learnMode#learnMode#learnMode.learn-topic-module1.lesson-slide-16 .lesson-activity input,
+  #learnMode#learnMode#learnMode.learn-topic-module1.lesson-slide-17 .lesson-activity input {
+    height: max(calc(24px * var(--fixed-scale)), 17px) !important;
+    font-size: max(calc(12px * var(--fixed-scale)), 8.8px) !important;
+  }
+
+  #learnMode#learnMode#learnMode.learn-topic-module1.lesson-slide-14 .lesson-check-btn,
+  #learnMode#learnMode#learnMode.learn-topic-module1.lesson-slide-15 .lesson-check-btn,
+  #learnMode#learnMode#learnMode.learn-topic-module1.lesson-slide-16 .lesson-check-btn,
+  #learnMode#learnMode#learnMode.learn-topic-module1.lesson-slide-17 .lesson-check-btn {
+    min-height: max(calc(27px * var(--fixed-scale)), 18px) !important;
+    margin-top: calc(4px * var(--fixed-scale)) !important;
+    font-size: max(calc(14px * var(--fixed-scale)), 9.5px) !important;
+  }
+
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-21 #lessonContent {
+    padding-top: calc(1px * var(--fixed-scale)) !important;
+    padding-bottom: calc(8px * var(--fixed-scale)) !important;
+  }
+
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-21 .module4-sensory-grid {
+    gap: calc(5px * var(--fixed-scale)) !important;
+  }
+
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-21 .module4-sensory-grid .lesson-answer-item,
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-21 .module4-sensory-grid .lesson-answer-item:last-child {
+    min-height: max(calc(38px * var(--fixed-scale)), 24px) !important;
+    padding: calc(3px * var(--fixed-scale)) calc(6px * var(--fixed-scale)) !important;
+  }
+
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-21 .module4-sensory-grid .lesson-answer-prompt {
+    font-size: max(calc(13.5px * var(--fixed-scale)), 8.8px) !important;
+    line-height: 1.04 !important;
+  }
+
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-21 .module4-sensory-grid .lesson-response-field-short {
+    height: max(calc(24px * var(--fixed-scale)), 17px) !important;
+    min-height: max(calc(24px * var(--fixed-scale)), 17px) !important;
+    font-size: max(calc(12px * var(--fixed-scale)), 8.8px) !important;
+  }
+}
+`
+  style.textContent += `
+/* Final runtime v371: split Module 1 reflection and protect summary labels. */
+#learnMode#learnMode#learnMode.learn-topic-module1 .module1-row strong {
+  overflow-wrap: normal !important;
+  word-break: normal !important;
+  hyphens: none !important;
+}
+
+#learnMode#learnMode#learnMode.learn-topic-module1.lesson-slide-19 #lessonContent,
+#learnMode#learnMode#learnMode.learn-topic-module1.lesson-slide-20 #lessonContent {
+  bottom: calc(70px * var(--fixed-scale)) !important;
+  justify-content: center !important;
+  padding-top: calc(4px * var(--fixed-scale)) !important;
+  padding-bottom: calc(18px * var(--fixed-scale)) !important;
+  font-size: max(calc(20px * var(--fixed-scale)), 12px) !important;
+  line-height: 1.1 !important;
+  overflow: hidden !important;
+}
+
+#learnMode#learnMode#learnMode.learn-topic-module1.lesson-slide-19 .lesson-answer-list-reflection-split,
+#learnMode#learnMode#learnMode.learn-topic-module1.lesson-slide-20 .lesson-answer-list-reflection-split {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  width: min(100%, calc(650px * var(--fixed-scale))) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  gap: calc(10px * var(--fixed-scale)) !important;
+}
+
+#learnMode#learnMode#learnMode.learn-topic-module1.lesson-slide-19 .lesson-answer-list-reflection-split .lesson-answer-item,
+#learnMode#learnMode#learnMode.learn-topic-module1.lesson-slide-20 .lesson-answer-list-reflection-split .lesson-answer-item {
+  grid-template-columns: 1fr !important;
+  padding: calc(5px * var(--fixed-scale)) calc(8px * var(--fixed-scale)) !important;
+  min-height: auto !important;
+}
+
+#learnMode#learnMode#learnMode.learn-topic-module1.lesson-slide-19 .lesson-answer-list-reflection-split .lesson-answer-prompt,
+#learnMode#learnMode#learnMode.learn-topic-module1.lesson-slide-20 .lesson-answer-list-reflection-split .lesson-answer-prompt {
+  font-size: max(calc(16px * var(--fixed-scale)), 10.5px) !important;
+  line-height: 1.08 !important;
+}
+
+#learnMode#learnMode#learnMode.learn-topic-module1.lesson-slide-19 .lesson-answer-list-reflection-split .lesson-response-field-long {
+  height: max(calc(66px * var(--fixed-scale)), 38px) !important;
+  min-height: max(calc(66px * var(--fixed-scale)), 38px) !important;
+}
+
+#learnMode#learnMode#learnMode.learn-topic-module1.lesson-slide-20 .lesson-answer-list-reflection-split .lesson-response-field-long {
+  height: max(calc(96px * var(--fixed-scale)), 48px) !important;
+  min-height: max(calc(96px * var(--fixed-scale)), 48px) !important;
+}
+
+#learnMode#learnMode#learnMode.learn-topic-module1.lesson-slide-21 .lesson-answer-list-reflection .lesson-response-field-long,
+#learnMode#learnMode#learnMode.learn-topic-module1.lesson-slide-22 .lesson-answer-list-reflection .lesson-response-field-long {
+  height: max(calc(62px * var(--fixed-scale)), 38px) !important;
+  min-height: max(calc(62px * var(--fixed-scale)), 38px) !important;
+}
+
+#learnMode#learnMode#learnMode.learn-topic-module1.lesson-slide-23 #lessonContent {
+  bottom: calc(76px * var(--fixed-scale)) !important;
+  justify-content: center !important;
+  gap: calc(11px * var(--fixed-scale)) !important;
+  padding-bottom: calc(48px * var(--fixed-scale)) !important;
+  font-size: max(calc(22px * var(--fixed-scale)), 13px) !important;
+  line-height: 1.16 !important;
+}
+
+#learnMode#learnMode#learnMode.learn-topic-module1.lesson-slide-23 .module1-row-list {
+  gap: calc(13px * var(--fixed-scale)) !important;
+  margin-top: calc(10px * var(--fixed-scale)) !important;
+  margin-bottom: calc(12px * var(--fixed-scale)) !important;
+}
+
+#learnMode#learnMode#learnMode.learn-topic-module1.lesson-slide-23 .module1-row {
+  grid-template-columns: max(calc(185px * var(--fixed-scale)), 126px) minmax(0, 1fr) !important;
+  align-items: center !important;
+  min-height: max(calc(72px * var(--fixed-scale)), 48px) !important;
+  padding-top: calc(8px * var(--fixed-scale)) !important;
+  padding-bottom: calc(8px * var(--fixed-scale)) !important;
+}
+
+#learnMode#learnMode#learnMode.learn-topic-module1.lesson-slide-23 .module1-row strong,
+#learnMode#learnMode#learnMode.learn-topic-module1.lesson-slide-23 .module1-row span {
+  font-size: max(calc(20px * var(--fixed-scale)), 12px) !important;
+  line-height: 1.08 !important;
+}
+
+#learnMode#learnMode#learnMode.learn-topic-module1.lesson-slide-23 .module1-row strong {
+  overflow-wrap: normal !important;
+  word-break: normal !important;
+  hyphens: none !important;
+}
+
+@media (orientation: landscape) and (max-height: 560px) {
+  #learnMode#learnMode#learnMode.learn-topic-module1.lesson-slide-19 #lessonContent,
+  #learnMode#learnMode#learnMode.learn-topic-module1.lesson-slide-20 #lessonContent {
+    bottom: calc(58px * var(--fixed-scale)) !important;
+    padding-top: calc(1px * var(--fixed-scale)) !important;
+    padding-bottom: calc(8px * var(--fixed-scale)) !important;
+    font-size: max(calc(15px * var(--fixed-scale)), 9px) !important;
+  }
+
+  #learnMode#learnMode#learnMode.learn-topic-module1.lesson-slide-19 .lesson-answer-list-reflection-split,
+  #learnMode#learnMode#learnMode.learn-topic-module1.lesson-slide-20 .lesson-answer-list-reflection-split {
+    gap: calc(5px * var(--fixed-scale)) !important;
+  }
+
+  #learnMode#learnMode#learnMode.learn-topic-module1.lesson-slide-19 .lesson-answer-list-reflection-split .lesson-answer-item,
+  #learnMode#learnMode#learnMode.learn-topic-module1.lesson-slide-20 .lesson-answer-list-reflection-split .lesson-answer-item {
+    padding: calc(3px * var(--fixed-scale)) calc(5px * var(--fixed-scale)) !important;
+  }
+
+  #learnMode#learnMode#learnMode.learn-topic-module1.lesson-slide-19 .lesson-answer-list-reflection-split .lesson-answer-prompt,
+  #learnMode#learnMode#learnMode.learn-topic-module1.lesson-slide-20 .lesson-answer-list-reflection-split .lesson-answer-prompt {
+    font-size: max(calc(13px * var(--fixed-scale)), 8.5px) !important;
+    line-height: 1.04 !important;
+  }
+
+  #learnMode#learnMode#learnMode.learn-topic-module1.lesson-slide-19 .lesson-answer-list-reflection-split .lesson-response-field-long {
+    height: max(calc(42px * var(--fixed-scale)), 26px) !important;
+    min-height: max(calc(42px * var(--fixed-scale)), 26px) !important;
+  }
+
+  #learnMode#learnMode#learnMode.learn-topic-module1.lesson-slide-20 .lesson-answer-list-reflection-split .lesson-response-field-long {
+    height: max(calc(60px * var(--fixed-scale)), 34px) !important;
+    min-height: max(calc(60px * var(--fixed-scale)), 34px) !important;
+  }
+
+  #learnMode#learnMode#learnMode.learn-topic-module1.lesson-slide-23 #lessonContent {
+    padding-bottom: calc(28px * var(--fixed-scale)) !important;
+    font-size: max(calc(17px * var(--fixed-scale)), 10px) !important;
+  }
+
+  #learnMode#learnMode#learnMode.learn-topic-module1.lesson-slide-23 .module1-row {
+    grid-template-columns: max(calc(155px * var(--fixed-scale)), 102px) minmax(0, 1fr) !important;
+    min-height: max(calc(52px * var(--fixed-scale)), 34px) !important;
+  }
+
+  #learnMode#learnMode#learnMode.learn-topic-module1.lesson-slide-23 .module1-row strong,
+  #learnMode#learnMode#learnMode.learn-topic-module1.lesson-slide-23 .module1-row span {
+    font-size: max(calc(16px * var(--fixed-scale)), 9.5px) !important;
+    line-height: 1.06 !important;
+  }
+}
+`
   document.head.appendChild(style)
 }
 function resetLessonFit(learnMode, content) {
@@ -4072,6 +4501,15 @@ function getPassingAnswersForGame(gameNumber = currentGame, totalQuestions = get
   return gameNumber === 1 ? Math.ceil(totalQuestions * GAME_1_PASSING_RATE) : PASSING_ANSWERS
 }
 
+function prepareQuestionsForRun(sourceQuestions, limit) {
+  return shuffle(sourceQuestions)
+    .slice(0, limit)
+    .map(question => ({
+      ...question,
+      choices: Array.isArray(question.choices) ? shuffle(question.choices) : question.choices
+    }))
+}
+
 function getCurrentRunTitle() {
   if (currentGame === 1) return `${gameTitles[1]} Level ${currentSentenceLevel}`
   return gameTitles[currentGame] || `Game ${currentGame}`
@@ -4147,6 +4585,7 @@ function startGame(gameNumber, resetCarriedStats = false, sentenceLevel = 1) {
   playMode.classList.remove("game1-bg", "game2-bg", "game3-bg", "practice-replay")
   playMode.classList.remove("reading-text-mode")
   activeGame2Text = null
+  activeGame2ReadingPart = 0
 
   if (completedGames.has(gameNumber)) {
     playMode.classList.add("practice-replay")
@@ -4154,16 +4593,17 @@ function startGame(gameNumber, resetCarriedStats = false, sentenceLevel = 1) {
 
   if (currentGame === 1) {
     const activeSentenceLevel = getSentenceSleuthLevel()
-    questions = shuffle(activeSentenceLevel.questions).slice(0, getQuestionLimitForGame(1))
+    questions = prepareQuestionsForRun(activeSentenceLevel.questions, getQuestionLimitForGame(1))
     questionDuration = 15
     playMode.classList.add("game1-bg")
   } else if (currentGame === 2) {
     activeGame2Text = shuffle(game2LiteraryTexts)[0]
-    questions = shuffle(activeGame2Text.questions).slice(0, QUESTIONS_PER_RUN)
+    activeGame2ReadingPart = 0
+    questions = prepareQuestionsForRun(activeGame2Text.questions, QUESTIONS_PER_RUN)
     questionDuration = 15
     playMode.classList.add("game2-bg")
   } else {
-    questions = shuffle(questionBank.game3).slice(0, QUESTIONS_PER_RUN)
+    questions = prepareQuestionsForRun(questionBank.game3, QUESTIONS_PER_RUN)
     questionDuration = 60
     playMode.classList.add("game3-bg")
   }
@@ -4249,6 +4689,20 @@ function formatLiteraryText(text) {
     .join("")
 }
 
+function splitLiteraryTextParts(text, maxLines = 8) {
+  const lines = String(text || "")
+    .split(/\n+/)
+    .map(line => line.trim())
+    .filter(Boolean)
+
+  if (lines.length <= maxLines) return [lines.join("\n")]
+
+  const parts = []
+  for (let index = 0; index < lines.length; index += maxLines) {
+    parts.push(lines.slice(index, index + maxLines).join("\n"))
+  }
+  return parts
+}
 function fitLiteraryReadingToCard() {
   const card = document.querySelector("#playMode.game2-bg.reading-text-mode .question-card")
   const reading = document.querySelector("#playMode.game2-bg.reading-text-mode .literary-reading")
@@ -4287,9 +4741,16 @@ function fitLiteraryReadingToCard() {
   }
 }
 
-function showGame2ReadingPage() {
+function showGame2ReadingPage(partIndex = activeGame2ReadingPart || 0) {
   const playMode = document.getElementById("playMode")
   const text = activeGame2Text || game2LiteraryTexts[0]
+  const readingParts = splitLiteraryTextParts(text.text, 8)
+  activeGame2ReadingPart = Math.max(0, Math.min(readingParts.length - 1, partIndex))
+  const partText = readingParts[activeGame2ReadingPart] || text.text
+  const hasMoreParts = activeGame2ReadingPart < readingParts.length - 1
+  const partLabel = readingParts.length > 1
+    ? `<small class="reading-part-count">Part ${activeGame2ReadingPart + 1} of ${readingParts.length}</small>`
+    : ""
 
   alreadyAnswered = true
   clearInterval(questionTimerInterval)
@@ -4300,20 +4761,34 @@ function showGame2ReadingPage() {
   document.getElementById("hintText").innerText = ""
   document.getElementById("gameTitle").innerText = gameTitles[2]
   document.getElementById("questionText").innerHTML = `
-    <div class="literary-reading">
+    <div class="literary-reading ${readingParts.length > 1 ? "literary-reading-paged" : ""}">
       <strong>${escapeHtml(text.title)}</strong>
       <em>${escapeHtml(text.author)}</em>
-      <p>${formatLiteraryText(text.text)}</p>
+      ${partLabel}
+      <p>${formatLiteraryText(partText)}</p>
     </div>
   `
-  document.getElementById("choices").innerHTML = developerPreviewMode && developerLastQuestionList.type === "content" && developerLastQuestionList.game === 2
-    ? `<button class="start-text-questions-btn" onclick="sparkButton(this); developerReturnToContentList()">Back to Poems</button>`
-    : `<button class="start-text-questions-btn" onclick="sparkButton(this); beginGame2Questions()">Start Questions</button>`
-  setGuideState("assets/images/guide-default.png", "Read the literary text first. The next questions will all come from this text.")
+
+  let readingButton = ""
+  if (hasMoreParts) {
+    readingButton = `<button class="start-text-questions-btn" onclick="sparkButton(this); showGame2ReadingPage(${activeGame2ReadingPart + 1})">Continue Reading</button>`
+  } else if (developerPreviewMode && developerLastQuestionList.type === "content" && developerLastQuestionList.game === 2) {
+    readingButton = `<button class="start-text-questions-btn" onclick="sparkButton(this); developerReturnToContentList()">Back to Poems</button>`
+  } else {
+    readingButton = `<button class="start-text-questions-btn" onclick="sparkButton(this); beginGame2Questions()">Start Questions</button>`
+  }
+  document.getElementById("choices").innerHTML = readingButton
+
+  const guideMessage = readingParts.length > 1
+    ? hasMoreParts
+      ? `Read part ${activeGame2ReadingPart + 1} of ${readingParts.length}. Continue when you are ready.`
+      : "This is the last part of the text. Start the questions when you are ready."
+    : "Read the literary text first. The next questions will all come from this text."
+  setGuideState("assets/images/guide-default.png", guideMessage)
   requestAnimationFrame(fitLiteraryReadingToCard)
 }
-
 function beginGame2Questions() {
+  activeGame2ReadingPart = 0
   document.getElementById("playMode").classList.remove("reading-text-mode")
   currentQuestion = 0
   loadQuestion()
@@ -5165,7 +5640,16 @@ function updateMuteButton() {
 }
 
 function shuffle(array) {
-  return [...array].sort(() => Math.random() - 0.5)
+  const shuffled = [...array]
+
+  for (let index = shuffled.length - 1; index > 0; index--) {
+    const swapIndex = Math.floor(Math.random() * (index + 1))
+    const current = shuffled[index]
+    shuffled[index] = shuffled[swapIndex]
+    shuffled[swapIndex] = current
+  }
+
+  return shuffled
 }
 
 function createGlitterBurst(x, y) {
