@@ -10015,3 +10015,410 @@ body {
     height: calc(70px * var(--fixed-scale)) !important;
   }
 }
+/* Final v376: split Module 4 rubric and lower the full Learn logo on phone. */
+@media (orientation: landscape) and (max-height: 560px) {
+  #learnBlank .learn-map-title {
+    top: calc(var(--fixed-top) + (34px * var(--fixed-scale))) !important;
+    height: calc(82px * var(--fixed-scale)) !important;
+    background-size: contain !important;
+    background-position: center center !important;
+    overflow: visible !important;
+  }
+
+  #learnBlank .learn-module1-card { top: calc(var(--fixed-top) + (116px * var(--fixed-scale))) !important; }
+  #learnBlank .learn-module2-card { top: calc(var(--fixed-top) + (260px * var(--fixed-scale))) !important; }
+  #learnBlank .learn-module3-card { top: calc(var(--fixed-top) + (404px * var(--fixed-scale))) !important; }
+  #learnBlank .learn-module4-card { top: calc(var(--fixed-top) + (548px * var(--fixed-scale))) !important; }
+
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-23 #lessonContent,
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-24 #lessonContent {
+    padding: calc(10px * var(--fixed-scale)) calc(24px * var(--fixed-scale)) calc(14px * var(--fixed-scale)) !important;
+    gap: calc(5px * var(--fixed-scale)) !important;
+    overflow: hidden !important;
+  }
+
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-23 #lessonContent h2,
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-24 #lessonContent h2 {
+    font-size: max(calc(31px * var(--fixed-scale)), 17px) !important;
+    line-height: 1 !important;
+    margin-bottom: calc(7px * var(--fixed-scale)) !important;
+  }
+
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-23 .module4-rubric-table-split,
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-24 .module4-rubric-table-split {
+    width: min(100%, calc(760px * var(--fixed-scale))) !important;
+    margin: 0 auto calc(5px * var(--fixed-scale)) !important;
+    font-size: max(calc(14px * var(--fixed-scale)), 8.8px) !important;
+    line-height: 1.04 !important;
+  }
+
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-23 .module4-rubric-table-split .rubric-row,
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-24 .module4-rubric-table-split .rubric-row {
+    grid-template-columns: calc(150px * var(--fixed-scale)) repeat(5, minmax(0, 1fr)) !important;
+    min-height: auto !important;
+  }
+
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-23 .module4-rubric-table-split .rubric-row > span,
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-23 .module4-rubric-table-split .rubric-row > strong,
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-24 .module4-rubric-table-split .rubric-row > span,
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-24 .module4-rubric-table-split .rubric-row > strong {
+    padding: calc(5px * var(--fixed-scale)) calc(4px * var(--fixed-scale)) !important;
+    line-height: 1.04 !important;
+    overflow-wrap: normal !important;
+    word-break: normal !important;
+    hyphens: none !important;
+    text-align: center !important;
+  }
+
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-23 .module4-rubric-table-split .rubric-row > :first-child,
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-24 .module4-rubric-table-split .rubric-row > :first-child {
+    font-weight: 900 !important;
+    text-align: center !important;
+  }
+
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-24 #lessonContent p {
+    font-size: max(calc(18px * var(--fixed-scale)), 11px) !important;
+    line-height: 1.05 !important;
+    margin: calc(3px * var(--fixed-scale)) auto 0 !important;
+    width: min(100%, calc(760px * var(--fixed-scale))) !important;
+  }
+}
+/* Final v377: make the split Module 4 rubric larger while staying inside phone view. */
+@media (orientation: landscape) and (max-height: 560px) {
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-23 #lessonContent,
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-24 #lessonContent {
+    padding: calc(8px * var(--fixed-scale)) calc(18px * var(--fixed-scale)) calc(10px * var(--fixed-scale)) !important;
+    gap: calc(7px * var(--fixed-scale)) !important;
+  }
+
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-23 .module4-rubric-table-split,
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-24 .module4-rubric-table-split {
+    width: min(100%, calc(820px * var(--fixed-scale))) !important;
+    font-size: max(calc(27px * var(--fixed-scale)), 13px) !important;
+    line-height: 1.08 !important;
+    margin-top: calc(4px * var(--fixed-scale)) !important;
+  }
+
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-23 .module4-rubric-table-split .rubric-row,
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-24 .module4-rubric-table-split .rubric-row {
+    grid-template-columns: calc(168px * var(--fixed-scale)) repeat(5, minmax(0, 1fr)) !important;
+  }
+
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-23 .module4-rubric-table-split .rubric-row:not(.rubric-head),
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-24 .module4-rubric-table-split .rubric-row:not(.rubric-head) {
+    min-height: calc(88px * var(--fixed-scale)) !important;
+  }
+
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-23 .module4-rubric-table-split .rubric-row > span,
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-23 .module4-rubric-table-split .rubric-row > strong,
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-24 .module4-rubric-table-split .rubric-row > span,
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-24 .module4-rubric-table-split .rubric-row > strong {
+    padding: calc(7px * var(--fixed-scale)) calc(5px * var(--fixed-scale)) !important;
+    line-height: 1.08 !important;
+  }
+
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-24 #lessonContent p {
+    font-size: max(calc(22px * var(--fixed-scale)), 12.5px) !important;
+    margin-top: calc(6px * var(--fixed-scale)) !important;
+  }
+}
+/* Final v378: compact merged rubric tables for phone landscape. */
+@media (orientation: landscape) and (max-height: 560px) {
+  #learnMode#learnMode#learnMode.learn-topic-module3.lesson-slide-14 #lessonContent,
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-23 #lessonContent {
+    left: calc(72px * var(--fixed-scale)) !important;
+    right: calc(112px * var(--fixed-scale)) !important;
+    padding: calc(2px * var(--fixed-scale)) calc(10px * var(--fixed-scale)) calc(5px * var(--fixed-scale)) !important;
+    gap: calc(2px * var(--fixed-scale)) !important;
+    overflow: hidden !important;
+    justify-content: flex-start !important;
+  }
+
+  #learnMode#learnMode#learnMode.learn-topic-module3.lesson-slide-14 #lessonContent h2,
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-23 #lessonContent h2 {
+    font-size: max(calc(24px * var(--fixed-scale)), 13px) !important;
+    line-height: 0.96 !important;
+    margin: 0 0 calc(2px * var(--fixed-scale)) !important;
+  }
+
+  #learnMode#learnMode#learnMode.learn-topic-module3.lesson-slide-14 .module3-rubric-table-merged,
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-23 .module4-rubric-table-merged {
+    width: 100% !important;
+    margin: 0 auto calc(1px * var(--fixed-scale)) !important;
+    font-size: max(calc(12px * var(--fixed-scale)), 6.6px) !important;
+    line-height: 0.98 !important;
+    border-width: 1px !important;
+  }
+
+  #learnMode#learnMode#learnMode.learn-topic-module3.lesson-slide-14 .module3-rubric-table-merged .rubric-row,
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-23 .module4-rubric-table-merged .rubric-row {
+    grid-template-columns: calc(112px * var(--fixed-scale)) repeat(5, minmax(0, 1fr)) !important;
+    min-height: 0 !important;
+  }
+
+  #learnMode#learnMode#learnMode.learn-topic-module3.lesson-slide-14 .module3-rubric-table-merged .rubric-row > span,
+  #learnMode#learnMode#learnMode.learn-topic-module3.lesson-slide-14 .module3-rubric-table-merged .rubric-row > strong,
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-23 .module4-rubric-table-merged .rubric-row > span,
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-23 .module4-rubric-table-merged .rubric-row > strong {
+    padding: calc(2px * var(--fixed-scale)) calc(1.5px * var(--fixed-scale)) !important;
+    line-height: 0.98 !important;
+    overflow-wrap: break-word !important;
+    word-break: normal !important;
+    hyphens: none !important;
+    text-align: center !important;
+    text-align-last: center !important;
+  }
+
+  #learnMode#learnMode#learnMode.learn-topic-module3.lesson-slide-14 .module3-rubric-table-merged .rubric-head > span,
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-23 .module4-rubric-table-merged .rubric-head > span {
+    padding-top: calc(1px * var(--fixed-scale)) !important;
+    padding-bottom: calc(1px * var(--fixed-scale)) !important;
+    font-size: 0.92em !important;
+  }
+
+  #learnMode#learnMode#learnMode.learn-topic-module3.lesson-slide-14 #lessonContent p,
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-23 #lessonContent p {
+    width: 100% !important;
+    margin: calc(1px * var(--fixed-scale)) auto 0 !important;
+    font-size: max(calc(11px * var(--fixed-scale)), 6.4px) !important;
+    line-height: 1 !important;
+    text-align: left !important;
+    text-align-last: left !important;
+  }
+}
+/* Final v379: widen and enlarge merged rubric tables on phone. */
+@media (orientation: landscape) and (max-height: 560px) {
+  #learnMode#learnMode#learnMode.learn-topic-module3.lesson-slide-14 #lessonContent,
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-23 #lessonContent {
+    left: calc(40px * var(--fixed-scale)) !important;
+    right: calc(40px * var(--fixed-scale)) !important;
+    padding: calc(2px * var(--fixed-scale)) calc(8px * var(--fixed-scale)) calc(5px * var(--fixed-scale)) !important;
+  }
+
+  #learnMode#learnMode#learnMode.learn-topic-module3.lesson-slide-14 .module3-rubric-table-merged,
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-23 .module4-rubric-table-merged {
+    font-size: max(calc(14.7px * var(--fixed-scale)), 8px) !important;
+    line-height: 0.98 !important;
+  }
+
+  #learnMode#learnMode#learnMode.learn-topic-module3.lesson-slide-14 .module3-rubric-table-merged .rubric-row,
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-23 .module4-rubric-table-merged .rubric-row {
+    grid-template-columns: calc(128px * var(--fixed-scale)) repeat(5, minmax(0, 1fr)) !important;
+  }
+
+  #learnMode#learnMode#learnMode.learn-topic-module3.lesson-slide-14 .module3-rubric-table-merged .rubric-row > span,
+  #learnMode#learnMode#learnMode.learn-topic-module3.lesson-slide-14 .module3-rubric-table-merged .rubric-row > strong,
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-23 .module4-rubric-table-merged .rubric-row > span,
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-23 .module4-rubric-table-merged .rubric-row > strong {
+    padding: calc(2px * var(--fixed-scale)) calc(2px * var(--fixed-scale)) !important;
+    line-height: 0.98 !important;
+  }
+
+  #learnMode#learnMode#learnMode.learn-topic-module3.lesson-slide-14 #lessonContent p,
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-23 #lessonContent p {
+    font-size: max(calc(13px * var(--fixed-scale)), 7.2px) !important;
+  }
+}
+/* Final v380: last readability nudge for merged rubric tables. */
+@media (orientation: landscape) and (max-height: 560px) {
+  #learnMode#learnMode#learnMode.learn-topic-module3.lesson-slide-14 .module3-rubric-table-merged,
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-23 .module4-rubric-table-merged {
+    font-size: max(calc(16.7px * var(--fixed-scale)), 9.1px) !important;
+  }
+
+  #learnMode#learnMode#learnMode.learn-topic-module3.lesson-slide-14 #lessonContent p,
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-23 #lessonContent p {
+    font-size: max(calc(14.8px * var(--fixed-scale)), 8px) !important;
+  }
+}
+/* Final v381: seat the Learn logo slightly onto Module 1 on phone. */
+@media (orientation: landscape) and (max-height: 560px) {
+  #learnBlank .learn-map-title {
+    top: calc(var(--fixed-top) + (47px * var(--fixed-scale))) !important;
+    z-index: 8 !important;
+    overflow: visible !important;
+  }
+
+  #learnBlank .learn-module1-card {
+    z-index: 4 !important;
+  }
+}
+/* Final v382: lower the visible Learn logo banner onto Module 1. */
+@media (orientation: landscape) and (max-height: 560px) {
+  #learnBlank .learn-map-title {
+    top: calc(var(--fixed-top) + (64px * var(--fixed-scale))) !important;
+    background-position: center bottom !important;
+    z-index: 9 !important;
+    overflow: visible !important;
+  }
+
+  #learnBlank .learn-module1-card {
+    z-index: 4 !important;
+  }
+}
+
+/* v383: keep the Literary Devices logo fully visible and seated above Module 1 on phone landscape. */
+@media (orientation: landscape) and (max-height: 560px) {
+  #app:has(#learnBlank:not(.hidden)),
+  #learnBlank,
+  #learnBlank.learn-blank-screen,
+  #learnBlank .learn-map-title {
+    overflow: visible !important;
+  }
+
+  #learnBlank .learn-map-title {
+    left: calc(var(--fixed-left) + (490px * var(--fixed-scale))) !important;
+    top: calc(var(--fixed-top) + (28px * var(--fixed-scale))) !important;
+    width: calc(300px * var(--fixed-scale)) !important;
+    height: calc(140px * var(--fixed-scale)) !important;
+    background-image: url("assets/images/literary-devices-trimmed.png") !important;
+    background-size: contain !important;
+    background-position: center bottom !important;
+    background-repeat: no-repeat !important;
+    z-index: 12 !important;
+    pointer-events: none !important;
+  }
+
+  #learnBlank .learn-module1-card {
+    top: calc(var(--fixed-top) + (136px * var(--fixed-scale))) !important;
+    z-index: 4 !important;
+  }
+
+  #learnBlank .learn-module2-card {
+    top: calc(var(--fixed-top) + (280px * var(--fixed-scale))) !important;
+  }
+
+  #learnBlank .learn-module3-card {
+    top: calc(var(--fixed-top) + (424px * var(--fixed-scale))) !important;
+  }
+
+  #learnBlank .learn-module4-card {
+    top: calc(var(--fixed-top) + (568px * var(--fixed-scale))) !important;
+  }
+}
+/* v385: final visible seating for the Literary Devices logo on the Module 1 card. */
+@media (orientation: landscape) and (max-height: 560px) {
+  #app,
+  #learnBlank,
+  #learnBlank.learn-blank-screen,
+  #learnBlank .learn-map-title {
+    overflow: visible !important;
+  }
+
+  #learnBlank .learn-map-title {
+    left: calc(var(--fixed-left) + (490px * var(--fixed-scale))) !important;
+    top: calc(var(--fixed-top) + (54px * var(--fixed-scale))) !important;
+    width: calc(300px * var(--fixed-scale)) !important;
+    height: calc(140px * var(--fixed-scale)) !important;
+    background-image: url("assets/images/literary-devices-trimmed.png") !important;
+    background-size: contain !important;
+    background-position: center bottom !important;
+    background-repeat: no-repeat !important;
+    z-index: 12 !important;
+    pointer-events: none !important;
+  }
+}
+/* v387: one Learn logo only: the original title element, fully visible and seated on Module 1. */
+#learnBlank .learn-map-title {
+  display: block !important;
+  position: absolute !important;
+  left: calc(var(--fixed-left) + (470px * var(--fixed-scale))) !important;
+  top: calc(var(--fixed-top) + (16px * var(--fixed-scale))) !important;
+  width: calc(340px * var(--fixed-scale)) !important;
+  height: calc(158px * var(--fixed-scale)) !important;
+  margin: 0 !important;
+  overflow: visible !important;
+  color: transparent !important;
+  text-indent: -9999px !important;
+  background-image: url("assets/images/literary-devices-trimmed.png?v=388") !important;
+  background-size: contain !important;
+  background-position: center bottom !important;
+  background-repeat: no-repeat !important;
+  z-index: 20 !important;
+  pointer-events: none !important;
+}
+
+@media (orientation: landscape) and (max-height: 560px) {
+  #app,
+  #learnBlank,
+  #learnBlank.learn-blank-screen,
+  #learnBlank .learn-map-title {
+    overflow: visible !important;
+  }
+
+  #learnBlank .learn-map-title {
+    display: block !important;
+    left: calc(var(--fixed-left) + (470px * var(--fixed-scale))) !important;
+    top: calc(var(--fixed-top) + (16px * var(--fixed-scale))) !important;
+    width: calc(340px * var(--fixed-scale)) !important;
+    height: calc(158px * var(--fixed-scale)) !important;
+    background-image: url("assets/images/literary-devices-trimmed.png?v=388") !important;
+    z-index: 20 !important;
+  }
+}
+/* v389: shrink the original Learn logo and move it slightly upward. */
+#learnBlank .learn-map-title {
+  left: calc(var(--fixed-left) + (490px * var(--fixed-scale))) !important;
+  top: calc(var(--fixed-top) + (8px * var(--fixed-scale))) !important;
+  width: calc(300px * var(--fixed-scale)) !important;
+  height: calc(140px * var(--fixed-scale)) !important;
+  background-image: url("assets/images/literary-devices-trimmed.png?v=389") !important;
+  background-size: contain !important;
+  background-position: center bottom !important;
+  background-repeat: no-repeat !important;
+  z-index: 20 !important;
+  overflow: visible !important;
+}
+
+@media (orientation: landscape) and (max-height: 560px) {
+  #learnBlank .learn-map-title {
+    left: calc(var(--fixed-left) + (490px * var(--fixed-scale))) !important;
+    top: calc(var(--fixed-top) + (8px * var(--fixed-scale))) !important;
+    width: calc(300px * var(--fixed-scale)) !important;
+    height: calc(140px * var(--fixed-scale)) !important;
+  }
+}
+/* v390: shrink the original Learn logo again and nudge it slightly upward. */
+#learnBlank .learn-map-title {
+  left: calc(var(--fixed-left) + (497.5px * var(--fixed-scale))) !important;
+  top: calc(var(--fixed-top) + (6px * var(--fixed-scale))) !important;
+  width: calc(285px * var(--fixed-scale)) !important;
+  height: calc(133px * var(--fixed-scale)) !important;
+  background-image: url("assets/images/literary-devices-trimmed.png?v=390") !important;
+  background-size: contain !important;
+  background-position: center bottom !important;
+  background-repeat: no-repeat !important;
+  z-index: 20 !important;
+  overflow: visible !important;
+}
+
+@media (orientation: landscape) and (max-height: 560px) {
+  #learnBlank .learn-map-title {
+    left: calc(var(--fixed-left) + (497.5px * var(--fixed-scale))) !important;
+    top: calc(var(--fixed-top) + (6px * var(--fixed-scale))) !important;
+    width: calc(285px * var(--fixed-scale)) !important;
+    height: calc(133px * var(--fixed-scale)) !important;
+  }
+}
+/* v391: shrink the original Learn logo. */
+#learnBlank .learn-map-title {
+  left: calc(var(--fixed-left) + (510px * var(--fixed-scale))) !important;
+  top: calc(var(--fixed-top) + (6px * var(--fixed-scale))) !important;
+  width: calc(260px * var(--fixed-scale)) !important;
+  height: calc(121px * var(--fixed-scale)) !important;
+  background-image: url("assets/images/literary-devices-trimmed.png?v=391") !important;
+  background-size: contain !important;
+  background-position: center bottom !important;
+  background-repeat: no-repeat !important;
+  z-index: 20 !important;
+  overflow: visible !important;
+}
+
+@media (orientation: landscape) and (max-height: 560px) {
+  #learnBlank .learn-map-title {
+    left: calc(var(--fixed-left) + (510px * var(--fixed-scale))) !important;
+    top: calc(var(--fixed-top) + (6px * var(--fixed-scale))) !important;
+    width: calc(260px * var(--fixed-scale)) !important;
+    height: calc(121px * var(--fixed-scale)) !important;
+  }
+}

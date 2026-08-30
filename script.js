@@ -429,19 +429,19 @@ const learnModules = {
     },
     {
       title: "Slide 14",
-      content: `<h2>Activity 1: Let's Recall! (1-5)</h2>${module1Activity("module1-activity1", "Directions: Read each statement carefully. Type TRUE if the statement is correct and FALSE if it is incorrect.", [{ prompt: "Literary devices help make literary works more interesting and meaningful.", answer: "TRUE", accept: "T", responseId: "module1-activity1-a-activity-1" }, { prompt: "Literary elements and literary techniques are the two categories of literary devices.", answer: "TRUE", accept: "T", responseId: "module1-activity1-a-activity-2" }, { prompt: "Simile is an example of a literary element.", answer: "FALSE", accept: "F", responseId: "module1-activity1-a-activity-3" }, { prompt: "Mood is an example of a literary element.", answer: "TRUE", accept: "T", responseId: "module1-activity1-a-activity-4" }, { prompt: "Literary techniques are used to enhance the artistic quality of a text.", answer: "TRUE", accept: "T", responseId: "module1-activity1-b-activity-1" }], 1, "lesson-activity-merged lesson-activity-split")}`
+      content: `<h2>Activity 1: Let's Recall!</h2>${module1Activity("module1-activity1", "Directions: Read each statement carefully. Type TRUE if the statement is correct and FALSE if it is incorrect.", [{ prompt: "Literary devices help make literary works more interesting and meaningful.", answer: "TRUE", accept: "T", responseId: "module1-activity1-a-activity-1" }, { prompt: "Literary elements and literary techniques are the two categories of literary devices.", answer: "TRUE", accept: "T", responseId: "module1-activity1-a-activity-2" }, { prompt: "Simile is an example of a literary element.", answer: "FALSE", accept: "F", responseId: "module1-activity1-a-activity-3" }, { prompt: "Mood is an example of a literary element.", answer: "TRUE", accept: "T", responseId: "module1-activity1-a-activity-4" }, { prompt: "Literary techniques are used to enhance the artistic quality of a text.", answer: "TRUE", accept: "T", responseId: "module1-activity1-b-activity-1" }], 1, "lesson-activity-merged lesson-activity-split")}`
     },
     {
       title: "Slide 15",
-      content: `<h2>Activity 1: Let's Recall! (6-10)</h2>${module1Activity("module1-activity1", "Directions: Continue Activity 1. Type TRUE if the statement is correct and FALSE if it is incorrect.", [{ prompt: "Setting refers to the time and place of a story.", answer: "TRUE", accept: "T", responseId: "module1-activity1-b-activity-2" }, { prompt: "Hyperbole is a literary element.", answer: "FALSE", accept: "F", responseId: "module1-activity1-b-activity-3" }, { prompt: "Writers use literary devices to express ideas and emotions effectively.", answer: "TRUE", accept: "T", responseId: "module1-activity1-b-activity-4" }, { prompt: "Characters are considered literary elements.", answer: "TRUE", accept: "T", responseId: "module1-activity1-b-activity-5" }, { prompt: "Symbolism is a literary technique.", answer: "TRUE", accept: "T", responseId: "module1-activity1-b-activity-6" }], 6, "lesson-activity-merged lesson-activity-split")}`
+      content: `<h2>Activity 1: Let's Recall!</h2>${module1Activity("module1-activity1", "Directions: Read each statement carefully. Type TRUE if the statement is correct and FALSE if it is incorrect.", [{ prompt: "Setting refers to the time and place of a story.", answer: "TRUE", accept: "T", responseId: "module1-activity1-b-activity-2" }, { prompt: "Hyperbole is a literary element.", answer: "FALSE", accept: "F", responseId: "module1-activity1-b-activity-3" }, { prompt: "Writers use literary devices to express ideas and emotions effectively.", answer: "TRUE", accept: "T", responseId: "module1-activity1-b-activity-4" }, { prompt: "Characters are considered literary elements.", answer: "TRUE", accept: "T", responseId: "module1-activity1-b-activity-5" }, { prompt: "Symbolism is a literary technique.", answer: "TRUE", accept: "T", responseId: "module1-activity1-b-activity-6" }], 6, "lesson-activity-merged lesson-activity-split")}`
     },
     {
       title: "Slide 16",
-      content: `<h2>Activity 2: Classify Me! (1-5)</h2>${module1Activity("module1-activity2", "Directions: Type LE if it is a Literary Element and LT if it is a Literary Technique.", [{ prompt: "Plot", answer: "LE", accept: "LITERARY ELEMENT" }, { prompt: "Simile", answer: "LT", accept: "LITERARY TECHNIQUE" }, { prompt: "Mood", answer: "LE", accept: "LITERARY ELEMENT" }, { prompt: "Metaphor", answer: "LT", accept: "LITERARY TECHNIQUE" }, { prompt: "Theme", answer: "LE", accept: "LITERARY ELEMENT" }], 1, "lesson-activity-split")}`
+      content: `<h2>Activity 2: Classify Me!</h2>${module1Activity("module1-activity2", "Directions: Type LE if it is a Literary Element and LT if it is a Literary Technique.", [{ prompt: "Plot", answer: "LE", accept: "LITERARY ELEMENT" }, { prompt: "Simile", answer: "LT", accept: "LITERARY TECHNIQUE" }, { prompt: "Mood", answer: "LE", accept: "LITERARY ELEMENT" }, { prompt: "Metaphor", answer: "LT", accept: "LITERARY TECHNIQUE" }, { prompt: "Theme", answer: "LE", accept: "LITERARY ELEMENT" }], 1, "lesson-activity-split")}`
     },
     {
       title: "Slide 17",
-      content: `<h2>Activity 2: Classify Me! (6-10)</h2>${module1Activity("module1-activity2", "Directions: Continue Activity 2. Type LE for Literary Element and LT for Literary Technique.", [{ prompt: "Hyperbole", answer: "LT", accept: "LITERARY TECHNIQUE" }, { prompt: "Setting", answer: "LE", accept: "LITERARY ELEMENT" }, { prompt: "Personification", answer: "LT", accept: "LITERARY TECHNIQUE" }, { prompt: "Tone", answer: "LE", accept: "LITERARY ELEMENT" }, { prompt: "Symbolism", answer: "LT", accept: "LITERARY TECHNIQUE" }], 6, "lesson-activity-split")}`
+      content: `<h2>Activity 2: Classify Me!</h2>${module1Activity("module1-activity2", "Directions: Type LE if it is a Literary Element and LT if it is a Literary Technique.", [{ prompt: "Hyperbole", answer: "LT", accept: "LITERARY TECHNIQUE" }, { prompt: "Setting", answer: "LE", accept: "LITERARY ELEMENT" }, { prompt: "Personification", answer: "LT", accept: "LITERARY TECHNIQUE" }, { prompt: "Tone", answer: "LE", accept: "LITERARY ELEMENT" }, { prompt: "Symbolism", answer: "LT", accept: "LITERARY TECHNIQUE" }], 6, "lesson-activity-split")}`
     },
     {
       title: "Slide 18",
@@ -449,11 +449,11 @@ const learnModules = {
     },
     {
       title: "Slide 19",
-      content: `<h2>Reflection Questions (1-3)</h2>${lessonAnswerList("module1-slide18-response", "Slide 19: Reflection Questions", [{ id: "module1-slide18-response-1", prompt: "Which literary devices can you identify in the paragraph?", long: true }, { id: "module1-slide18-response-2", prompt: "How did these literary devices affect your imagination while reading?", long: true }, { id: "module1-slide18-response-3", prompt: "How would the paragraph change if the literary devices were removed?", long: true }], "lesson-answer-list-stacked lesson-answer-list-many lesson-answer-list-reflection-split")}`
+      content: `<h2>Reflection Questions</h2>${lessonAnswerList("module1-slide18-response", "Slide 19: Reflection Questions", [{ id: "module1-slide18-response-1", prompt: "Which literary devices can you identify in the paragraph?", long: true }, { id: "module1-slide18-response-2", prompt: "How did these literary devices affect your imagination while reading?", long: true }, { id: "module1-slide18-response-3", prompt: "How would the paragraph change if the literary devices were removed?", long: true }], "lesson-answer-list-stacked lesson-answer-list-many lesson-answer-list-reflection-split")}`
     },
     {
       title: "Slide 20",
-      content: `<h2>Reflection Questions (4-5)</h2>${lessonAnswerList("module1-slide18-response", "Slide 20: Reflection Questions", [{ id: "module1-slide18-response-4", prompt: "Why is it important for writers to use literary devices in literary works?", long: true }, { id: "module1-slide18-response-5", prompt: "How can understanding literary devices help you appreciate poems, stories, and songs?", long: true }], "lesson-answer-list-stacked lesson-answer-list-many lesson-answer-list-reflection-split")}`
+      content: `<h2>Reflection Questions</h2>${lessonAnswerList("module1-slide18-response", "Slide 20: Reflection Questions", [{ id: "module1-slide18-response-4", prompt: "Why is it important for writers to use literary devices in literary works?", long: true }, { id: "module1-slide18-response-5", prompt: "How can understanding literary devices help you appreciate poems, stories, and songs?", long: true }], "lesson-answer-list-stacked lesson-answer-list-many lesson-answer-list-reflection-split")}`
     },
     {
       title: "Slide 21",
@@ -645,22 +645,18 @@ const learnModules = {
     },
     {
       title: "Slide 14",
-      content: `<h2>Analytic Rubric (Part 1)</h2><div class="module3-rubric-table module3-rubric-table-split" role="table" aria-label="Analytic Rubric Part 1"><div class="rubric-row rubric-head" role="row"><span>Criteria</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="rubric-row" role="row"><strong>Use of Sound Devices</strong><span>Correctly uses all required sound devices.</span><span>Uses most sound devices correctly.</span><span>Uses some sound devices with minor errors.</span><span>Uses only one sound device or several errors.</span><span>Does not correctly use the required sound devices.</span></div><div class="rubric-row" role="row"><strong>Creativity</strong><span>Poem is highly creative and original.</span><span>Poem is creative.</span><span>Poem shows some creativity.</span><span>Poem has limited creativity.</span><span>Poem lacks creativity.</span></div><div class="rubric-row" role="row"><strong>Clarity</strong><span>Ideas are clear and organized.</span><span>Ideas are mostly clear.</span><span>Ideas are understandable.</span><span>Ideas are somewhat unclear.</span><span>Ideas are difficult to understand.</span></div></div>`
+      content: `<h2>Analytic Rubric</h2><div class="module3-rubric-table module3-rubric-table-merged" role="table" aria-label="Analytic Rubric"><div class="rubric-row rubric-head" role="row"><span>Criteria</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="rubric-row" role="row"><strong>Use of Sound Devices</strong><span>Correctly uses all required sound devices.</span><span>Uses most sound devices correctly.</span><span>Uses some sound devices with minor errors.</span><span>Uses only one sound device or several errors.</span><span>Does not correctly use the required sound devices.</span></div><div class="rubric-row" role="row"><strong>Creativity</strong><span>Poem is highly creative and original.</span><span>Poem is creative.</span><span>Poem shows some creativity.</span><span>Poem has limited creativity.</span><span>Poem lacks creativity.</span></div><div class="rubric-row" role="row"><strong>Clarity</strong><span>Ideas are clear and organized.</span><span>Ideas are mostly clear.</span><span>Ideas are understandable.</span><span>Ideas are somewhat unclear.</span><span>Ideas are difficult to understand.</span></div><div class="rubric-row" role="row"><strong>Grammar and Mechanics</strong><span>No grammar, spelling, or punctuation errors.</span><span>One or two minor errors.</span><span>Some errors that do not affect meaning.</span><span>Frequent errors that affect understanding.</span><span>Many errors that make the poem difficult to understand.</span></div><div class="rubric-row" role="row"><strong>Completeness</strong><span>All instructions are followed.</span><span>One minor requirement is missing.</span><span>Two requirements are missing.</span><span>Several requirements are missing.</span><span>Most requirements are not completed.</span></div></div><p><strong>Total Score:</strong> ____ /25</p>`
     },
     {
       title: "Slide 15",
-      content: `<h2>Analytic Rubric (Part 2)</h2><div class="module3-rubric-table module3-rubric-table-split" role="table" aria-label="Analytic Rubric Part 2"><div class="rubric-row rubric-head" role="row"><span>Criteria</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="rubric-row" role="row"><strong>Grammar and Mechanics</strong><span>No grammar, spelling, or punctuation errors.</span><span>One or two minor errors.</span><span>Some errors that do not affect meaning.</span><span>Frequent errors that affect understanding.</span><span>Many errors that make the poem difficult to understand.</span></div><div class="rubric-row" role="row"><strong>Completeness</strong><span>All instructions are followed.</span><span>One minor requirement is missing.</span><span>Two requirements are missing.</span><span>Several requirements are missing.</span><span>Most requirements are not completed.</span></div></div><p><strong>Total Score:</strong> ____ /25</p>`
+      content: `<h2>My Learning Reflection</h2><p><strong>Directions:</strong> Reflect on what you have learned in this module. Answer each question in 2-4 complete sentences.</p>${lessonAnswerList("module3-slide15-response", "Slide 15: Learning Reflection", [{ prompt: "What did I learn from this module?", html: "<strong>1. What did I learn from this module?</strong> Describe what you learned about sound devices.", placeholder: "Type your answer.", long: true }, { prompt: "What interested me the most? Why?", html: "<strong>2. What interested me the most? Why?</strong> Which sound device did you enjoy learning the most? Explain why.", placeholder: "Type your answer.", long: true }], "lesson-answer-list-stacked lesson-answer-list-reflection")}`
     },
     {
       title: "Slide 16",
-      content: `<h2>My Learning Reflection</h2><p><strong>Directions:</strong> Reflect on what you have learned in this module. Answer each question in 2-4 complete sentences.</p>${lessonAnswerList("module3-slide15-response", "Slide 16: Learning Reflection", [{ prompt: "What did I learn from this module?", html: "<strong>1. What did I learn from this module?</strong> Describe what you learned about sound devices.", placeholder: "Type your answer.", long: true }, { prompt: "What interested me the most? Why?", html: "<strong>2. What interested me the most? Why?</strong> Which sound device did you enjoy learning the most? Explain why.", placeholder: "Type your answer.", long: true }], "lesson-answer-list-stacked lesson-answer-list-reflection")}`
+      content: `<h2>My Learning Reflection</h2>${lessonAnswerList("module3-slide16-response", "Slide 16: Learning Reflection", [{ prompt: "What do I still need to improve or practice?", html: "<strong>3. What do I still need to improve or practice?</strong> Which sound device do you still need more practice using? Explain your answer.", placeholder: "Type your answer.", long: true }, { prompt: "How can I apply what I learned in real life?", html: "<strong>4. How can I apply what I learned in real life?</strong> Explain how sound devices can improve poems, songs, or creative writing.", placeholder: "Type your answer.", long: true }], "lesson-answer-list-stacked lesson-answer-list-reflection")}`
     },
     {
       title: "Slide 17",
-      content: `<h2>My Learning Reflection</h2>${lessonAnswerList("module3-slide16-response", "Slide 17: Learning Reflection", [{ prompt: "What do I still need to improve or practice?", html: "<strong>3. What do I still need to improve or practice?</strong> Which sound device do you still need more practice using? Explain your answer.", placeholder: "Type your answer.", long: true }, { prompt: "How can I apply what I learned in real life?", html: "<strong>4. How can I apply what I learned in real life?</strong> Explain how sound devices can improve poems, songs, or creative writing.", placeholder: "Type your answer.", long: true }], "lesson-answer-list-stacked lesson-answer-list-reflection")}`
-    },
-    {
-      title: "Slide 18",
       content: `<h2>Module Summary</h2><p>In this module, you learned that sound devices make poems more enjoyable by using interesting sounds.</p><ul class="module1-plain-list"><li><strong>Alliteration</strong> repeats the same beginning consonant sound.</li><li><strong>Rhyme</strong> repeats similar ending sounds.</li><li><strong>Onomatopoeia</strong> uses words that imitate real sounds.</li></ul><p>Understanding these sound devices helps you appreciate how poets make their writing rhythmic, expressive, and enjoyable to read aloud.</p>`
     }
   ],
@@ -755,7 +751,7 @@ const learnModules = {
     },
     {
       title: "Slide 23",
-      content: `<h2>Analytical Rubric</h2><div class="module3-rubric-table module4-rubric-table" role="table" aria-label="Analytical Rubric for Activity 2"><div class="rubric-row rubric-head" role="row"><span>Criteria</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="rubric-row" role="row"><strong>Use of Sensory Details</strong><span>Uses three or more vivid sensory details.</span><span>Uses three clear sensory details.</span><span>Uses two sensory details.</span><span>Uses one limited sensory detail.</span><span>Uses no sensory details.</span></div><div class="rubric-row" role="row"><strong>Description</strong><span>Clear, detailed, and interesting.</span><span>Clear with enough details.</span><span>Basic with some details.</span><span>Limited or unclear.</span><span>Little or no description.</span></div><div class="rubric-row" role="row"><strong>Organization</strong><span>4-5 complete sentences, well organized.</span><span>4-5 sentences with minor errors.</span><span>Somewhat organized.</span><span>Lacks organization or has incomplete sentences.</span><span>Disorganized and hard to understand.</span></div><div class="rubric-row" role="row"><strong>Grammar and Mechanics</strong><span>No or very few errors.</span><span>A few minor errors.</span><span>Some errors affect understanding.</span><span>Several errors make meaning unclear.</span><span>Many errors make it hard to understand.</span></div></div><p><strong>Total Score:</strong> ____ /20</p>`
+      content: `<h2>Analytical Rubric</h2><div class="module3-rubric-table module4-rubric-table module4-rubric-table-merged" role="table" aria-label="Analytical Rubric for Activity 2"><div class="rubric-row rubric-head" role="row"><span>Criteria</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="rubric-row" role="row"><strong>Use of Sensory Details</strong><span>Uses three or more vivid sensory details.</span><span>Uses three clear sensory details.</span><span>Uses two sensory details.</span><span>Uses one limited sensory detail.</span><span>Uses no sensory details.</span></div><div class="rubric-row" role="row"><strong>Description</strong><span>Clear, detailed, and interesting.</span><span>Clear with enough details.</span><span>Basic with some details.</span><span>Limited or unclear.</span><span>Little or no description.</span></div><div class="rubric-row" role="row"><strong>Organization</strong><span>4-5 complete sentences, well organized.</span><span>4-5 sentences with minor errors.</span><span>Somewhat organized.</span><span>Lacks organization or has incomplete sentences.</span><span>Disorganized and hard to understand.</span></div><div class="rubric-row" role="row"><strong>Grammar and Mechanics</strong><span>No or very few errors.</span><span>A few minor errors.</span><span>Some errors affect understanding.</span><span>Several errors make meaning unclear.</span><span>Many errors make it hard to understand.</span></div></div><p><strong>Total Score:</strong> ____ /20</p>`
     },
     {
       title: "Slide 24",
@@ -4281,6 +4277,402 @@ function ensureLessonReadabilityStyles() {
   #learnMode#learnMode#learnMode .nav-buttons .next-image-btn {
     width: calc(136px * var(--fixed-scale)) !important;
     height: calc(70px * var(--fixed-scale)) !important;
+  }
+}
+`
+  style.textContent += `
+/* Final runtime v376: split Module 4 rubric and lower the full Learn logo on phone. */
+@media (orientation: landscape) and (max-height: 560px) {
+  #learnBlank .learn-map-title {
+    top: calc(var(--fixed-top) + (34px * var(--fixed-scale))) !important;
+    height: calc(82px * var(--fixed-scale)) !important;
+    background-size: contain !important;
+    background-position: center center !important;
+    overflow: visible !important;
+  }
+
+  #learnBlank .learn-module1-card { top: calc(var(--fixed-top) + (116px * var(--fixed-scale))) !important; }
+  #learnBlank .learn-module2-card { top: calc(var(--fixed-top) + (260px * var(--fixed-scale))) !important; }
+  #learnBlank .learn-module3-card { top: calc(var(--fixed-top) + (404px * var(--fixed-scale))) !important; }
+  #learnBlank .learn-module4-card { top: calc(var(--fixed-top) + (548px * var(--fixed-scale))) !important; }
+
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-23 #lessonContent,
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-24 #lessonContent {
+    padding: calc(10px * var(--fixed-scale)) calc(24px * var(--fixed-scale)) calc(14px * var(--fixed-scale)) !important;
+    gap: calc(5px * var(--fixed-scale)) !important;
+    overflow: hidden !important;
+  }
+
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-23 #lessonContent h2,
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-24 #lessonContent h2 {
+    font-size: max(calc(31px * var(--fixed-scale)), 17px) !important;
+    line-height: 1 !important;
+    margin-bottom: calc(7px * var(--fixed-scale)) !important;
+  }
+
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-23 .module4-rubric-table-split,
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-24 .module4-rubric-table-split {
+    width: min(100%, calc(760px * var(--fixed-scale))) !important;
+    margin: 0 auto calc(5px * var(--fixed-scale)) !important;
+    font-size: max(calc(14px * var(--fixed-scale)), 8.8px) !important;
+    line-height: 1.04 !important;
+  }
+
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-23 .module4-rubric-table-split .rubric-row,
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-24 .module4-rubric-table-split .rubric-row {
+    grid-template-columns: calc(150px * var(--fixed-scale)) repeat(5, minmax(0, 1fr)) !important;
+    min-height: auto !important;
+  }
+
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-23 .module4-rubric-table-split .rubric-row > span,
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-23 .module4-rubric-table-split .rubric-row > strong,
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-24 .module4-rubric-table-split .rubric-row > span,
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-24 .module4-rubric-table-split .rubric-row > strong {
+    padding: calc(5px * var(--fixed-scale)) calc(4px * var(--fixed-scale)) !important;
+    line-height: 1.04 !important;
+    overflow-wrap: normal !important;
+    word-break: normal !important;
+    hyphens: none !important;
+    text-align: center !important;
+  }
+
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-23 .module4-rubric-table-split .rubric-row > :first-child,
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-24 .module4-rubric-table-split .rubric-row > :first-child {
+    font-weight: 900 !important;
+    text-align: center !important;
+  }
+
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-24 #lessonContent p {
+    font-size: max(calc(18px * var(--fixed-scale)), 11px) !important;
+    line-height: 1.05 !important;
+    margin: calc(3px * var(--fixed-scale)) auto 0 !important;
+    width: min(100%, calc(760px * var(--fixed-scale))) !important;
+  }
+}
+`
+  style.textContent += `
+/* Final runtime v377: make the split Module 4 rubric larger while staying inside phone view. */
+@media (orientation: landscape) and (max-height: 560px) {
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-23 #lessonContent,
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-24 #lessonContent {
+    padding: calc(8px * var(--fixed-scale)) calc(18px * var(--fixed-scale)) calc(10px * var(--fixed-scale)) !important;
+    gap: calc(7px * var(--fixed-scale)) !important;
+  }
+
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-23 .module4-rubric-table-split,
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-24 .module4-rubric-table-split {
+    width: min(100%, calc(820px * var(--fixed-scale))) !important;
+    font-size: max(calc(27px * var(--fixed-scale)), 13px) !important;
+    line-height: 1.08 !important;
+    margin-top: calc(4px * var(--fixed-scale)) !important;
+  }
+
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-23 .module4-rubric-table-split .rubric-row,
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-24 .module4-rubric-table-split .rubric-row {
+    grid-template-columns: calc(168px * var(--fixed-scale)) repeat(5, minmax(0, 1fr)) !important;
+  }
+
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-23 .module4-rubric-table-split .rubric-row:not(.rubric-head),
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-24 .module4-rubric-table-split .rubric-row:not(.rubric-head) {
+    min-height: calc(88px * var(--fixed-scale)) !important;
+  }
+
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-23 .module4-rubric-table-split .rubric-row > span,
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-23 .module4-rubric-table-split .rubric-row > strong,
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-24 .module4-rubric-table-split .rubric-row > span,
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-24 .module4-rubric-table-split .rubric-row > strong {
+    padding: calc(7px * var(--fixed-scale)) calc(5px * var(--fixed-scale)) !important;
+    line-height: 1.08 !important;
+  }
+
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-24 #lessonContent p {
+    font-size: max(calc(22px * var(--fixed-scale)), 12.5px) !important;
+    margin-top: calc(6px * var(--fixed-scale)) !important;
+  }
+}
+`
+  style.textContent += `
+/* Final runtime v378: compact merged rubric tables for phone landscape. */
+@media (orientation: landscape) and (max-height: 560px) {
+  #learnMode#learnMode#learnMode.learn-topic-module3.lesson-slide-14 #lessonContent,
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-23 #lessonContent {
+    left: calc(72px * var(--fixed-scale)) !important;
+    right: calc(112px * var(--fixed-scale)) !important;
+    padding: calc(2px * var(--fixed-scale)) calc(10px * var(--fixed-scale)) calc(5px * var(--fixed-scale)) !important;
+    gap: calc(2px * var(--fixed-scale)) !important;
+    overflow: hidden !important;
+    justify-content: flex-start !important;
+  }
+
+  #learnMode#learnMode#learnMode.learn-topic-module3.lesson-slide-14 #lessonContent h2,
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-23 #lessonContent h2 {
+    font-size: max(calc(24px * var(--fixed-scale)), 13px) !important;
+    line-height: 0.96 !important;
+    margin: 0 0 calc(2px * var(--fixed-scale)) !important;
+  }
+
+  #learnMode#learnMode#learnMode.learn-topic-module3.lesson-slide-14 .module3-rubric-table-merged,
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-23 .module4-rubric-table-merged {
+    width: 100% !important;
+    margin: 0 auto calc(1px * var(--fixed-scale)) !important;
+    font-size: max(calc(12px * var(--fixed-scale)), 6.6px) !important;
+    line-height: 0.98 !important;
+    border-width: 1px !important;
+  }
+
+  #learnMode#learnMode#learnMode.learn-topic-module3.lesson-slide-14 .module3-rubric-table-merged .rubric-row,
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-23 .module4-rubric-table-merged .rubric-row {
+    grid-template-columns: calc(112px * var(--fixed-scale)) repeat(5, minmax(0, 1fr)) !important;
+    min-height: 0 !important;
+  }
+
+  #learnMode#learnMode#learnMode.learn-topic-module3.lesson-slide-14 .module3-rubric-table-merged .rubric-row > span,
+  #learnMode#learnMode#learnMode.learn-topic-module3.lesson-slide-14 .module3-rubric-table-merged .rubric-row > strong,
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-23 .module4-rubric-table-merged .rubric-row > span,
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-23 .module4-rubric-table-merged .rubric-row > strong {
+    padding: calc(2px * var(--fixed-scale)) calc(1.5px * var(--fixed-scale)) !important;
+    line-height: 0.98 !important;
+    overflow-wrap: break-word !important;
+    word-break: normal !important;
+    hyphens: none !important;
+    text-align: center !important;
+    text-align-last: center !important;
+  }
+
+  #learnMode#learnMode#learnMode.learn-topic-module3.lesson-slide-14 .module3-rubric-table-merged .rubric-head > span,
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-23 .module4-rubric-table-merged .rubric-head > span {
+    padding-top: calc(1px * var(--fixed-scale)) !important;
+    padding-bottom: calc(1px * var(--fixed-scale)) !important;
+    font-size: 0.92em !important;
+  }
+
+  #learnMode#learnMode#learnMode.learn-topic-module3.lesson-slide-14 #lessonContent p,
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-23 #lessonContent p {
+    width: 100% !important;
+    margin: calc(1px * var(--fixed-scale)) auto 0 !important;
+    font-size: max(calc(11px * var(--fixed-scale)), 6.4px) !important;
+    line-height: 1 !important;
+    text-align: left !important;
+    text-align-last: left !important;
+  }
+}
+`
+  style.textContent += `
+/* Final runtime v379: widen and enlarge merged rubric tables on phone. */
+@media (orientation: landscape) and (max-height: 560px) {
+  #learnMode#learnMode#learnMode.learn-topic-module3.lesson-slide-14 #lessonContent,
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-23 #lessonContent {
+    left: calc(40px * var(--fixed-scale)) !important;
+    right: calc(40px * var(--fixed-scale)) !important;
+    padding: calc(2px * var(--fixed-scale)) calc(8px * var(--fixed-scale)) calc(5px * var(--fixed-scale)) !important;
+  }
+
+  #learnMode#learnMode#learnMode.learn-topic-module3.lesson-slide-14 .module3-rubric-table-merged,
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-23 .module4-rubric-table-merged {
+    font-size: max(calc(14.7px * var(--fixed-scale)), 8px) !important;
+    line-height: 0.98 !important;
+  }
+
+  #learnMode#learnMode#learnMode.learn-topic-module3.lesson-slide-14 .module3-rubric-table-merged .rubric-row,
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-23 .module4-rubric-table-merged .rubric-row {
+    grid-template-columns: calc(128px * var(--fixed-scale)) repeat(5, minmax(0, 1fr)) !important;
+  }
+
+  #learnMode#learnMode#learnMode.learn-topic-module3.lesson-slide-14 .module3-rubric-table-merged .rubric-row > span,
+  #learnMode#learnMode#learnMode.learn-topic-module3.lesson-slide-14 .module3-rubric-table-merged .rubric-row > strong,
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-23 .module4-rubric-table-merged .rubric-row > span,
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-23 .module4-rubric-table-merged .rubric-row > strong {
+    padding: calc(2px * var(--fixed-scale)) calc(2px * var(--fixed-scale)) !important;
+    line-height: 0.98 !important;
+  }
+
+  #learnMode#learnMode#learnMode.learn-topic-module3.lesson-slide-14 #lessonContent p,
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-23 #lessonContent p {
+    font-size: max(calc(13px * var(--fixed-scale)), 7.2px) !important;
+  }
+}
+`
+  style.textContent += `
+/* Final runtime v380: last readability nudge for merged rubric tables. */
+@media (orientation: landscape) and (max-height: 560px) {
+  #learnMode#learnMode#learnMode.learn-topic-module3.lesson-slide-14 .module3-rubric-table-merged,
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-23 .module4-rubric-table-merged {
+    font-size: max(calc(16.7px * var(--fixed-scale)), 9.1px) !important;
+  }
+
+  #learnMode#learnMode#learnMode.learn-topic-module3.lesson-slide-14 #lessonContent p,
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-23 #lessonContent p {
+    font-size: max(calc(14.8px * var(--fixed-scale)), 8px) !important;
+  }
+}
+`
+  style.textContent += `
+/* Final runtime v381: seat the Learn logo slightly onto Module 1 on phone. */
+@media (orientation: landscape) and (max-height: 560px) {
+  #learnBlank .learn-map-title {
+    top: calc(var(--fixed-top) + (47px * var(--fixed-scale))) !important;
+    z-index: 8 !important;
+    overflow: visible !important;
+  }
+
+  #learnBlank .learn-module1-card {
+    z-index: 4 !important;
+  }
+}
+`
+  style.textContent += `
+/* Final runtime v382: lower the visible Learn logo banner onto Module 1. */
+@media (orientation: landscape) and (max-height: 560px) {
+  #learnBlank .learn-map-title {
+    top: calc(var(--fixed-top) + (64px * var(--fixed-scale))) !important;
+    background-position: center bottom !important;
+    z-index: 9 !important;
+    overflow: visible !important;
+  }
+
+  #learnBlank .learn-module1-card {
+    z-index: 4 !important;
+  }
+}
+`
+
+  style.textContent += `
+/* Final runtime v385: final visible seating for the Literary Devices logo on the Module 1 card. */
+@media (orientation: landscape) and (max-height: 560px) {
+  #app,
+  #learnBlank,
+  #learnBlank.learn-blank-screen,
+  #learnBlank .learn-map-title {
+    overflow: visible !important;
+  }
+
+  #learnBlank .learn-map-title {
+    left: calc(var(--fixed-left) + (490px * var(--fixed-scale))) !important;
+    top: calc(var(--fixed-top) + (54px * var(--fixed-scale))) !important;
+    width: calc(300px * var(--fixed-scale)) !important;
+    height: calc(140px * var(--fixed-scale)) !important;
+    background-image: url("assets/images/literary-devices-trimmed.png") !important;
+    background-size: contain !important;
+    background-position: center bottom !important;
+    background-repeat: no-repeat !important;
+    z-index: 12 !important;
+    pointer-events: none !important;
+  }
+}
+`
+
+  style.textContent += `
+/* Final runtime v387: one Learn logo only: the original title element, fully visible and seated on Module 1. */
+#learnBlank .learn-map-title {
+  display: block !important;
+  position: absolute !important;
+  left: calc(var(--fixed-left) + (470px * var(--fixed-scale))) !important;
+  top: calc(var(--fixed-top) + (16px * var(--fixed-scale))) !important;
+  width: calc(340px * var(--fixed-scale)) !important;
+  height: calc(158px * var(--fixed-scale)) !important;
+  margin: 0 !important;
+  overflow: visible !important;
+  color: transparent !important;
+  text-indent: -9999px !important;
+  background-image: url("assets/images/literary-devices-trimmed.png?v=388") !important;
+  background-size: contain !important;
+  background-position: center bottom !important;
+  background-repeat: no-repeat !important;
+  z-index: 20 !important;
+  pointer-events: none !important;
+}
+
+@media (orientation: landscape) and (max-height: 560px) {
+  #app,
+  #learnBlank,
+  #learnBlank.learn-blank-screen,
+  #learnBlank .learn-map-title {
+    overflow: visible !important;
+  }
+
+  #learnBlank .learn-map-title {
+    display: block !important;
+    left: calc(var(--fixed-left) + (470px * var(--fixed-scale))) !important;
+    top: calc(var(--fixed-top) + (16px * var(--fixed-scale))) !important;
+    width: calc(340px * var(--fixed-scale)) !important;
+    height: calc(158px * var(--fixed-scale)) !important;
+    background-image: url("assets/images/literary-devices-trimmed.png?v=388") !important;
+    z-index: 20 !important;
+  }
+}
+`
+
+  style.textContent += `
+/* Final runtime v389: shrink the original Learn logo and move it slightly upward. */
+#learnBlank .learn-map-title {
+  left: calc(var(--fixed-left) + (490px * var(--fixed-scale))) !important;
+  top: calc(var(--fixed-top) + (8px * var(--fixed-scale))) !important;
+  width: calc(300px * var(--fixed-scale)) !important;
+  height: calc(140px * var(--fixed-scale)) !important;
+  background-image: url("assets/images/literary-devices-trimmed.png?v=389") !important;
+  background-size: contain !important;
+  background-position: center bottom !important;
+  background-repeat: no-repeat !important;
+  z-index: 20 !important;
+  overflow: visible !important;
+}
+
+@media (orientation: landscape) and (max-height: 560px) {
+  #learnBlank .learn-map-title {
+    left: calc(var(--fixed-left) + (490px * var(--fixed-scale))) !important;
+    top: calc(var(--fixed-top) + (8px * var(--fixed-scale))) !important;
+    width: calc(300px * var(--fixed-scale)) !important;
+    height: calc(140px * var(--fixed-scale)) !important;
+  }
+}
+`
+
+  style.textContent += `
+/* Final runtime v390: shrink the original Learn logo again and nudge it slightly upward. */
+#learnBlank .learn-map-title {
+  left: calc(var(--fixed-left) + (497.5px * var(--fixed-scale))) !important;
+  top: calc(var(--fixed-top) + (6px * var(--fixed-scale))) !important;
+  width: calc(285px * var(--fixed-scale)) !important;
+  height: calc(133px * var(--fixed-scale)) !important;
+  background-image: url("assets/images/literary-devices-trimmed.png?v=390") !important;
+  background-size: contain !important;
+  background-position: center bottom !important;
+  background-repeat: no-repeat !important;
+  z-index: 20 !important;
+  overflow: visible !important;
+}
+
+@media (orientation: landscape) and (max-height: 560px) {
+  #learnBlank .learn-map-title {
+    left: calc(var(--fixed-left) + (497.5px * var(--fixed-scale))) !important;
+    top: calc(var(--fixed-top) + (6px * var(--fixed-scale))) !important;
+    width: calc(285px * var(--fixed-scale)) !important;
+    height: calc(133px * var(--fixed-scale)) !important;
+  }
+}
+`
+
+  style.textContent += `
+/* Final runtime v391: shrink the original Learn logo. */
+#learnBlank .learn-map-title {
+  left: calc(var(--fixed-left) + (510px * var(--fixed-scale))) !important;
+  top: calc(var(--fixed-top) + (6px * var(--fixed-scale))) !important;
+  width: calc(260px * var(--fixed-scale)) !important;
+  height: calc(121px * var(--fixed-scale)) !important;
+  background-image: url("assets/images/literary-devices-trimmed.png?v=391") !important;
+  background-size: contain !important;
+  background-position: center bottom !important;
+  background-repeat: no-repeat !important;
+  z-index: 20 !important;
+  overflow: visible !important;
+}
+
+@media (orientation: landscape) and (max-height: 560px) {
+  #learnBlank .learn-map-title {
+    left: calc(var(--fixed-left) + (510px * var(--fixed-scale))) !important;
+    top: calc(var(--fixed-top) + (6px * var(--fixed-scale))) !important;
+    width: calc(260px * var(--fixed-scale)) !important;
+    height: calc(121px * var(--fixed-scale)) !important;
   }
 }
 `
