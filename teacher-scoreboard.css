@@ -539,3 +539,36 @@ td.empty-cell {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
+.live-panel-heading {
+  align-items: center;
+}
+
+.panel-title-stack {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.panel-student-nav {
+  flex: 0 0 auto;
+}
+
+.panel-student-nav button {
+  min-width: 76px;
+  padding: 8px 12px;
+}
+
+@media (max-width: 760px) {
+  .live-panel-heading,
+  .panel-title-stack {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .panel-student-nav {
+    justify-content: space-between;
+  }
+}

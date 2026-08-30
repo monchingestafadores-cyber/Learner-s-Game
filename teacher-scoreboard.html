@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Teacher Scoreboard</title>
-  <link rel="stylesheet" href="teacher-scoreboard.css?v=5" />
+  <link rel="stylesheet" href="teacher-scoreboard.css?v=6" />
 </head>
 <body>
   <main class="scoreboard-shell">
@@ -32,9 +32,16 @@
 
     <section class="score-grid" aria-live="polite">
       <div class="score-panel">
-        <div class="panel-heading">
-          <h2>Live Student Scores</h2>
-          <span id="liveCount">0 live</span>
+        <div class="panel-heading live-panel-heading">
+          <div class="panel-title-stack">
+            <h2>Live Student Scores</h2>
+            <span id="liveCount">0 live</span>
+          </div>
+          <div class="student-detail-nav panel-student-nav" aria-label="Choose student">
+            <button id="studentBackButtonTop" data-student-nav="back" type="button">Back</button>
+            <span id="studentDetailCountTop" data-student-count>0/0</span>
+            <button id="studentNextButtonTop" data-student-nav="next" type="button">Next</button>
+          </div>
         </div>
         <div class="table-wrap">
           <table>
@@ -87,9 +94,9 @@
       <div class="student-detail-heading">
         <h2>Student Details</h2>
         <div class="student-detail-nav">
-          <button id="studentBackButton" type="button">Back</button>
-          <span id="studentDetailCount">0/0</span>
-          <button id="studentNextButton" type="button">Next</button>
+          <button id="studentBackButton" data-student-nav="back" type="button">Back</button>
+          <span id="studentDetailCount" data-student-count>0/0</span>
+          <button id="studentNextButton" data-student-nav="next" type="button">Next</button>
         </div>
       </div>
       <div id="studentDetailBody" class="student-detail-body">
@@ -102,7 +109,8 @@
     </footer>
   </main>
 
-  <script src="teacher-scoreboard.js?v=8"></script>
+  <script src="teacher-scoreboard.js?v=9"></script>
 </body>
 </html>
+
 

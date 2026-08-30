@@ -96,6 +96,8 @@ let multiplayerEventSource = null
 let multiplayerScoreTimer = null
 let multiplayerPollTimer = null
 let multiplayerHeartbeatTimer = null
+let liveScorePlayerOrder = []
+let liveScoreLeaderOrder = []
 
 const badgeDefinitions = {
   simile: {
@@ -2296,6 +2298,29 @@ function getMultiplayerPayload() {
   }
 }
 
+function getLiveScoreStableKey(player, index = 0) {
+  return String(player?.clientId || player?.name || `player-${index}`).toLowerCase()
+}
+
+function getStableScoreItems(items = [], order, keyGetter = getLiveScoreStableKey) {
+  const keyedItems = items.map((item, index) => ({
+    key: keyGetter(item, index),
+    item
+  }))
+  const currentKeys = new Set(keyedItems.map(item => item.key))
+
+  for (let index = order.length - 1; index >= 0; index -= 1) {
+    if (!currentKeys.has(order[index])) order.splice(index, 1)
+  }
+
+  keyedItems.forEach(item => {
+    if (!order.includes(item.key)) order.push(item.key)
+  })
+
+  const itemByKey = new Map(keyedItems.map(item => [item.key, item.item]))
+  return order.map(key => itemByKey.get(key)).filter(Boolean)
+}
+
 function createScoreRows(items = [], emptyText = "Waiting for scores", highlight = () => false) {
   if (!items.length) {
     return `<li><span class="live-score-rank">-</span><span class="live-score-name">${escapeHtml(emptyText)}</span><strong class="live-score-points">0</strong></li>`
@@ -2330,8 +2355,8 @@ function renderLiveScores(data = {}) {
   const leaders = !Array.isArray(data) && Array.isArray(data.leaders)
     ? data.leaders
     : players
-  const safePlayers = players.slice(0, 10)
-  const safeLeaders = leaders.slice(0, 10)
+  const safePlayers = getStableScoreItems(players, liveScorePlayerOrder).slice(0, 10)
+  const safeLeaders = getStableScoreItems(leaders, liveScoreLeaderOrder).slice(0, 10)
   const myName = normalizePlayerName(playerName).toLowerCase()
 
   liveList.innerHTML = createScoreRows(
@@ -2349,7 +2374,7 @@ function renderLiveScores(data = {}) {
   const count = !Array.isArray(data) && Number.isFinite(Number(data.playerCount))
     ? Number(data.playerCount)
     : players.length
-  const topScore = safeLeaders[0]?.score || 0
+  const topScore = leaders[0]?.score || safeLeaders[0]?.score || 0
   setLiveScoreStatus(multiplayerConnected
     ? `${count} live | Beat ${topScore}`
     : "Classroom server offline")
@@ -6321,3 +6346,5 @@ document.addEventListener("click", event => {
 
   createGlitterBurst(event.clientX, event.clientY)
 })
+
+

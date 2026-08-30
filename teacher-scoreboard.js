@@ -15,12 +15,13 @@ const topCount = document.getElementById("topCount")
 const connectionStatus = document.getElementById("connectionStatus")
 const lastUpdated = document.getElementById("lastUpdated")
 const studentDetailBody = document.getElementById("studentDetailBody")
-const studentDetailCount = document.getElementById("studentDetailCount")
-const studentBackButton = document.getElementById("studentBackButton")
-const studentNextButton = document.getElementById("studentNextButton")
+const studentDetailCounts = Array.from(document.querySelectorAll("[data-student-count], #studentDetailCount")).filter(Boolean)
+const studentBackButtons = Array.from(document.querySelectorAll("[data-student-nav='back'], #studentBackButton")).filter(Boolean)
+const studentNextButtons = Array.from(document.querySelectorAll("[data-student-nav='next'], #studentNextButton")).filter(Boolean)
 
 let latestPlayers = []
 let studentOrder = []
+let leaderOrder = []
 let selectedStudentId = ""
 
 function normalizeRoom(value) {
@@ -208,20 +209,35 @@ function getStudentKey(player, index = 0) {
   return String(player?.clientId || `${player?.name || "Player"}-${index}`)
 }
 
-function getStableLivePlayers(players = []) {
-  const keyedPlayers = players.map((player, index) => ({
-    key: getStudentKey(player, index),
-    player
-  }))
-  const currentKeys = new Set(keyedPlayers.map(item => item.key))
+function getLeaderStableKey(player, index = 0) {
+  return String(player?.clientId || player?.name || `leader-${index}`).toLowerCase()
+}
 
-  studentOrder = studentOrder.filter(key => currentKeys.has(key))
-  keyedPlayers.forEach(item => {
-    if (!studentOrder.includes(item.key)) studentOrder.push(item.key)
+function getStableItems(items = [], order, keyGetter) {
+  const keyedItems = items.map((item, index) => ({
+    key: keyGetter(item, index),
+    item
+  }))
+  const currentKeys = new Set(keyedItems.map(item => item.key))
+
+  for (let index = order.length - 1; index >= 0; index -= 1) {
+    if (!currentKeys.has(order[index])) order.splice(index, 1)
+  }
+
+  keyedItems.forEach(item => {
+    if (!order.includes(item.key)) order.push(item.key)
   })
 
-  const playersByKey = new Map(keyedPlayers.map(item => [item.key, item.player]))
-  return studentOrder.map(key => playersByKey.get(key)).filter(Boolean)
+  const itemByKey = new Map(keyedItems.map(item => [item.key, item.item]))
+  return order.map(key => itemByKey.get(key)).filter(Boolean)
+}
+
+function getStableLivePlayers(players = []) {
+  return getStableItems(players, studentOrder, getStudentKey)
+}
+
+function getStableLeaders(leaders = []) {
+  return getStableItems(leaders, leaderOrder, getLeaderStableKey)
 }
 
 function getSelectedStudentIndex() {
@@ -286,11 +302,18 @@ function renderStudentDetails() {
   const selectedPlayer = selectedIndex >= 0 ? latestPlayers[selectedIndex] : null
 
   studentDetailBody.innerHTML = createStudentDetail(selectedPlayer, Math.max(selectedIndex, 0), total)
-  studentDetailCount.textContent = total ? `${selectedIndex + 1}/${total}` : "0/0"
+  const countText = total ? `${selectedIndex + 1}/${total}` : "0/0"
+  studentDetailCounts.forEach(count => {
+    count.textContent = countText
+  })
 
   const disableNav = total <= 1
-  studentBackButton.disabled = disableNav
-  studentNextButton.disabled = disableNav
+  studentBackButtons.forEach(button => {
+    button.disabled = disableNav
+  })
+  studentNextButtons.forEach(button => {
+    button.disabled = disableNav
+  })
   updateLiveRowSelection()
 }
 
@@ -300,6 +323,7 @@ function selectStudentOffset(offset) {
   const currentIndex = Math.max(0, getSelectedStudentIndex())
   const nextIndex = (currentIndex + offset + latestPlayers.length) % latestPlayers.length
   selectedStudentId = getStudentKey(latestPlayers[nextIndex], nextIndex)
+  liveRows.innerHTML = createLiveRows(latestPlayers)
   renderStudentDetails()
 }
 
@@ -308,23 +332,23 @@ function createLiveRows(players = []) {
     return `<tr><td class="empty-cell" colspan="8">Waiting for students to join this room.</td></tr>`
   }
 
-  return players.map((player, index) => {
-    const studentKey = getStudentKey(player, index)
-    const selectedClass = studentKey === selectedStudentId ? " selected-student-row" : ""
+  ensureSelectedStudent(players)
+  const selectedIndex = Math.max(0, getSelectedStudentIndex())
+  const player = players[selectedIndex] || players[0]
+  const studentKey = getStudentKey(player, selectedIndex)
 
-    return `
-      <tr class="student-live-row${selectedClass}" data-student-id="${escapeHtml(studentKey)}" tabindex="0" aria-current="${studentKey === selectedStudentId ? "true" : "false"}">
-        <td class="rank-cell">${index + 1}</td>
-        <td>${escapeHtml(player.name || "Player")}</td>
-        <td class="score-cell">${Number(player.score) || 0}</td>
-        <td>${escapeHtml(player.game || "Lobby")}</td>
-        <td>${escapeHtml(player.level || "-")}</td>
-        <td>${Number(player.streak) || 0}</td>
-        <td>${Number(player.hints) || 0}</td>
-        <td>${Number(player.badges) || 0}/5</td>
-      </tr>
-    `
-  }).join("")
+  return `
+    <tr class="student-live-row selected-student-row" data-student-id="${escapeHtml(studentKey)}" tabindex="0" aria-current="true">
+      <td class="rank-cell">${selectedIndex + 1}</td>
+      <td>${escapeHtml(player.name || "Player")}</td>
+      <td class="score-cell">${Number(player.score) || 0}</td>
+      <td>${escapeHtml(player.game || "Lobby")}</td>
+      <td>${escapeHtml(player.level || "-")}</td>
+      <td>${Number(player.streak) || 0}</td>
+      <td>${Number(player.hints) || 0}</td>
+      <td>${Number(player.badges) || 0}/5</td>
+    </tr>
+  `
 }
 
 function createTopRows(leaders = []) {
@@ -355,10 +379,11 @@ function renderScoreboard(data) {
   const leaders = Array.isArray(data.leaders) ? data.leaders : []
 
   latestPlayers = getStableLivePlayers(players)
+  const stableLeaders = getStableLeaders(leaders)
   ensureSelectedStudent(latestPlayers)
 
   liveRows.innerHTML = createLiveRows(latestPlayers)
-  topRows.innerHTML = createTopRows(leaders)
+  topRows.innerHTML = createTopRows(stableLeaders)
   liveCount.textContent = `${players.length} live`
   topCount.textContent = `Top ${leaders.length}`
   lastUpdated.textContent = `Last update: ${new Date().toLocaleTimeString()}`
@@ -441,8 +466,12 @@ copyLinkButton.addEventListener("click", () => {
 })
 
 
-studentBackButton.addEventListener("click", () => selectStudentOffset(-1))
-studentNextButton.addEventListener("click", () => selectStudentOffset(1))
+studentBackButtons.forEach(button => {
+  button.addEventListener("click", () => selectStudentOffset(-1))
+})
+studentNextButtons.forEach(button => {
+  button.addEventListener("click", () => selectStudentOffset(1))
+})
 
 liveRows.addEventListener("click", event => {
   const row = event.target.closest("[data-student-id]")
@@ -463,4 +492,6 @@ liveRows.addEventListener("keydown", event => {
   renderStudentDetails()
 })
 startScoreboard()
+
+
 
