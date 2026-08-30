@@ -444,8 +444,8 @@ const learnModules = {
       content: `<h2>Activity 2: Classify Me! (6-10)</h2>${module1Activity("module1-activity2", "Directions: Continue Activity 2. Type LE for Literary Element and LT for Literary Technique.", [{ prompt: "Hyperbole", answer: "LT", accept: "LITERARY TECHNIQUE" }, { prompt: "Setting", answer: "LE", accept: "LITERARY ELEMENT" }, { prompt: "Personification", answer: "LT", accept: "LITERARY TECHNIQUE" }, { prompt: "Tone", answer: "LE", accept: "LITERARY ELEMENT" }, { prompt: "Symbolism", answer: "LT", accept: "LITERARY TECHNIQUE" }], 6, "lesson-activity-split")}`
     },
     {
-      title: "Slide 16",
-      content: `<h2>Activity 3: Why Does It Matter?</h2><p>Directions: Read the short paragraph below and answer the questions.</p><div class="lesson-example">The moon smiled down on the sleepy village while the stars twinkled like tiny diamonds. The cool breeze whispered through the trees, making everyone feel peaceful and safe.</div>${lessonAnswerList("module1-slide17-response", "Slide 16: Activity 3", [{ prompt: "Which literary devices can you identify in the paragraph?", placeholder: "Type the devices you noticed.", long: true }, { prompt: "What do these devices add to the paragraph?", placeholder: "Type what they add.", long: true }], "lesson-answer-list-stacked lesson-answer-list-shortpair")}`
+      title: "Slide 18",
+      content: `<h2>Activity 3: Why Does It Matter?</h2><p>Directions: Read the short paragraph below and answer the questions.</p><div class="lesson-example">The moon smiled down on the sleepy village while the stars twinkled like tiny diamonds. The cool breeze whispered through the trees, making everyone feel peaceful and safe.</div>${lessonAnswerList("module1-slide17-response", "Slide 18: Activity 3", [{ prompt: "Which literary devices can you identify in the paragraph?", placeholder: "Type the devices you noticed.", long: true }, { prompt: "What do these devices add to the paragraph?", placeholder: "Type what they add.", long: true }], "lesson-answer-list-stacked lesson-answer-list-shortpair")}`
     },
     {
       title: "Slide 19",
@@ -456,15 +456,15 @@ const learnModules = {
       content: `<h2>Reflection Questions (4-5)</h2>${lessonAnswerList("module1-slide18-response", "Slide 20: Reflection Questions", [{ id: "module1-slide18-response-4", prompt: "Why is it important for writers to use literary devices in literary works?", long: true }, { id: "module1-slide18-response-5", prompt: "How can understanding literary devices help you appreciate poems, stories, and songs?", long: true }], "lesson-answer-list-stacked lesson-answer-list-many lesson-answer-list-reflection-split")}`
     },
     {
-      title: "Slide 18",
+      title: "Slide 21",
       content: `<h2>My Learning Reflection</h2><p>Directions: Reflect on what you have learned in this module. Answer each question in 2-4 complete sentences.</p>${lessonAnswerList("module1-slide19-response", "Slide 21: My Learning Reflection", [{ prompt: "What did I learn from this module?", html: "<strong>What did I learn from this module?</strong> Describe the most important knowledge or skills you gained about literary devices.", placeholder: "Type your answer.", long: true }, { prompt: "What interested me the most? Why?", html: "<strong>What interested me the most? Why?</strong> Explain which literary device, example, or activity you found most interesting.", placeholder: "Type your answer.", long: true }], "lesson-answer-list-stacked lesson-answer-list-reflection")}`
     },
     {
-      title: "Slide 19",
+      title: "Slide 22",
       content: `<h2>My Learning Reflection</h2><p>Answer each question in 2-4 complete sentences.</p>${lessonAnswerList("module1-slide20-response", "Slide 22: My Learning Reflection", [{ prompt: "What do I still need to improve or practice?", html: "<strong>What do I still need to improve or practice?</strong> Identify a concept or skill about literary devices that you found challenging and explain how you can improve.", placeholder: "Type your answer.", long: true }, { prompt: "How can I apply what I learned in real life?", html: "<strong>How can I apply what I learned in real life?</strong> Explain how understanding literary devices can help you become a better reader, writer, or speaker.", placeholder: "Type your answer.", long: true }], "lesson-answer-list-stacked lesson-answer-list-reflection")}`
     },
     {
-      title: "Slide 20",
+      title: "Slide 23",
       content: `<h2>Module Summary</h2><p>Literary devices are tools and techniques that writers use to make literary texts more meaningful, creative, and engaging.</p>${module1Rows([{ label: "Literary Elements", text: "Fundamental parts of a literary work, such as plot, setting, characters, mood, theme, moral, and tone." }, { label: "Literary Techniques", text: "Methods writers use to make writing more expressive, such as simile, metaphor, personification, hyperbole, alliteration, onomatopoeia, imagery, and symbolism." }])}<p>Understanding literary devices helps readers recognize how writers express ideas, create vivid descriptions, communicate emotions, and strengthen stories and poems.</p>`
     }
   ],
@@ -567,22 +567,26 @@ const learnModules = {
     },
     {
       title: "Slide 25",
-      content: `<h2>Activity 2: Construct Simple Sentences</h2><p><strong>Directions:</strong> Construct one simple sentence for each type.</p>${lessonAnswerList("module2-slide25-response", "Slide 25: Activity 2", [{ prompt: "Simile", html: "<strong>Simile</strong>", placeholder: "Type one simile.", long: true }, { prompt: "Metaphor", html: "<strong>Metaphor</strong>", placeholder: "Type one metaphor.", long: true }, { prompt: "Personification", html: "<strong>Personification</strong>", placeholder: "Type one personification.", long: true }, { prompt: "Hyperbole", html: "<strong>Hyperbole</strong>", placeholder: "Type one hyperbole.", long: true }, { prompt: "Symbolism", html: "<strong>Symbolism</strong>", placeholder: "Type one symbolism sentence.", long: true }], "lesson-answer-list-stacked lesson-answer-list-many")}`
+      content: `<h2>Activity 2: Construct Simple Sentences (1-3)</h2><p><strong>Directions:</strong> Construct one simple sentence for each type.</p>${lessonAnswerList("module2-slide25-response", "Slide 25: Activity 2", [{ id: "module2-slide25-response-1", prompt: "Simile", html: "<strong>Simile</strong>", placeholder: "Type one simile.", long: true }, { id: "module2-slide25-response-2", prompt: "Metaphor", html: "<strong>Metaphor</strong>", placeholder: "Type one metaphor.", long: true }, { id: "module2-slide25-response-3", prompt: "Personification", html: "<strong>Personification</strong>", placeholder: "Type one personification.", long: true }], "lesson-answer-list-stacked lesson-answer-list-many lesson-answer-list-reflection-split")}`
     },
     {
       title: "Slide 26",
-      content: `<h2>Activity 3: My Learning Reflection</h2><p><strong>Directions:</strong> Reflect on what you have learned in this module. Answer each question in 2-4 complete sentences.</p>${lessonAnswerList("module2-slide26-response", "Slide 26: Learning Reflection", [{ prompt: "What did I learn from this module?", html: "<strong>What did I learn from this module?</strong> Describe what you learned about figurative language.", placeholder: "Type your answer.", long: true }, { prompt: "What interested me the most? Why?", html: "<strong>What interested me the most? Why?</strong> Which type of figurative language did you enjoy learning the most?", placeholder: "Type your answer.", long: true }], "lesson-answer-list-stacked lesson-answer-list-reflection")}`
+      content: `<h2>Activity 2: Construct Simple Sentences (4-5)</h2><p><strong>Directions:</strong> Continue Activity 2. Construct one simple sentence for each type.</p>${lessonAnswerList("module2-slide25-response", "Slide 26: Activity 2", [{ id: "module2-slide25-response-4", prompt: "Hyperbole", html: "<strong>Hyperbole</strong>", placeholder: "Type one hyperbole.", long: true }, { id: "module2-slide25-response-5", prompt: "Symbolism", html: "<strong>Symbolism</strong>", placeholder: "Type one symbolism sentence.", long: true }], "lesson-answer-list-stacked lesson-answer-list-many lesson-answer-list-reflection-split")}`
     },
     {
       title: "Slide 27",
-      content: `<h2>Activity 3: Continue</h2>${lessonAnswerList("module2-slide27-response", "Slide 27: Learning Reflection", [{ prompt: "What do I still need to improve or practice?", html: "<strong>What do I still need to improve or practice?</strong> Which type of figurative language do you still find difficult? How will you improve?", placeholder: "Type your answer.", long: true }, { prompt: "How can I apply what I learned in real life?", html: "<strong>How can I apply what I learned in real life?</strong> Explain how figurative language can improve your reading, writing, or everyday communication.", placeholder: "Type your answer.", long: true }], "lesson-answer-list-stacked lesson-answer-list-reflection")}`
+      content: `<h2>Activity 3: My Learning Reflection</h2><p><strong>Directions:</strong> Reflect on what you have learned in this module. Answer each question in 2-4 complete sentences.</p>${lessonAnswerList("module2-slide26-response", "Slide 27: Learning Reflection", [{ prompt: "What did I learn from this module?", html: "<strong>What did I learn from this module?</strong> Describe what you learned about figurative language.", placeholder: "Type your answer.", long: true }, { prompt: "What interested me the most? Why?", html: "<strong>What interested me the most? Why?</strong> Which type of figurative language did you enjoy learning the most?", placeholder: "Type your answer.", long: true }], "lesson-answer-list-stacked lesson-answer-list-reflection")}`
     },
     {
       title: "Slide 28",
-      content: `<h2>Module Summary</h2><p>In this module, you learned that figurative language uses creative expressions to communicate ideas beyond their literal meanings.</p><ul class="module1-plain-list"><li><strong>Simile</strong> compares two unlike things using like or as.</li><li><strong>Metaphor</strong> directly compares two unlike things.</li><li><strong>Personification</strong> gives human qualities to objects, animals, or ideas.</li><li><strong>Hyperbole</strong> uses exaggeration for emphasis.</li><li><strong>Symbolism</strong> uses objects, people, or ideas to represent deeper meanings.</li></ul>`
+      content: `<h2>Activity 3: Continue</h2>${lessonAnswerList("module2-slide27-response", "Slide 28: Learning Reflection", [{ prompt: "What do I still need to improve or practice?", html: "<strong>What do I still need to improve or practice?</strong> Which type of figurative language do you still find difficult? How will you improve?", placeholder: "Type your answer.", long: true }, { prompt: "How can I apply what I learned in real life?", html: "<strong>How can I apply what I learned in real life?</strong> Explain how figurative language can improve your reading, writing, or everyday communication.", placeholder: "Type your answer.", long: true }], "lesson-answer-list-stacked lesson-answer-list-reflection")}`
     },
     {
       title: "Slide 29",
+      content: `<h2>Module Summary</h2><p>In this module, you learned that figurative language uses creative expressions to communicate ideas beyond their literal meanings.</p><ul class="module1-plain-list"><li><strong>Simile</strong> compares two unlike things using like or as.</li><li><strong>Metaphor</strong> directly compares two unlike things.</li><li><strong>Personification</strong> gives human qualities to objects, animals, or ideas.</li><li><strong>Hyperbole</strong> uses exaggeration for emphasis.</li><li><strong>Symbolism</strong> uses objects, people, or ideas to represent deeper meanings.</li></ul>`
+    },
+    {
+      title: "Slide 30",
       content: `<h2>References</h2><ul class="lesson-list"><li>https://www.scribd.com/document/708731855/English-7-Q3-M5</li><li>Figurative Language - Examples and Definition</li></ul>`
     }
   ],
@@ -629,26 +633,34 @@ const learnModules = {
     },
     {
       title: "Slide 11",
-      content: `<h2>Activity 1: Practice Sound Devices</h2><p><strong>Directions:</strong> Follow the instructions in each item. Write sentences or words that use the given sound device.</p>${lessonAnswerList("module3-slide11-response", "Slide 11: Activity 1", [{ id: "module3-slide11-response-1", prompt: "Write one sentence using alliteration.", html: "<strong>1.</strong> Write one sentence using alliteration.", placeholder: "Type one alliteration sentence.", long: true }, { id: "module3-slide12-response-1", prompt: "Write two words that rhyme with light.", html: "<strong>2.</strong> Write two words that rhyme with <strong>light</strong>.", placeholder: "Type two rhyming words.", long: true }, { id: "module3-slide12-response-2", prompt: "Write one sentence using an onomatopoeic word.", html: "<strong>3.</strong> Write one sentence using an onomatopoeic word.", placeholder: "Type your sentence.", long: true }, { id: "module3-slide12-response-3", prompt: "Identify the sound device and sound word in: The leaves rustled as the wind blew.", html: "<strong>4.</strong> Identify the sound device and sound word in: \"The leaves rustled as the wind blew.\"", placeholder: "Type the device and sound word.", long: true }], "lesson-answer-list-stacked lesson-answer-list-merged-activity")}`
+      content: `<h2>Activity 1: Practice Sound Devices (1-2)</h2><p><strong>Directions:</strong> Follow the instructions in each item. Write sentences or words that use the given sound device.</p>${lessonAnswerList("module3-slide11-response", "Slide 11: Activity 1", [{ id: "module3-slide11-response-1", prompt: "Write one sentence using alliteration.", html: "<strong>1.</strong> Write one sentence using alliteration.", placeholder: "Type one alliteration sentence.", long: true }, { id: "module3-slide12-response-1", prompt: "Write two words that rhyme with light.", html: "<strong>2.</strong> Write two words that rhyme with <strong>light</strong>.", placeholder: "Type two rhyming words.", long: true }], "lesson-answer-list-stacked lesson-answer-list-merged-activity lesson-answer-list-reflection-split")}`
     },
     {
       title: "Slide 12",
-      content: `<h2>Activity 2: Nature Sound Verse</h2><p><strong>Directions:</strong> Write a 2-4 line poem about nature using one alliteration, one pair of rhyming words, and one onomatopoeic word.</p>${lessonAnswerList("module3-slide13-response", "Slide 12: Nature Sound Verse", [{ prompt: "Write your 2-4 line nature poem.", placeholder: "Type your poem here.", long: true }], "lesson-answer-list-stacked lesson-answer-list-poem")}`
+      content: `<h2>Activity 1: Practice Sound Devices (3-4)</h2><p><strong>Directions:</strong> Continue Activity 1.</p>${lessonAnswerList("module3-slide11-response", "Slide 12: Activity 1", [{ id: "module3-slide12-response-2", prompt: "Write one sentence using an onomatopoeic word.", html: "<strong>3.</strong> Write one sentence using an onomatopoeic word.", placeholder: "Type your sentence.", long: true }, { id: "module3-slide12-response-3", prompt: "Identify the sound device and sound word in: The leaves rustled as the wind blew.", html: "<strong>4.</strong> Identify the sound device and sound word in: \"The leaves rustled as the wind blew.\"", placeholder: "Type the device and sound word.", long: true }], "lesson-answer-list-stacked lesson-answer-list-merged-activity lesson-answer-list-reflection-split")}`
     },
     {
       title: "Slide 13",
-      content: `<h2>Analytic Rubric</h2><div class="module3-rubric-table" role="table" aria-label="Analytic Rubric"><div class="rubric-row rubric-head" role="row"><span>Criteria</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="rubric-row" role="row"><strong>Use of Sound Devices</strong><span>Correctly uses all required sound devices.</span><span>Uses most sound devices correctly.</span><span>Uses some sound devices with minor errors.</span><span>Uses only one sound device or several errors.</span><span>Does not correctly use the required sound devices.</span></div><div class="rubric-row" role="row"><strong>Creativity</strong><span>Poem is highly creative and original.</span><span>Poem is creative.</span><span>Poem shows some creativity.</span><span>Poem has limited creativity.</span><span>Poem lacks creativity.</span></div><div class="rubric-row" role="row"><strong>Clarity</strong><span>Ideas are clear and organized.</span><span>Ideas are mostly clear.</span><span>Ideas are understandable.</span><span>Ideas are somewhat unclear.</span><span>Ideas are difficult to understand.</span></div><div class="rubric-row" role="row"><strong>Grammar and Mechanics</strong><span>No grammar, spelling, or punctuation errors.</span><span>One or two minor errors.</span><span>Some errors that do not affect meaning.</span><span>Frequent errors that affect understanding.</span><span>Many errors that make the poem difficult to understand.</span></div><div class="rubric-row" role="row"><strong>Completeness</strong><span>All instructions are followed.</span><span>One minor requirement is missing.</span><span>Two requirements are missing.</span><span>Several requirements are missing.</span><span>Most requirements are not completed.</span></div></div><p><strong>Total Score:</strong> ____ /25</p>`
+      content: `<h2>Activity 2: Nature Sound Verse</h2><p><strong>Directions:</strong> Write a 2-4 line poem about nature using one alliteration, one pair of rhyming words, and one onomatopoeic word.</p>${lessonAnswerList("module3-slide13-response", "Slide 13: Nature Sound Verse", [{ prompt: "Write your 2-4 line nature poem.", placeholder: "Type your poem here.", long: true }], "lesson-answer-list-stacked lesson-answer-list-poem")}`
     },
     {
       title: "Slide 14",
-      content: `<h2>My Learning Reflection</h2><p><strong>Directions:</strong> Reflect on what you have learned in this module. Answer each question in 2-4 complete sentences.</p>${lessonAnswerList("module3-slide15-response", "Slide 14: Learning Reflection", [{ prompt: "What did I learn from this module?", html: "<strong>1. What did I learn from this module?</strong> Describe what you learned about sound devices.", placeholder: "Type your answer.", long: true }, { prompt: "What interested me the most? Why?", html: "<strong>2. What interested me the most? Why?</strong> Which sound device did you enjoy learning the most? Explain why.", placeholder: "Type your answer.", long: true }], "lesson-answer-list-stacked lesson-answer-list-reflection")}`
+      content: `<h2>Analytic Rubric (Part 1)</h2><div class="module3-rubric-table module3-rubric-table-split" role="table" aria-label="Analytic Rubric Part 1"><div class="rubric-row rubric-head" role="row"><span>Criteria</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="rubric-row" role="row"><strong>Use of Sound Devices</strong><span>Correctly uses all required sound devices.</span><span>Uses most sound devices correctly.</span><span>Uses some sound devices with minor errors.</span><span>Uses only one sound device or several errors.</span><span>Does not correctly use the required sound devices.</span></div><div class="rubric-row" role="row"><strong>Creativity</strong><span>Poem is highly creative and original.</span><span>Poem is creative.</span><span>Poem shows some creativity.</span><span>Poem has limited creativity.</span><span>Poem lacks creativity.</span></div><div class="rubric-row" role="row"><strong>Clarity</strong><span>Ideas are clear and organized.</span><span>Ideas are mostly clear.</span><span>Ideas are understandable.</span><span>Ideas are somewhat unclear.</span><span>Ideas are difficult to understand.</span></div></div>`
     },
     {
       title: "Slide 15",
-      content: `<h2>My Learning Reflection</h2>${lessonAnswerList("module3-slide16-response", "Slide 15: Learning Reflection", [{ prompt: "What do I still need to improve or practice?", html: "<strong>3. What do I still need to improve or practice?</strong> Which sound device do you still need more practice using? Explain your answer.", placeholder: "Type your answer.", long: true }, { prompt: "How can I apply what I learned in real life?", html: "<strong>4. How can I apply what I learned in real life?</strong> Explain how sound devices can improve poems, songs, or creative writing.", placeholder: "Type your answer.", long: true }], "lesson-answer-list-stacked lesson-answer-list-reflection")}`
+      content: `<h2>Analytic Rubric (Part 2)</h2><div class="module3-rubric-table module3-rubric-table-split" role="table" aria-label="Analytic Rubric Part 2"><div class="rubric-row rubric-head" role="row"><span>Criteria</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="rubric-row" role="row"><strong>Grammar and Mechanics</strong><span>No grammar, spelling, or punctuation errors.</span><span>One or two minor errors.</span><span>Some errors that do not affect meaning.</span><span>Frequent errors that affect understanding.</span><span>Many errors that make the poem difficult to understand.</span></div><div class="rubric-row" role="row"><strong>Completeness</strong><span>All instructions are followed.</span><span>One minor requirement is missing.</span><span>Two requirements are missing.</span><span>Several requirements are missing.</span><span>Most requirements are not completed.</span></div></div><p><strong>Total Score:</strong> ____ /25</p>`
     },
     {
       title: "Slide 16",
+      content: `<h2>My Learning Reflection</h2><p><strong>Directions:</strong> Reflect on what you have learned in this module. Answer each question in 2-4 complete sentences.</p>${lessonAnswerList("module3-slide15-response", "Slide 16: Learning Reflection", [{ prompt: "What did I learn from this module?", html: "<strong>1. What did I learn from this module?</strong> Describe what you learned about sound devices.", placeholder: "Type your answer.", long: true }, { prompt: "What interested me the most? Why?", html: "<strong>2. What interested me the most? Why?</strong> Which sound device did you enjoy learning the most? Explain why.", placeholder: "Type your answer.", long: true }], "lesson-answer-list-stacked lesson-answer-list-reflection")}`
+    },
+    {
+      title: "Slide 17",
+      content: `<h2>My Learning Reflection</h2>${lessonAnswerList("module3-slide16-response", "Slide 17: Learning Reflection", [{ prompt: "What do I still need to improve or practice?", html: "<strong>3. What do I still need to improve or practice?</strong> Which sound device do you still need more practice using? Explain your answer.", placeholder: "Type your answer.", long: true }, { prompt: "How can I apply what I learned in real life?", html: "<strong>4. How can I apply what I learned in real life?</strong> Explain how sound devices can improve poems, songs, or creative writing.", placeholder: "Type your answer.", long: true }], "lesson-answer-list-stacked lesson-answer-list-reflection")}`
+    },
+    {
+      title: "Slide 18",
       content: `<h2>Module Summary</h2><p>In this module, you learned that sound devices make poems more enjoyable by using interesting sounds.</p><ul class="module1-plain-list"><li><strong>Alliteration</strong> repeats the same beginning consonant sound.</li><li><strong>Rhyme</strong> repeats similar ending sounds.</li><li><strong>Onomatopoeia</strong> uses words that imitate real sounds.</li></ul><p>Understanding these sound devices helps you appreciate how poets make their writing rhythmic, expressive, and enjoyable to read aloud.</p>`
     }
   ],
@@ -4100,6 +4112,175 @@ function ensureLessonReadabilityStyles() {
   #learnMode#learnMode#learnMode.learn-topic-module1.lesson-slide-23 .module1-row span {
     font-size: max(calc(16px * var(--fixed-scale)), 9.5px) !important;
     line-height: 1.06 !important;
+  }
+}
+`
+  style.textContent += `
+/* Final runtime v372: real phone Learn view without scroll-to-read pages. */
+@media (orientation: landscape) and (max-height: 560px) {
+  #learnMode#learnMode#learnMode .lesson-box,
+  #learnMode#learnMode#learnMode.learn-topic-game .lesson-box,
+  #learnMode#learnMode#learnMode:not(.learn-topic-game) .lesson-box {
+    top: calc(var(--fixed-top) + (50px * var(--fixed-scale))) !important;
+    height: calc(642px * var(--fixed-scale)) !important;
+    padding-top: calc(0px * var(--fixed-scale)) !important;
+    padding-bottom: calc(4px * var(--fixed-scale)) !important;
+    gap: calc(1px * var(--fixed-scale)) !important;
+    justify-content: flex-start !important;
+  }
+
+  #learnMode#learnMode#learnMode #lessonContent,
+  #learnMode#learnMode#learnMode.learn-topic-game #lessonContent,
+  #learnMode#learnMode#learnMode:not(.learn-topic-game) #lessonContent,
+  #learnMode#learnMode#learnMode.lesson-overflow-fit #lessonContent,
+  #learnMode#learnMode#learnMode.lesson-overflow-extra #lessonContent {
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    padding: calc(14px * var(--fixed-scale)) calc(24px * var(--fixed-scale)) calc(22px * var(--fixed-scale)) !important;
+    overflow: hidden !important;
+    overflow-y: hidden !important;
+    justify-content: flex-start !important;
+    gap: var(--lesson-dynamic-gap, calc(6px * var(--fixed-scale))) !important;
+    font-size: var(--lesson-dynamic-font-size, max(calc(18px * var(--fixed-scale)), 10px)) !important;
+    line-height: 1.08 !important;
+  }
+
+  #learnMode#learnMode#learnMode #lessonContent > :first-child {
+    margin-top: 0 !important;
+  }
+
+  #learnMode#learnMode#learnMode #lessonContent p,
+  #learnMode#learnMode#learnMode #lessonContent li,
+  #learnMode#learnMode#learnMode #lessonContent .lesson-example,
+  #learnMode#learnMode#learnMode #lessonContent .lesson-notice,
+  #learnMode#learnMode#learnMode #lessonContent .lesson-key-point {
+    line-height: 1.07 !important;
+    margin-top: 0 !important;
+    margin-bottom: calc(7px * var(--fixed-scale)) !important;
+  }
+
+  #learnMode#learnMode#learnMode .lesson-example {
+    padding: calc(4px * var(--fixed-scale)) calc(8px * var(--fixed-scale)) !important;
+  }
+
+  #learnMode#learnMode#learnMode .lesson-notice,
+  #learnMode#learnMode#learnMode .lesson-key-point {
+    margin-top: calc(5px * var(--fixed-scale)) !important;
+    padding-top: calc(4px * var(--fixed-scale)) !important;
+  }
+
+  #learnMode#learnMode#learnMode .lesson-activity,
+  #learnMode#learnMode#learnMode .lesson-answer-list {
+    gap: calc(5px * var(--fixed-scale)) !important;
+    margin-top: calc(2px * var(--fixed-scale)) !important;
+    margin-bottom: 0 !important;
+  }
+
+  #learnMode#learnMode#learnMode .lesson-check-btn {
+    min-height: max(calc(28px * var(--fixed-scale)), 20px) !important;
+    margin-top: calc(4px * var(--fixed-scale)) !important;
+    font-size: max(calc(14px * var(--fixed-scale)), 9px) !important;
+  }
+
+  #learnMode#learnMode#learnMode.learn-topic-module2.lesson-slide-2 .lesson-activity-row,
+  #learnMode#learnMode#learnMode.learn-topic-module2.lesson-slide-24 .lesson-activity-row {
+    min-height: max(calc(46px * var(--fixed-scale)), 30px) !important;
+    padding: calc(4px * var(--fixed-scale)) calc(8px * var(--fixed-scale)) !important;
+    grid-template-columns: minmax(0, 1fr) max(calc(72px * var(--fixed-scale)), 48px) !important;
+  }
+
+  #learnMode#learnMode#learnMode.learn-topic-module2.lesson-slide-2 .lesson-activity-prompt,
+  #learnMode#learnMode#learnMode.learn-topic-module2.lesson-slide-24 .lesson-activity-prompt {
+    font-size: max(calc(14px * var(--fixed-scale)), 9px) !important;
+    line-height: 1.05 !important;
+  }
+
+  #learnMode#learnMode#learnMode .lesson-answer-list-reflection-split .lesson-answer-item {
+    grid-template-columns: 1fr !important;
+    gap: calc(3px * var(--fixed-scale)) !important;
+    padding: calc(3px * var(--fixed-scale)) calc(5px * var(--fixed-scale)) !important;
+    min-height: auto !important;
+  }
+
+  #learnMode#learnMode#learnMode .lesson-answer-list-reflection-split .lesson-answer-prompt {
+    font-size: max(calc(13.5px * var(--fixed-scale)), 9px) !important;
+    line-height: 1.04 !important;
+  }
+
+  #learnMode#learnMode#learnMode .lesson-answer-list-reflection-split .lesson-response-field-long {
+    height: max(calc(58px * var(--fixed-scale)), 32px) !important;
+    min-height: max(calc(58px * var(--fixed-scale)), 32px) !important;
+  }
+
+  #learnMode#learnMode#learnMode.learn-topic-module2.lesson-slide-25 .lesson-response-field-long,
+  #learnMode#learnMode#learnMode.learn-topic-module2.lesson-slide-26 .lesson-response-field-long,
+  #learnMode#learnMode#learnMode.learn-topic-module3.lesson-slide-11 .lesson-response-field-long,
+  #learnMode#learnMode#learnMode.learn-topic-module3.lesson-slide-12 .lesson-response-field-long {
+    height: max(calc(54px * var(--fixed-scale)), 30px) !important;
+    min-height: max(calc(54px * var(--fixed-scale)), 30px) !important;
+  }
+
+  #learnMode#learnMode#learnMode.learn-topic-module3.lesson-slide-14 .module3-rubric-table-split,
+  #learnMode#learnMode#learnMode.learn-topic-module3.lesson-slide-15 .module3-rubric-table-split {
+    font-size: max(calc(10px * var(--fixed-scale)), 7px) !important;
+    line-height: 1 !important;
+    margin-top: 0 !important;
+  }
+
+  #learnMode#learnMode#learnMode.learn-topic-module3.lesson-slide-14 .module3-rubric-table-split .rubric-row > span,
+  #learnMode#learnMode#learnMode.learn-topic-module3.lesson-slide-14 .module3-rubric-table-split .rubric-row > strong,
+  #learnMode#learnMode#learnMode.learn-topic-module3.lesson-slide-15 .module3-rubric-table-split .rubric-row > span,
+  #learnMode#learnMode#learnMode.learn-topic-module3.lesson-slide-15 .module3-rubric-table-split .rubric-row > strong {
+    padding: calc(2px * var(--fixed-scale)) !important;
+    line-height: 1 !important;
+  }
+}
+`
+  style.textContent += `
+/* Final runtime v373: remove the last hidden-scroll padding on the Module 4 rubric in phone landscape. */
+@media (orientation: landscape) and (max-height: 560px) {
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-23 #lessonContent {
+    padding-top: calc(10px * var(--fixed-scale)) !important;
+    padding-bottom: calc(12px * var(--fixed-scale)) !important;
+  }
+
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-23 .module4-rubric-table {
+    margin-bottom: calc(3px * var(--fixed-scale)) !important;
+  }
+}
+`
+  style.textContent += `
+/* Final runtime v374: keep Learn navigation buttons fully inside real phone landscape screens. */
+@media (orientation: landscape) and (max-height: 560px) {
+  #learnMode#learnMode#learnMode .nav-buttons,
+  #learnMode#learnMode#learnMode.learn-topic-game .nav-buttons,
+  #learnMode#learnMode#learnMode:not(.learn-topic-game) .nav-buttons {
+    bottom: calc(46px * var(--fixed-scale)) !important;
+    height: calc(46px * var(--fixed-scale)) !important;
+    gap: calc(46px * var(--fixed-scale)) !important;
+  }
+
+  #learnMode#learnMode#learnMode .nav-buttons .back-image-btn,
+  #learnMode#learnMode#learnMode .nav-buttons .next-image-btn {
+    width: calc(150px * var(--fixed-scale)) !important;
+    height: calc(80px * var(--fixed-scale)) !important;
+  }
+}
+`
+  style.textContent += `
+/* Final runtime v375: final phone nudge so Learn nav artwork never sits below the viewport. */
+@media (orientation: landscape) and (max-height: 560px) {
+  #learnMode#learnMode#learnMode .nav-buttons,
+  #learnMode#learnMode#learnMode.learn-topic-game .nav-buttons,
+  #learnMode#learnMode#learnMode:not(.learn-topic-game) .nav-buttons {
+    bottom: calc(76px * var(--fixed-scale)) !important;
+    height: calc(40px * var(--fixed-scale)) !important;
+  }
+
+  #learnMode#learnMode#learnMode .nav-buttons .back-image-btn,
+  #learnMode#learnMode#learnMode .nav-buttons .next-image-btn {
+    width: calc(136px * var(--fixed-scale)) !important;
+    height: calc(70px * var(--fixed-scale)) !important;
   }
 }
 `

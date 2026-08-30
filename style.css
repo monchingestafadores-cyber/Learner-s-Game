@@ -4021,7 +4021,7 @@ body {
 
 #learnMode .lesson-box h1,
 #learnMode.learn-topic-game .lesson-box h1 {
-  min-height: calc(42px * var(--fixed-scale)) !important;
+  min-height: calc(40px * var(--fixed-scale)) !important;
   font-size: max(calc(33px * var(--fixed-scale)), 18px) !important;
   line-height: 1.02 !important;
 }
@@ -6722,7 +6722,7 @@ body {
 }
 
 #learnMode.learn-topic-module2.lesson-slide-26 .lesson-response-field {
-  height: calc(42px * var(--fixed-scale)) !important;
+  height: calc(40px * var(--fixed-scale)) !important;
 }
 
 /* Module 3 PDF content: keep the new sound-device slides readable while
@@ -9834,5 +9834,184 @@ body {
   #learnMode#learnMode#learnMode.learn-topic-module1.lesson-slide-23 .module1-row span {
     font-size: max(calc(16px * var(--fixed-scale)), 9.5px) !important;
     line-height: 1.06 !important;
+  }
+}
+/* Final v371: real phone Learn view without scroll-to-read pages. */
+#learnBlank .learn-map-title {
+  top: calc(var(--fixed-top) + (14px * var(--fixed-scale))) !important;
+  height: calc(86px * var(--fixed-scale)) !important;
+  background-size: calc(292px * var(--fixed-scale)) auto !important;
+  background-position: center center !important;
+}
+
+@media (orientation: landscape) and (max-height: 560px) {
+  #learnBlank .learn-map-title {
+    top: calc(var(--fixed-top) + (16px * var(--fixed-scale))) !important;
+    height: calc(78px * var(--fixed-scale)) !important;
+    background-size: calc(272px * var(--fixed-scale)) auto !important;
+    background-position: center center !important;
+  }
+
+  #learnBlank .learn-module1-card {
+    top: calc(var(--fixed-top) + (104px * var(--fixed-scale))) !important;
+  }
+
+  #learnMode#learnMode#learnMode .lesson-box,
+  #learnMode#learnMode#learnMode.learn-topic-game .lesson-box,
+  #learnMode#learnMode#learnMode:not(.learn-topic-game) .lesson-box {
+    top: calc(var(--fixed-top) + (50px * var(--fixed-scale))) !important;
+    height: calc(642px * var(--fixed-scale)) !important;
+    padding-top: calc(0px * var(--fixed-scale)) !important;
+    padding-bottom: calc(4px * var(--fixed-scale)) !important;
+    gap: calc(1px * var(--fixed-scale)) !important;
+    justify-content: flex-start !important;
+  }
+
+  #learnMode#learnMode#learnMode #lessonContent,
+  #learnMode#learnMode#learnMode.learn-topic-game #lessonContent,
+  #learnMode#learnMode#learnMode:not(.learn-topic-game) #lessonContent,
+  #learnMode#learnMode#learnMode.lesson-overflow-fit #lessonContent,
+  #learnMode#learnMode#learnMode.lesson-overflow-extra #lessonContent {
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    padding: calc(14px * var(--fixed-scale)) calc(24px * var(--fixed-scale)) calc(22px * var(--fixed-scale)) !important;
+    overflow: hidden !important;
+    overflow-y: hidden !important;
+    justify-content: flex-start !important;
+    gap: var(--lesson-dynamic-gap, calc(6px * var(--fixed-scale))) !important;
+    font-size: var(--lesson-dynamic-font-size, max(calc(18px * var(--fixed-scale)), 10px)) !important;
+    line-height: 1.08 !important;
+  }
+
+  #learnMode#learnMode#learnMode #lessonContent > :first-child {
+    margin-top: 0 !important;
+  }
+
+  #learnMode#learnMode#learnMode #lessonContent p,
+  #learnMode#learnMode#learnMode #lessonContent li,
+  #learnMode#learnMode#learnMode #lessonContent .lesson-example,
+  #learnMode#learnMode#learnMode #lessonContent .lesson-notice,
+  #learnMode#learnMode#learnMode #lessonContent .lesson-key-point {
+    line-height: 1.07 !important;
+    margin-top: 0 !important;
+    margin-bottom: calc(7px * var(--fixed-scale)) !important;
+  }
+
+  #learnMode#learnMode#learnMode .lesson-example {
+    padding: calc(4px * var(--fixed-scale)) calc(8px * var(--fixed-scale)) !important;
+  }
+
+  #learnMode#learnMode#learnMode .lesson-notice,
+  #learnMode#learnMode#learnMode .lesson-key-point {
+    margin-top: calc(5px * var(--fixed-scale)) !important;
+    padding-top: calc(4px * var(--fixed-scale)) !important;
+  }
+
+  #learnMode#learnMode#learnMode .lesson-activity,
+  #learnMode#learnMode#learnMode .lesson-answer-list {
+    gap: calc(5px * var(--fixed-scale)) !important;
+    margin-top: calc(2px * var(--fixed-scale)) !important;
+    margin-bottom: 0 !important;
+  }
+
+  #learnMode#learnMode#learnMode .lesson-check-btn {
+    min-height: max(calc(28px * var(--fixed-scale)), 20px) !important;
+    margin-top: calc(4px * var(--fixed-scale)) !important;
+    font-size: max(calc(14px * var(--fixed-scale)), 9px) !important;
+  }
+
+  #learnMode#learnMode#learnMode.learn-topic-module2.lesson-slide-2 .lesson-activity-row,
+  #learnMode#learnMode#learnMode.learn-topic-module2.lesson-slide-24 .lesson-activity-row {
+    min-height: max(calc(46px * var(--fixed-scale)), 30px) !important;
+    padding: calc(4px * var(--fixed-scale)) calc(8px * var(--fixed-scale)) !important;
+    grid-template-columns: minmax(0, 1fr) max(calc(72px * var(--fixed-scale)), 48px) !important;
+  }
+
+  #learnMode#learnMode#learnMode.learn-topic-module2.lesson-slide-2 .lesson-activity-prompt,
+  #learnMode#learnMode#learnMode.learn-topic-module2.lesson-slide-24 .lesson-activity-prompt {
+    font-size: max(calc(14px * var(--fixed-scale)), 9px) !important;
+    line-height: 1.05 !important;
+  }
+
+  #learnMode#learnMode#learnMode .lesson-answer-list-reflection-split .lesson-answer-item {
+    grid-template-columns: 1fr !important;
+    gap: calc(3px * var(--fixed-scale)) !important;
+    padding: calc(3px * var(--fixed-scale)) calc(5px * var(--fixed-scale)) !important;
+    min-height: auto !important;
+  }
+
+  #learnMode#learnMode#learnMode .lesson-answer-list-reflection-split .lesson-answer-prompt {
+    font-size: max(calc(13.5px * var(--fixed-scale)), 9px) !important;
+    line-height: 1.04 !important;
+  }
+
+  #learnMode#learnMode#learnMode .lesson-answer-list-reflection-split .lesson-response-field-long {
+    height: max(calc(58px * var(--fixed-scale)), 32px) !important;
+    min-height: max(calc(58px * var(--fixed-scale)), 32px) !important;
+  }
+
+  #learnMode#learnMode#learnMode.learn-topic-module2.lesson-slide-25 .lesson-response-field-long,
+  #learnMode#learnMode#learnMode.learn-topic-module2.lesson-slide-26 .lesson-response-field-long,
+  #learnMode#learnMode#learnMode.learn-topic-module3.lesson-slide-11 .lesson-response-field-long,
+  #learnMode#learnMode#learnMode.learn-topic-module3.lesson-slide-12 .lesson-response-field-long {
+    height: max(calc(54px * var(--fixed-scale)), 30px) !important;
+    min-height: max(calc(54px * var(--fixed-scale)), 30px) !important;
+  }
+
+  #learnMode#learnMode#learnMode.learn-topic-module3.lesson-slide-14 .module3-rubric-table-split,
+  #learnMode#learnMode#learnMode.learn-topic-module3.lesson-slide-15 .module3-rubric-table-split {
+    font-size: max(calc(10px * var(--fixed-scale)), 7px) !important;
+    line-height: 1 !important;
+    margin-top: 0 !important;
+  }
+
+  #learnMode#learnMode#learnMode.learn-topic-module3.lesson-slide-14 .module3-rubric-table-split .rubric-row > span,
+  #learnMode#learnMode#learnMode.learn-topic-module3.lesson-slide-14 .module3-rubric-table-split .rubric-row > strong,
+  #learnMode#learnMode#learnMode.learn-topic-module3.lesson-slide-15 .module3-rubric-table-split .rubric-row > span,
+  #learnMode#learnMode#learnMode.learn-topic-module3.lesson-slide-15 .module3-rubric-table-split .rubric-row > strong {
+    padding: calc(2px * var(--fixed-scale)) !important;
+    line-height: 1 !important;
+  }
+}
+/* Final v372: remove the last hidden-scroll padding on the Module 4 rubric in phone landscape. */
+@media (orientation: landscape) and (max-height: 560px) {
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-23 #lessonContent {
+    padding-top: calc(10px * var(--fixed-scale)) !important;
+    padding-bottom: calc(12px * var(--fixed-scale)) !important;
+  }
+
+  #learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-23 .module4-rubric-table {
+    margin-bottom: calc(3px * var(--fixed-scale)) !important;
+  }
+}
+/* Final v373: keep Learn navigation buttons fully inside real phone landscape screens. */
+@media (orientation: landscape) and (max-height: 560px) {
+  #learnMode#learnMode#learnMode .nav-buttons,
+  #learnMode#learnMode#learnMode.learn-topic-game .nav-buttons,
+  #learnMode#learnMode#learnMode:not(.learn-topic-game) .nav-buttons {
+    bottom: calc(46px * var(--fixed-scale)) !important;
+    height: calc(46px * var(--fixed-scale)) !important;
+    gap: calc(46px * var(--fixed-scale)) !important;
+  }
+
+  #learnMode#learnMode#learnMode .nav-buttons .back-image-btn,
+  #learnMode#learnMode#learnMode .nav-buttons .next-image-btn {
+    width: calc(150px * var(--fixed-scale)) !important;
+    height: calc(80px * var(--fixed-scale)) !important;
+  }
+}
+/* Final v374: final phone nudge so Learn nav artwork never sits below the viewport. */
+@media (orientation: landscape) and (max-height: 560px) {
+  #learnMode#learnMode#learnMode .nav-buttons,
+  #learnMode#learnMode#learnMode.learn-topic-game .nav-buttons,
+  #learnMode#learnMode#learnMode:not(.learn-topic-game) .nav-buttons {
+    bottom: calc(76px * var(--fixed-scale)) !important;
+    height: calc(40px * var(--fixed-scale)) !important;
+  }
+
+  #learnMode#learnMode#learnMode .nav-buttons .back-image-btn,
+  #learnMode#learnMode#learnMode .nav-buttons .next-image-btn {
+    width: calc(136px * var(--fixed-scale)) !important;
+    height: calc(70px * var(--fixed-scale)) !important;
   }
 }
