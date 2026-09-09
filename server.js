@@ -365,7 +365,6 @@ async function handleCreativeCheck(req, res) {
     const figureLabel = sanitizeText(body.figureLabel, 80, figure)
     const literal = sanitizeText(body.literal, 240, "")
     const answer = sanitizeText(body.answer, 500, "")
-    const hint = sanitizeText(body.hint, 180, "")
     const checkRules = Array.isArray(body.checkRules)
       ? body.checkRules.map(rule => sanitizeText(rule, 80, "")).filter(Boolean).slice(0, 8)
       : []
@@ -388,7 +387,7 @@ async function handleCreativeCheck(req, res) {
       "For personification, require a human action, feeling, or quality given to a non-human thing.",
       "For hyperbole, require clear exaggeration. For alliteration, require nearby repeated beginning sounds.",
       "If the item requires both alliteration and simile, both must be present.",
-      "Keep the reason short and student-friendly. Return JSON only."
+      "Return JSON only. Do not provide suggestions, examples, or model answers."
     ].join(" ")
 
     const response = await fetch(openAiResponsesUrl, {
@@ -405,7 +404,6 @@ async function handleCreativeCheck(req, res) {
           requestedLabel: figureLabel,
           originalSentence: literal,
           studentAnswer: answer,
-          hint,
           checkRules,
           requiresSimile
         }),
@@ -419,10 +417,9 @@ async function handleCreativeCheck(req, res) {
               additionalProperties: false,
               properties: {
                 correct: { type: "boolean" },
-                reason: { type: "string" },
                 confidence: { type: "number" }
               },
-              required: ["correct", "reason", "confidence"]
+              required: ["correct", "confidence"]
             }
           }
         },
@@ -454,7 +451,6 @@ async function handleCreativeCheck(req, res) {
     const confidence = Number(result.confidence)
     sendJson(res, 200, {
       correct: result.correct,
-      reason: sanitizeText(result.reason, 180, result.correct ? "Good creative answer." : "Try revising your answer."),
       confidence: Number.isFinite(confidence) ? Math.max(0, Math.min(1, confidence)) : 0.5,
       aiAvailable: true,
       model: openAiModel

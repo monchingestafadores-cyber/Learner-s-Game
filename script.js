@@ -5359,7 +5359,7 @@ function getGuidePrompt(question) {
     return "Read the text carefully. I will help you spot the figure of speech or sound device."
   }
 
-  return `Create your own ${question.figureLabel || question.figure}. Type an answer that follows the clue.`
+  return `Create your own ${question.figureLabel || question.figure}. Write the answer in your own words.`
 }
 
 function formatLiteraryText(text) {
@@ -5875,7 +5875,6 @@ async function requestCreativeAiCheck(question, rawAnswer) {
       figureLabel: question.figureLabel || question.figure,
       literal: question.literal,
       answer: rawAnswer,
-      hint: question.hint || "",
       checkRules: question.checkRules || [],
       requiresSimile: Boolean(question.requiresSimile)
     })
@@ -5892,7 +5891,6 @@ async function requestCreativeAiCheck(question, rawAnswer) {
 
   return {
     correct: result.correct,
-    reason: String(result.reason || "").trim(),
     aiAvailable: Boolean(result.aiAvailable)
   }
 }
@@ -5920,9 +5918,7 @@ function finishCreativeAnswer(q, rawAnswer, validation) {
     return
   }
 
-  const correction = validation.reason
-    ? `${validation.reason} ${q.incorrectFeedback || ""}`.trim()
-    : q.incorrectFeedback || `Try again next time. Remember: ${q.hint}`
+  const correction = q.incorrectFeedback || "Try again. Review the requested figure of speech and rewrite the original idea in your own words."
   setFeedback("wrong", "Wrong!", correction, true)
   setGuideState("assets/images/guide-default.png", correction)
   updateStats()
@@ -5949,7 +5945,7 @@ async function checkCreative() {
       const aiValidation = await requestCreativeAiCheck(q, rawAnswer)
       validation = aiValidation.correct || localValidation.correct
         ? { correct: true }
-        : { correct: false, reason: aiValidation.reason || localValidation.reason }
+        : { correct: false }
     } catch {
       validation = localValidation
     }
