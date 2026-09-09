@@ -5886,8 +5886,14 @@ body {
 
 /* Final Game 2 text-reading page and feedback placement. */
 #learnMode.learn-topic-game .mechanics-flow-line {
+  width: 100% !important;
+  max-width: calc(640px * var(--fixed-scale)) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
   white-space: nowrap !important;
-  font-size: max(calc(13px * var(--fixed-scale)), 10px) !important;
+  overflow: visible !important;
+  font-size: max(calc(10px * var(--fixed-scale)), 8px) !important;
+  line-height: 1 !important;
 }
 
 #playMode.game2-bg.reading-text-mode .question-card {
@@ -10420,5 +10426,260 @@ body {
     top: calc(var(--fixed-top) + (6px * var(--fixed-scale))) !important;
     width: calc(260px * var(--fixed-scale)) !important;
     height: calc(121px * var(--fixed-scale)) !important;
+  }
+}
+/* Hard stop for clipped Game 2 mechanics flow text on phone previews. */
+#learnMode.learn-topic-game .game-mechanics-card .mechanics-flow-line {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  max-width: calc(620px * var(--fixed-scale)) !important;
+  padding: 0 calc(8px * var(--fixed-scale)) !important;
+  margin: calc(3px * var(--fixed-scale)) auto 0 !important;
+  white-space: nowrap !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  font-size: max(calc(9px * var(--fixed-scale)), 8px) !important;
+  line-height: 1 !important;
+  letter-spacing: 0 !important;
+}
+/* v395: phone audit cleanup for the shortest landscape phones. */
+#learnMode#learnMode#learnMode#learnMode.learn-topic-module2.lesson-slide-30 .lesson-list li {
+  overflow-wrap: anywhere !important;
+  word-break: break-word !important;
+}
+
+@media (orientation: landscape) and (max-height: 380px) {
+  #learnMode#learnMode#learnMode#learnMode.learn-topic-module1.lesson-slide-13 #lessonContent {
+    padding-top: calc(4px * var(--fixed-scale)) !important;
+    padding-bottom: calc(6px * var(--fixed-scale)) !important;
+    gap: calc(3px * var(--fixed-scale)) !important;
+    font-size: max(calc(16px * var(--fixed-scale)), 9.4px) !important;
+    line-height: 1.04 !important;
+  }
+
+  #learnMode#learnMode#learnMode#learnMode.learn-topic-module1.lesson-slide-13 #lessonContent p,
+  #learnMode#learnMode#learnMode#learnMode.learn-topic-module1.lesson-slide-13 .module1-plain-list li {
+    margin-bottom: calc(3px * var(--fixed-scale)) !important;
+    line-height: 1.04 !important;
+  }
+
+  #learnMode#learnMode#learnMode#learnMode.learn-topic-module1.lesson-slide-13 .module1-plain-list {
+    margin-top: calc(2px * var(--fixed-scale)) !important;
+    margin-bottom: calc(2px * var(--fixed-scale)) !important;
+    padding-left: calc(24px * var(--fixed-scale)) !important;
+  }
+
+  #learnMode#learnMode#learnMode#learnMode.learn-topic-module2.lesson-slide-24 #lessonContent {
+    padding-top: 0 !important;
+    padding-bottom: calc(2px * var(--fixed-scale)) !important;
+    gap: calc(2px * var(--fixed-scale)) !important;
+    font-size: max(calc(14px * var(--fixed-scale)), 8.7px) !important;
+    line-height: 1.02 !important;
+  }
+
+  #learnMode#learnMode#learnMode#learnMode.learn-topic-module2.lesson-slide-24 #lessonContent h2 {
+    margin-bottom: calc(1px * var(--fixed-scale)) !important;
+    font-size: max(calc(21px * var(--fixed-scale)), 11.5px) !important;
+    line-height: 1 !important;
+  }
+
+  #learnMode#learnMode#learnMode#learnMode.learn-topic-module2.lesson-slide-24 #lessonContent p,
+  #learnMode#learnMode#learnMode#learnMode.learn-topic-module2.lesson-slide-24 .lesson-activity-directions {
+    margin-bottom: calc(1px * var(--fixed-scale)) !important;
+    font-size: max(calc(12px * var(--fixed-scale)), 8px) !important;
+    line-height: 1.02 !important;
+  }
+
+  #learnMode#learnMode#learnMode#learnMode.learn-topic-module2.lesson-slide-24 .lesson-activity {
+    gap: calc(2px * var(--fixed-scale)) !important;
+    margin-top: 0 !important;
+  }
+
+  #learnMode#learnMode#learnMode#learnMode.learn-topic-module2.lesson-slide-24 .lesson-activity-items {
+    gap: calc(2px * var(--fixed-scale)) !important;
+  }
+
+  #learnMode#learnMode#learnMode#learnMode.learn-topic-module2.lesson-slide-24 .lesson-activity-row {
+    min-height: max(calc(34px * var(--fixed-scale)), 23px) !important;
+    padding: calc(2px * var(--fixed-scale)) calc(5px * var(--fixed-scale)) !important;
+    gap: calc(5px * var(--fixed-scale)) !important;
+    grid-template-columns: minmax(0, 1fr) max(calc(62px * var(--fixed-scale)), 42px) !important;
+  }
+
+  #learnMode#learnMode#learnMode#learnMode.learn-topic-module2.lesson-slide-24 .lesson-activity-prompt {
+    font-size: max(calc(11.5px * var(--fixed-scale)), 7.8px) !important;
+    line-height: 1.02 !important;
+  }
+
+  #learnMode#learnMode#learnMode#learnMode.learn-topic-module2.lesson-slide-24 .lesson-activity input {
+    height: max(calc(22px * var(--fixed-scale)), 17px) !important;
+    font-size: max(calc(10px * var(--fixed-scale)), 7.8px) !important;
+    padding: calc(1px * var(--fixed-scale)) calc(4px * var(--fixed-scale)) !important;
+  }
+
+  #learnMode#learnMode#learnMode#learnMode.learn-topic-module2.lesson-slide-24 .lesson-check-btn {
+    min-height: max(calc(24px * var(--fixed-scale)), 18px) !important;
+    margin-top: calc(1px * var(--fixed-scale)) !important;
+    padding: calc(1px * var(--fixed-scale)) calc(10px * var(--fixed-scale)) !important;
+    font-size: max(calc(12px * var(--fixed-scale)), 8px) !important;
+    line-height: 1 !important;
+  }
+
+  #learnMode#learnMode#learnMode#learnMode.learn-topic-module3.lesson-slide-14 #lessonContent,
+  #learnMode#learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-23 #lessonContent {
+    padding: 0 calc(5px * var(--fixed-scale)) calc(1px * var(--fixed-scale)) !important;
+    gap: 0 !important;
+  }
+
+  #learnMode#learnMode#learnMode#learnMode.learn-topic-module3.lesson-slide-14 #lessonContent h2,
+  #learnMode#learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-23 #lessonContent h2 {
+    margin-bottom: calc(1px * var(--fixed-scale)) !important;
+    font-size: max(calc(21px * var(--fixed-scale)), 11.5px) !important;
+    line-height: 0.95 !important;
+  }
+
+  #learnMode#learnMode#learnMode#learnMode.learn-topic-module3.lesson-slide-14 .module3-rubric-table-merged,
+  #learnMode#learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-23 .module4-rubric-table-merged {
+    margin-bottom: 0 !important;
+    font-size: max(calc(13.3px * var(--fixed-scale)), 7.6px) !important;
+    line-height: 0.94 !important;
+  }
+
+  #learnMode#learnMode#learnMode#learnMode.learn-topic-module3.lesson-slide-14 .module3-rubric-table-merged .rubric-row,
+  #learnMode#learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-23 .module4-rubric-table-merged .rubric-row {
+    grid-template-columns: calc(116px * var(--fixed-scale)) repeat(5, minmax(0, 1fr)) !important;
+  }
+
+  #learnMode#learnMode#learnMode#learnMode.learn-topic-module3.lesson-slide-14 .module3-rubric-table-merged .rubric-row > span,
+  #learnMode#learnMode#learnMode#learnMode.learn-topic-module3.lesson-slide-14 .module3-rubric-table-merged .rubric-row > strong,
+  #learnMode#learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-23 .module4-rubric-table-merged .rubric-row > span,
+  #learnMode#learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-23 .module4-rubric-table-merged .rubric-row > strong {
+    padding: calc(1px * var(--fixed-scale)) calc(1px * var(--fixed-scale)) !important;
+    line-height: 0.94 !important;
+  }
+
+  #learnMode#learnMode#learnMode#learnMode.learn-topic-module3.lesson-slide-14 #lessonContent p,
+  #learnMode#learnMode#learnMode#learnMode.learn-topic-module4.lesson-slide-23 #lessonContent p {
+    margin: 0 !important;
+    font-size: max(calc(11px * var(--fixed-scale)), 6.8px) !important;
+    line-height: 0.95 !important;
+  }
+
+  #playMode#playMode.game2-bg:not(.reading-text-mode) .game-actions {
+    position: fixed !important;
+    left: calc(var(--fixed-left) + (184px * var(--fixed-scale))) !important;
+    top: calc(var(--fixed-top) + (620px * var(--fixed-scale))) !important;
+    width: calc(268px * var(--fixed-scale)) !important;
+    height: calc(58px * var(--fixed-scale)) !important;
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: calc(8px * var(--fixed-scale)) !important;
+    margin: 0 !important;
+    z-index: 18 !important;
+  }
+
+  #playMode#playMode.game2-bg:not(.reading-text-mode) .hint-image-btn,
+  #playMode#playMode.game2-bg:not(.reading-text-mode) .fifty-image-btn {
+    width: calc(128px * var(--fixed-scale)) !important;
+    height: calc(56px * var(--fixed-scale)) !important;
+  }
+
+  #playMode#playMode.game2-bg:not(.reading-text-mode) #hintText:empty {
+    display: none !important;
+  }
+}
+
+/* v396: keep Module 2 Activity 2 typing slides fully visible on phone landscape. */
+@media (orientation: landscape) and (max-height: 560px) {
+  #learnMode#learnMode#learnMode#learnMode.learn-topic-module2.lesson-slide-25 #lessonContent,
+  #learnMode#learnMode#learnMode#learnMode.learn-topic-module2.lesson-slide-26 #lessonContent {
+    padding-top: 0 !important;
+    padding-bottom: calc(3px * var(--fixed-scale)) !important;
+    gap: calc(2px * var(--fixed-scale)) !important;
+    font-size: max(calc(13.5px * var(--fixed-scale)), 8px) !important;
+    line-height: 1.02 !important;
+  }
+
+  #learnMode#learnMode#learnMode#learnMode.learn-topic-module2.lesson-slide-25 #lessonContent h2,
+  #learnMode#learnMode#learnMode#learnMode.learn-topic-module2.lesson-slide-26 #lessonContent h2 {
+    margin-bottom: calc(1px * var(--fixed-scale)) !important;
+    font-size: max(calc(20px * var(--fixed-scale)), 11px) !important;
+    line-height: 1 !important;
+  }
+
+  #learnMode#learnMode#learnMode#learnMode.learn-topic-module2.lesson-slide-25 #lessonContent p,
+  #learnMode#learnMode#learnMode#learnMode.learn-topic-module2.lesson-slide-26 #lessonContent p {
+    margin-bottom: calc(1px * var(--fixed-scale)) !important;
+    font-size: max(calc(11.5px * var(--fixed-scale)), 7.6px) !important;
+    line-height: 1.02 !important;
+  }
+
+  #learnMode#learnMode#learnMode#learnMode.learn-topic-module2.lesson-slide-25 .lesson-answer-list-reflection-split,
+  #learnMode#learnMode#learnMode#learnMode.learn-topic-module2.lesson-slide-26 .lesson-answer-list-reflection-split {
+    gap: calc(2px * var(--fixed-scale)) !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+  }
+
+  #learnMode#learnMode#learnMode#learnMode.learn-topic-module2.lesson-slide-25 .lesson-answer-list-reflection-split .lesson-answer-item,
+  #learnMode#learnMode#learnMode#learnMode.learn-topic-module2.lesson-slide-26 .lesson-answer-list-reflection-split .lesson-answer-item {
+    padding: calc(1px * var(--fixed-scale)) calc(4px * var(--fixed-scale)) !important;
+    gap: calc(1px * var(--fixed-scale)) !important;
+    min-height: 0 !important;
+  }
+
+  #learnMode#learnMode#learnMode#learnMode.learn-topic-module2.lesson-slide-25 .lesson-answer-list-reflection-split .lesson-answer-prompt,
+  #learnMode#learnMode#learnMode#learnMode.learn-topic-module2.lesson-slide-26 .lesson-answer-list-reflection-split .lesson-answer-prompt {
+    font-size: max(calc(11.5px * var(--fixed-scale)), 7.6px) !important;
+    line-height: 1 !important;
+  }
+
+  #learnMode#learnMode#learnMode#learnMode.learn-topic-module2.lesson-slide-25 .lesson-response-field-long,
+  #learnMode#learnMode#learnMode#learnMode.learn-topic-module2.lesson-slide-26 .lesson-response-field-long {
+    height: max(calc(42px * var(--fixed-scale)), 24px) !important;
+    min-height: max(calc(42px * var(--fixed-scale)), 24px) !important;
+    padding: calc(2px * var(--fixed-scale)) calc(5px * var(--fixed-scale)) !important;
+    font-size: max(calc(10px * var(--fixed-scale)), 7.5px) !important;
+    line-height: 1.05 !important;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 380px) {
+  #learnMode#learnMode#learnMode#learnMode.learn-topic-module2.lesson-slide-25 .lesson-response-field-long,
+  #learnMode#learnMode#learnMode#learnMode.learn-topic-module2.lesson-slide-26 .lesson-response-field-long {
+    height: max(calc(38px * var(--fixed-scale)), 22px) !important;
+    min-height: max(calc(38px * var(--fixed-scale)), 22px) !important;
+  }
+}
+
+/* v397: keep Game 2 hint controls inside all phone-landscape previews. */
+@media (orientation: landscape) and (max-height: 560px) {
+  #playMode#playMode.game2-bg:not(.reading-text-mode) .game-actions {
+    position: fixed !important;
+    left: calc(var(--fixed-left) + (184px * var(--fixed-scale))) !important;
+    top: calc(var(--fixed-top) + (620px * var(--fixed-scale))) !important;
+    width: calc(268px * var(--fixed-scale)) !important;
+    height: calc(58px * var(--fixed-scale)) !important;
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: calc(8px * var(--fixed-scale)) !important;
+    margin: 0 !important;
+    z-index: 18 !important;
+  }
+
+  #playMode#playMode.game2-bg:not(.reading-text-mode) .hint-image-btn,
+  #playMode#playMode.game2-bg:not(.reading-text-mode) .fifty-image-btn {
+    width: calc(128px * var(--fixed-scale)) !important;
+    height: calc(56px * var(--fixed-scale)) !important;
+  }
+
+  #playMode#playMode.game2-bg:not(.reading-text-mode) #hintText:empty {
+    display: none !important;
   }
 }

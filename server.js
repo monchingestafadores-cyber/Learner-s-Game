@@ -9,6 +9,9 @@ const rooms = new Map()
 const stalePlayerMs = 1000 * 60 * 20
 const highScoreLimit = 10
 const learnAnswerLimit = 120
+const openAiApiKey = process.env.OPENAI_API_KEY || ""
+const openAiModel = process.env.OPENAI_MODEL || "gpt-5"
+const openAiResponsesUrl = "https://api.openai.com/v1/responses"
 const scoreStorePath = path.join(rootDir, "classroom-scores.json")
 let savedScoreStore = loadScoreStore()
 let scoreSaveTimer = null
@@ -242,7 +245,7 @@ function sendJson(res, statusCode, body) {
     "Cache-Control": "no-store",
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Methods": "GET,POST,OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type"
+    "Access-Control-Allow-Headers": "Content-Type, Authorization"
   })
   res.end(JSON.stringify(body))
 }
@@ -306,6 +309,163 @@ function handleEvents(req, res, url) {
   })
 }
 
+function extractOpenAiOutputText(responseBody) {
+  if (typeof responseBody?.output_text === "string") {
+    return responseBody.output_text.trim()
+  }
+
+  const chunks = []
+  const output = Array.isArray(responseBody?.output) ? responseBody.output : []
+
+  for (const item of output) {
+    const content = Array.isArray(item?.content) ? item.content : []
+    for (const part of content) {
+      if (typeof part?.text === "string") chunks.push(part.text)
+      if (typeof part?.output_text === "string") chunks.push(part.output_text)
+    }
+  }
+
+  return chunks.join("\n").trim()
+}
+
+function parseCreativeCheckResult(text) {
+  const clean = String(text || "")
+    .trim()
+    .replace(/^```(?:json)?\s*/i, "")
+    .replace(/```$/i, "")
+    .trim()
+
+  if (!clean) return null
+
+  try {
+    return JSON.parse(clean)
+  } catch {
+    const match = clean.match(/\{[\s\S]*\}/)
+    if (!match) return null
+    try {
+      return JSON.parse(match[0])
+    } catch {
+      return null
+    }
+  }
+}
+
+async function handleCreativeCheck(req, res) {
+  if (!openAiApiKey) {
+    sendJson(res, 503, {
+      error: "AI checker is not configured.",
+      aiAvailable: false
+    })
+    return
+  }
+
+  try {
+    const body = await readJsonBody(req)
+    const figure = sanitizeText(body.figure, 40, "")
+    const figureLabel = sanitizeText(body.figureLabel, 80, figure)
+    const literal = sanitizeText(body.literal, 240, "")
+    const answer = sanitizeText(body.answer, 500, "")
+    const hint = sanitizeText(body.hint, 180, "")
+    const checkRules = Array.isArray(body.checkRules)
+      ? body.checkRules.map(rule => sanitizeText(rule, 80, "")).filter(Boolean).slice(0, 8)
+      : []
+    const requiresSimile = Boolean(body.requiresSimile)
+
+    if (!figure || !literal || !answer) {
+      sendJson(res, 400, {
+        error: "Missing answer details.",
+        aiAvailable: false
+      })
+      return
+    }
+
+    const instructions = [
+      "You check short student answers for a literary devices game.",
+      "Decide whether the answer preserves the original sentence's basic idea and uses the requested figure of speech.",
+      "Accept different wording, minor grammar mistakes, and creative but reasonable answers.",
+      "Do not require the exact sample answer.",
+      "For simile, require a like/as comparison. For metaphor, require a direct comparison without like/as.",
+      "For personification, require a human action, feeling, or quality given to a non-human thing.",
+      "For hyperbole, require clear exaggeration. For alliteration, require nearby repeated beginning sounds.",
+      "If the item requires both alliteration and simile, both must be present.",
+      "Keep the reason short and student-friendly. Return JSON only."
+    ].join(" ")
+
+    const response = await fetch(openAiResponsesUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${openAiApiKey}`
+      },
+      body: JSON.stringify({
+        model: openAiModel,
+        instructions,
+        input: JSON.stringify({
+          requestedFigure: figure,
+          requestedLabel: figureLabel,
+          originalSentence: literal,
+          studentAnswer: answer,
+          hint,
+          checkRules,
+          requiresSimile
+        }),
+        text: {
+          format: {
+            type: "json_schema",
+            name: "creative_answer_check",
+            strict: true,
+            schema: {
+              type: "object",
+              additionalProperties: false,
+              properties: {
+                correct: { type: "boolean" },
+                reason: { type: "string" },
+                confidence: { type: "number" }
+              },
+              required: ["correct", "reason", "confidence"]
+            }
+          }
+        },
+        max_output_tokens: 200
+      })
+    })
+
+    if (!response.ok) {
+      const details = sanitizeText(await response.text(), 300, "OpenAI request failed.")
+      sendJson(res, 502, {
+        error: "AI checker failed.",
+        details,
+        aiAvailable: false
+      })
+      return
+    }
+
+    const responseBody = await response.json()
+    const result = parseCreativeCheckResult(extractOpenAiOutputText(responseBody))
+
+    if (!result || typeof result.correct !== "boolean") {
+      sendJson(res, 502, {
+        error: "AI checker returned an unreadable result.",
+        aiAvailable: false
+      })
+      return
+    }
+
+    const confidence = Number(result.confidence)
+    sendJson(res, 200, {
+      correct: result.correct,
+      reason: sanitizeText(result.reason, 180, result.correct ? "Good creative answer." : "Try revising your answer."),
+      confidence: Number.isFinite(confidence) ? Math.max(0, Math.min(1, confidence)) : 0.5,
+      aiAvailable: true,
+      model: openAiModel
+    })
+  } catch (error) {
+    sendJson(res, 500, {
+      error: "Could not check the creative answer.",
+      aiAvailable: false
+    })
+  }
+}
 async function handleScore(req, res) {
   try {
     const body = await readJsonBody(req)
@@ -388,6 +548,11 @@ const server = http.createServer(async (req, res) => {
 
   if (url.pathname === "/api/score" && req.method === "POST") {
     await handleScore(req, res)
+    return
+  }
+
+  if (url.pathname === "/api/check-creative" && req.method === "POST") {
+    await handleCreativeCheck(req, res)
     return
   }
 

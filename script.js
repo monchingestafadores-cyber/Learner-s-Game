@@ -52,6 +52,7 @@ let learnResponseSaveTimer = null
 let developerAuthorized = false
 let developerPreviewMode = false
 let developerLastQuestionList = { type: "questions", game: 1 }
+let pendingPopupAction = null
 
 const fixedLayout = {
   width: 1280,
@@ -71,6 +72,7 @@ const MAX_SAVED_ANSWER_RUNS = 20
 const MAX_CLASSROOM_ANSWER_RUNS = 5
 const MAX_LEARN_RESPONSES = 120
 const MAX_LEARN_RESPONSE_LENGTH = 700
+const italicLineInstructionText = "Read the italicized line carefully. This is the line you should analyze to answer the question"
 
 const learnTopicClasses = [
   "learn-topic-game",
@@ -214,7 +216,7 @@ if (window.visualViewport) {
 
 const gameMechanicsPages = {
   1: {
-    title: "Sentence Sleuths",
+    title: "Sentence Solver",
     content: `<div class="game-mechanics-card">
       <h2>Game Mechanics</h2>
       <div class="mechanics-mini-grid">
@@ -236,7 +238,7 @@ const gameMechanicsPages = {
         <div><strong>Scoring</strong><span>Correct answers add points and build your streak.</span></div>
         <div><strong>Tools</strong><span>Hints give definitions or examples without giving away the answer.</span></div>
       </div>
-      <p class="mechanics-flow-line">Read Text → Study Clue → Choose → Feedback</p>
+      <p class="mechanics-flow-line">Read Line → Clue → Choose → Feedback</p>
     </div>`
   },
   3: {
@@ -570,11 +572,11 @@ const learnModules = {
     },
     {
       title: "Slide 25",
-      content: `<h2>Activity 2: Construct Simple Sentences (1-3)</h2><p><strong>Directions:</strong> Construct one simple sentence for each type.</p>${lessonAnswerList("module2-slide25-response", "Slide 25: Activity 2", [{ id: "module2-slide25-response-1", prompt: "Simile", html: "<strong>Simile</strong>", placeholder: "Type one simile.", long: true }, { id: "module2-slide25-response-2", prompt: "Metaphor", html: "<strong>Metaphor</strong>", placeholder: "Type one metaphor.", long: true }, { id: "module2-slide25-response-3", prompt: "Personification", html: "<strong>Personification</strong>", placeholder: "Type one personification.", long: true }], "lesson-answer-list-stacked lesson-answer-list-many lesson-answer-list-reflection-split")}`
+      content: `<h2>Activity 2: Construct Simple Sentences</h2><p><strong>Directions:</strong> Construct one simple sentence for each type.</p>${lessonAnswerList("module2-slide25-response", "Slide 25: Activity 2", [{ id: "module2-slide25-response-1", prompt: "Simile", html: "<strong>Simile</strong>", placeholder: "Type one simile.", long: true }, { id: "module2-slide25-response-2", prompt: "Metaphor", html: "<strong>Metaphor</strong>", placeholder: "Type one metaphor.", long: true }, { id: "module2-slide25-response-3", prompt: "Personification", html: "<strong>Personification</strong>", placeholder: "Type one personification.", long: true }], "lesson-answer-list-stacked lesson-answer-list-many lesson-answer-list-reflection-split")}`
     },
     {
       title: "Slide 26",
-      content: `<h2>Activity 2: Construct Simple Sentences (4-5)</h2><p><strong>Directions:</strong> Continue Activity 2. Construct one simple sentence for each type.</p>${lessonAnswerList("module2-slide25-response", "Slide 26: Activity 2", [{ id: "module2-slide25-response-4", prompt: "Hyperbole", html: "<strong>Hyperbole</strong>", placeholder: "Type one hyperbole.", long: true }, { id: "module2-slide25-response-5", prompt: "Symbolism", html: "<strong>Symbolism</strong>", placeholder: "Type one symbolism sentence.", long: true }], "lesson-answer-list-stacked lesson-answer-list-many lesson-answer-list-reflection-split")}`
+      content: `<h2>Activity 2: Construct Simple Sentences</h2><p><strong>Directions:</strong> Construct one simple sentence for each type.</p>${lessonAnswerList("module2-slide25-response", "Slide 26: Activity 2", [{ id: "module2-slide25-response-4", prompt: "Hyperbole", html: "<strong>Hyperbole</strong>", placeholder: "Type one hyperbole.", long: true }, { id: "module2-slide25-response-5", prompt: "Symbolism", html: "<strong>Symbolism</strong>", placeholder: "Type one symbolism sentence.", long: true }], "lesson-answer-list-stacked lesson-answer-list-many lesson-answer-list-reflection-split")}`
     },
     {
       title: "Slide 27",
@@ -772,7 +774,7 @@ const learnModules = {
 }
 
 const gameTitles = {
-  1: "Sentence Sleuths",
+  1: "Sentence Solver",
   2: "Text Detectives",
   3: "Expression Lab"
 }
@@ -785,7 +787,7 @@ const developerContentLabels = {
 
 const lessonGuideMessages = {
   1: [
-    "Before we begin, check the rules for Sentence Sleuths. This tells you how to earn points and unlock the next level.",
+    "Before we begin, check the rules for Sentence Solver. This tells you how to earn points and unlock the next level.",
     "This is where we learn what figures of speech do. Read the scroll first, then I will help you practice.",
     "Watch for like or as. If they are missing, it may be a direct comparison.",
     "These three are easy to mix up. Look for human action, exaggeration, or a phrase with a hidden meaning."
@@ -1740,6 +1742,10 @@ function getClassroomScoreApiUrl() {
   return getClassroomApiUrl("/api/score")
 }
 
+function getCreativeCheckApiUrl() {
+  return getClassroomApiUrl("/api/check-creative")
+}
+
 function getClassroomEventsApiUrl() {
   if (isNetlifyFunctionApi()) return ""
   return getClassroomApiUrl("/api/events", `?room=${encodeURIComponent(multiplayerRoomCode)}&clientId=${encodeURIComponent(getMultiplayerClientId())}`)
@@ -1865,10 +1871,45 @@ function escapeHtml(value) {
   }[char]))
 }
 
-function formatQuestionPrompt(question) {
-  return [question.sentence, question.question]
+function hasQuotationMark(value) {
+  return /["“”]/.test(String(value || ""))
+}
+
+function formatLineWithQuotationMarks(value) {
+  return String(value || "")
+    .split("\n")
+    .map(line => {
+      const escapedLine = escapeHtml(line)
+      return hasQuotationMark(line) ? `<em>${escapedLine}</em>` : escapedLine
+    })
+    .join("<br>")
+}
+
+function quoteLineForDisplay(line) {
+  const text = String(line || "").trim()
+  if (!text) return ""
+  const startsWithQuote = /^["“]/.test(text)
+  const endsWithQuote = /["”]$/.test(text)
+  return `${startsWithQuote ? "" : "&quot;"}${escapeHtml(text)}${endsWithQuote ? "" : "&quot;"}`
+}
+
+function formatGame2Line(value) {
+  return String(value || "")
+    .split("\n")
+    .map(line => {
+      const quotedLine = quoteLineForDisplay(line)
+      return quotedLine ? `<em>${quotedLine}</em>` : ""
+    })
     .filter(Boolean)
-    .map(part => escapeHtml(part).replace(/\n/g, "<br>"))
+    .join("<br>")
+}
+
+function formatQuestionPrompt(question) {
+  return [
+    formatLineWithQuotationMarks(question.sentence),
+    escapeHtml(question.question).replace(/\n/g, "<br>")
+  ]
+    .filter(Boolean)
     .join("<br><br>")
 }
 
@@ -3032,7 +3073,7 @@ function getDeveloperContentEntries(gameNumber) {
         level: level.level,
         index,
         label: `Level ${level.level} Q${index + 1}`,
-        title: question.sentence || question.text || question.question || "Sentence Sleuths Text",
+        title: question.sentence || question.text || question.question || "Sentence Solver Text",
         subtitle: question.question || "",
         body: question.sentence || question.text || "",
         answer: question.answer || question.figure || "",
@@ -3058,7 +3099,7 @@ function getDeveloperContentEntries(gameNumber) {
     game: 3,
     index,
     label: `Level ${question.level || Math.floor(index / 5) + 1} Prompt ${(index % 5) + 1}`,
-    title: `Rewrite using ${question.figureLabel || question.figure}`,
+    title: `Rewrite the sentence using ${question.figureLabel || question.figure}`,
     subtitle: question.source ? `Inspired by ${question.source}` : question.literal,
     body: question.literal,
     answer: question.figureLabel || question.figure || "",
@@ -3203,7 +3244,7 @@ function developerOpenInstructionList() {
       <button type="button" onclick="openDeveloperCheckPanel()">Back</button>
     </div>
     <div class="developer-check-grid">
-      <button type="button" onclick="developerPreviewInstructions(1)">Sentence Sleuths Instructions</button>
+      <button type="button" onclick="developerPreviewInstructions(1)">Sentence Solver Instructions</button>
       <button type="button" onclick="developerPreviewInstructions(2)">Text Detectives Instructions</button>
       <button type="button" onclick="developerPreviewInstructions(3)">Expression Lab Instructions</button>
     </div>
@@ -5156,7 +5197,7 @@ function getQuestionLogPrompt(question) {
   if (!question) return "Question"
 
   if (currentGame === 3) {
-    return `Rewrite using ${question.figureLabel || question.figure}: ${question.literal}`
+    return `Rewrite the sentence using ${question.figureLabel || question.figure}: ${question.literal}`
   }
 
   if (question.text) {
@@ -5255,6 +5296,8 @@ function startGame(gameNumber, resetCarriedStats = false, sentenceLevel = 1) {
 
   if (currentGame === 2) {
     showGame2ReadingPage()
+  } else if (currentGame === 1) {
+    showItalicLineInstructionBeforeQuestions(loadQuestion)
   } else {
     loadQuestion()
   }
@@ -5428,7 +5471,7 @@ function beginGame2Questions() {
   activeGame2ReadingPart = 0
   document.getElementById("playMode").classList.remove("reading-text-mode")
   currentQuestion = 0
-  loadQuestion()
+  showItalicLineInstructionBeforeQuestions(loadQuestion)
 }
 
 function loadQuestion() {
@@ -5452,16 +5495,16 @@ function loadQuestion() {
 
   if (currentGame === 3) {
     document.getElementById("questionText").innerHTML =
-      `<span class="rewrite-title">Rewrite using <b>${q.figureLabel || q.figure}</b></span><span class="literal-line">Sentence: ${q.literal}</span>`
+      `<span class="rewrite-title">Rewrite the sentence using <b>${q.figureLabel || q.figure}</b></span><span class="literal-line">Sentence: ${q.literal}</span>`
 
     document.getElementById("choices").innerHTML = `
       <input id="playerAnswer" class="answer-input" placeholder="Type your answer here">
-      <button onclick="sparkButton(this); checkCreative()">Submit</button>
+      <button id="creativeCheckButton" onclick="sparkButton(this); checkCreative()">AI Check</button>
     `
   } else {
     if (q.text) {
       document.getElementById("questionText").innerHTML =
-        `<b>Text:</b><br>${q.text}<br><br>${q.question}`
+        `<b>Line:</b><br>${formatGame2Line(q.text)}<br><br>${escapeHtml(q.question)}`
     } else {
       document.getElementById("questionText").innerHTML = formatQuestionPrompt(q)
     }
@@ -5515,64 +5558,236 @@ function checkAnswer(choice) {
   }
 }
 
+const creativeStopWords = new Set([
+  "the", "a", "an", "is", "are", "am", "was", "were", "be", "been", "being",
+  "very", "for", "after", "through", "on", "in", "to", "of", "during", "tonight",
+  "and", "while", "using", "with", "by", "at", "from", "that", "this", "these", "those",
+  "one", "two", "thing", "things", "sentence", "word", "words", "into", "as", "like"
+])
+
+const creativeFigureWords = new Set([
+  "simile", "metaphor", "personification", "hyperbole", "alliteration", "figure", "speech"
+])
+
 function getCreativeWords(answer) {
   return String(answer || "")
     .toLowerCase()
-    .replace(/[^a-z\s]/g, " ")
+    .replace(/'/g, "")
+    .replace(/[^a-z0-9\s]/g, " ")
     .split(/\s+/)
     .filter(Boolean)
 }
 
+function getCreativeWordForms(word) {
+  const clean = String(word || "").toLowerCase()
+  const forms = new Set([clean])
+
+  if (clean.length > 4 && clean.endsWith("ies")) {
+    forms.add(clean.slice(0, -3) + "y")
+  }
+
+  if (clean.length > 5 && clean.endsWith("ing")) {
+    const root = clean.slice(0, -3)
+    forms.add(root)
+    forms.add(root + "e")
+    if (/([bcdfghjklmnpqrstvwxyz])\1$/.test(root)) forms.add(root.slice(0, -1))
+  }
+
+  if (clean.length > 4 && clean.endsWith("ed")) {
+    const root = clean.slice(0, -2)
+    forms.add(root)
+    forms.add(root + "e")
+  }
+
+  if (clean.length > 4 && clean.endsWith("er")) {
+    forms.add(clean.slice(0, -2))
+  }
+
+  if (clean.length > 4 && clean.endsWith("est")) {
+    forms.add(clean.slice(0, -3))
+  }
+
+  if (clean.length > 4 && clean.endsWith("es")) {
+    forms.add(clean.slice(0, -2))
+    forms.add(clean.slice(0, -1))
+  }
+
+  if (clean.length > 3 && clean.endsWith("s")) {
+    forms.add(clean.slice(0, -1))
+  }
+
+  return [...forms].filter(Boolean)
+}
+
+function hasCreativeWord(words, candidates) {
+  const forms = new Set()
+  words.forEach(word => getCreativeWordForms(word).forEach(form => forms.add(form)))
+  return candidates.some(candidate => forms.has(String(candidate || "").toLowerCase()))
+}
+
+function isContextWord(word, contextWords) {
+  return hasCreativeWord([word], [...contextWords])
+}
+
+function isMeaningfulCreativeWord(word) {
+  return String(word || "").length >= 3
+    && !creativeStopWords.has(word)
+    && !creativeFigureWords.has(word)
+}
+
+function isComparisonTarget(word, contextWords) {
+  return isMeaningfulCreativeWord(word) && !isContextWord(word, contextWords)
+}
+
 function getPromptKeywords(question) {
-  const stopWords = new Set([
-    "the", "a", "an", "is", "are", "am", "was", "were", "very", "for", "after", "through",
-    "on", "in", "to", "of", "during", "tonight", "and", "while", "using", "with"
+  const promptStopWords = new Set([
+    ...creativeStopWords,
+    "calm", "strong", "moved", "move", "smiled", "smile", "happily", "fell", "flowed",
+    "smoothly", "brightly", "soft", "singing", "gave", "carried", "heavy", "waited",
+    "many", "years", "outside", "sailing"
   ])
 
   return getCreativeWords(question?.literal || "")
-    .map(word => word.replace(/'(s)?$/, ""))
-    .filter(word => word.length >= 3 && !stopWords.has(word))
+    .flatMap(word => getCreativeWordForms(word))
+    .filter(word => word.length >= 3 && !promptStopWords.has(word))
+}
+
+function getQuestionContextWords(question) {
+  const literal = String(question?.literal || "").toLowerCase()
+  const contextWords = new Set(getPromptKeywords(question))
+  const groups = [
+    { pattern: /\bsea\b|\bocean\b|\bshore\b/, words: ["sea", "ocean", "water", "wave", "tide", "shore"] },
+    { pattern: /\bfarmer\b/, words: ["farmer", "farm", "field", "worker", "man", "earth", "soil", "strong"] },
+    { pattern: /\bwind\b|\bforest\b/, words: ["wind", "breeze", "air", "forest", "tree", "trees", "branch", "branches"] },
+    { pattern: /\bchild\b|\bsmiled\b|\bsmile\b/, words: ["child", "kid", "boy", "girl", "smile", "happy", "happiness", "joy"] },
+    { pattern: /\brain\b|\broof\b/, words: ["rain", "roof", "drop", "drops", "storm", "water"] },
+    { pattern: /\bbeloved\b|\bwaited\b/, words: ["she", "her", "beloved", "love", "lover", "wait", "waiting"] },
+    { pattern: /\bclassroom\b|\bnoisy\b/, words: ["classroom", "class", "room", "student", "students", "noise", "noisy", "loud"] },
+    { pattern: /\briver\b/, words: ["river", "stream", "water", "flow", "flowing"] },
+    { pattern: /\bbasket\b|\bheavy\b|\bcarried\b/, words: ["basket", "carry", "carried", "load", "burden", "heavy", "he", "his"] },
+    { pattern: /\bfire\b|\bburned\b/, words: ["fire", "flame", "flames", "burn", "burned", "night", "light"] },
+    { pattern: /\bstorm\b/, words: ["storm", "typhoon", "wind", "rain", "thunder", "outside"] },
+    { pattern: /\bfisherman\b|\bsailing\b/, words: ["fisherman", "fisher", "sail", "sailing", "boat", "sea", "tired", "he", "his"] },
+    { pattern: /\bgirl\b|\bvoice\b|\bsinging\b/, words: ["girl", "voice", "song", "sing", "singing", "melody", "music", "her"] },
+    { pattern: /\bmother\b|\bcomfort\b|\bchild\b/, words: ["mother", "mom", "mama", "child", "comfort", "warmth", "care", "her"] },
+    { pattern: /\bleaves\b|\bleaf\b/, words: ["leaf", "leaves", "storm", "wind", "tree", "trees"] }
+  ]
+
+  groups.forEach(group => {
+    if (group.pattern.test(literal)) {
+      group.words.forEach(word => contextWords.add(word))
+    }
+  })
+
+  return contextWords
 }
 
 function hasPromptConnection(question, words) {
-  const answerWords = new Set(words)
   const pronouns = ["he", "she", "it", "they", "his", "her", "its", "their", "him", "them", "i"]
-  const promptKeywords = getPromptKeywords(question)
+  const contextWords = getQuestionContextWords(question)
 
-  return promptKeywords.some(word => answerWords.has(word))
-    || pronouns.some(word => answerWords.has(word))
+  return hasCreativeWord(words, [...contextWords]) || hasCreativeWord(words, pronouns)
 }
 
 function hasValidSimileStructure(words, question = null) {
-  const promptKeywords = new Set(getPromptKeywords(question))
+  const contextWords = getQuestionContextWords(question)
 
   return words.some((word, index) => {
     if (word !== "like" && word !== "as") return false
 
-    const hasBefore = words.slice(0, index).some(part => part !== "like" && part !== "as")
-    const hasAfter = words.slice(index + 1).some(part =>
-      part !== "like"
-      && part !== "as"
-      && !["a", "an", "the"].includes(part)
-      && !promptKeywords.has(part)
+    const beforeHasSubject = words.slice(0, index).some(part =>
+      isMeaningfulCreativeWord(part) || ["he", "she", "it", "they", "his", "her", "their"].includes(part)
     )
-    return hasBefore && hasAfter
+
+    if (!beforeHasSubject) return false
+
+    if (word === "as") {
+      const secondAsIndex = words.indexOf("as", index + 1)
+      if (secondAsIndex > index) {
+        const hasDescriptor = words.slice(index + 1, secondAsIndex).some(part => isMeaningfulCreativeWord(part))
+        const hasTarget = words.slice(secondAsIndex + 1).some(part => isComparisonTarget(part, contextWords))
+        return hasDescriptor && hasTarget
+      }
+    }
+
+    return words.slice(index + 1).some(part => isComparisonTarget(part, contextWords))
   })
 }
 
 function hasDirectMetaphorStructure(words, question = null) {
-  const linkingWords = new Set(["is", "are", "am", "was", "were", "becomes", "become", "became"])
-  const promptKeywords = new Set(getPromptKeywords(question))
-  const linkIndex = words.findIndex(word => linkingWords.has(word))
-  if (linkIndex < 1) return false
+  const linkingWords = new Set(["is", "are", "am", "was", "were", "becomes", "become", "became", "turns", "turned"])
+  const subjectWords = new Set(["he", "she", "it", "they", "his", "her", "their"])
+  const contextWords = getQuestionContextWords(question)
 
-  const afterLink = words.slice(linkIndex + 1).filter(word => !["a", "an", "the"].includes(word))
-  return afterLink.some(word => word.length >= 3 && !promptKeywords.has(word))
+  for (let index = 0; index < words.length; index += 1) {
+    if (!linkingWords.has(words[index])) continue
+
+    const hasSubjectBefore = words.slice(0, index).some(word =>
+      isMeaningfulCreativeWord(word) || subjectWords.has(word)
+    )
+    const hasTargetAfter = words.slice(index + 1).some(word => isComparisonTarget(word, contextWords))
+    if (hasSubjectBefore && hasTargetAfter) return true
+  }
+
+  return words.some((word, index) => {
+    if (!isContextWord(word, contextWords) && !subjectWords.has(word)) return false
+    const markerIndex = words.slice(index + 1, index + 5).findIndex(part => ["a", "an", "the"].includes(part))
+    if (markerIndex < 0) return false
+    const targetStart = index + markerIndex + 2
+    return words.slice(targetStart, targetStart + 4).some(part => isComparisonTarget(part, contextWords))
+  })
 }
 
 function hasAlliterationPair(words) {
-  const contentWords = words.filter(word => word.length >= 3 && !["the", "and", "like", "as"].includes(word))
-  return contentWords.some((word, index) => contentWords[index + 1] && word[0] === contentWords[index + 1][0])
+  const contentWords = words.filter(word =>
+    isMeaningfulCreativeWord(word) && /^[bcdfghjklmnpqrstvwxyz]/.test(word)
+  )
+
+  return contentWords.some((word, index) =>
+    contentWords.slice(index + 1, index + 5).some(nextWord => nextWord[0] === word[0])
+  )
+}
+
+function hasPersonificationSignal(words) {
+  const humanActionWords = [
+    "whisper", "dance", "sing", "talk", "cry", "laugh", "smile", "hug", "call",
+    "scream", "sleep", "sob", "weep", "welcome", "grumble", "run", "walk", "chase",
+    "creep", "shout", "fear", "beg", "comfort", "kiss", "knock", "tap", "greet",
+    "watch", "listen", "breathe", "crawl", "kick", "fight", "argue", "invite", "tease",
+    "play", "pray", "dream", "remember", "reach", "clap", "cheer", "sigh", "moan",
+    "groan", "angry", "happy", "sad", "lonely", "friendly", "tired", "stubborn"
+  ]
+
+  return hasCreativeWord(words, humanActionWords)
+}
+
+function hasHyperboleSignal(answer, words) {
+  const normalized = ` ${words.join(" ")} `
+  const exaggerationWords = [
+    "million", "billion", "trillion", "thousand", "hundred", "forever", "tons", "ton",
+    "always", "never", "entire", "whole", "endless", "infinite", "mountain", "ocean",
+    "world", "planet", "universe", "moon", "starving", "dying", "dead", "death", "exploded",
+    "explode", "biggest", "smallest", "heaviest", "river", "sky", "earth", "lifetime",
+    "lifetimes", "giant", "gigantic", "monstrous", "massive", "impossible", "unbearable",
+    "crushed", "crush", "drown", "flood", "shatter", "melt", "tear"
+  ]
+  const phrasePatterns = [
+    /\bso\s+\w+\s+that\b/,
+    /\btoo\s+\w+\s+to\b/,
+    /\bto\s+death\b/,
+    /\bfor\s+(a\s+)?(lifetime|eternity|forever)\b/,
+    /\b(end\s+of\s+time|end\s+of\s+the\s+world)\b/,
+    /\bweigh\w*\s+(a\s+)?(ton|tons|mountain|world)\b/,
+    /\bshake\w*\s+(the\s+)?(world|earth|sky)\b/,
+    /\bcry\w*\s+(a\s+)?(river|ocean)\b/,
+    /\bsleep\w*\s+for\s+(a\s+)?(hundred|thousand|million|lifetime)\b/
+  ]
+  const hasBigNumber = (String(answer || "").match(/\b\d+\b/g) || [])
+    .some(numberText => Number(numberText) >= 100)
+
+  return hasBigNumber
+    || hasCreativeWord(words, exaggerationWords)
+    || phrasePatterns.some(pattern => pattern.test(normalized))
 }
 
 function validateCreativeAnswer(question, rawAnswer) {
@@ -5581,13 +5796,13 @@ function validateCreativeAnswer(question, rawAnswer) {
   const usesLikeOrAs = words.includes("like") || words.includes("as")
   const enoughWords = words.length >= 3
   const hasConnection = hasPromptConnection(question, words)
-  const emptyFigureWords = new Set(["like", "as", "simile", "metaphor", "personification", "hyperbole", "alliteration"])
+  const figure = question.figure
 
   if (!answer) {
     return { correct: false, reason: "Please type your answer first." }
   }
 
-  if (!enoughWords || words.every(word => emptyFigureWords.has(word))) {
+  if (!enoughWords || words.every(word => creativeFigureWords.has(word) || ["like", "as"].includes(word))) {
     return { correct: false, reason: "Please write a complete answer, not just one clue word." }
   }
 
@@ -5595,14 +5810,14 @@ function validateCreativeAnswer(question, rawAnswer) {
     return { correct: false, reason: "Keep the original idea from the sentence while rewriting it." }
   }
 
-  if (question.figure === "Simile") {
+  if (figure === "Simile") {
     if (words.length < 4 || !hasValidSimileStructure(words, question)) {
-      return { correct: false, reason: "Use like or as with words before and after it to make a real comparison." }
+      return { correct: false, reason: "Use like or as with a clear comparison target." }
     }
     return { correct: true }
   }
 
-  if (question.figure === "Metaphor") {
+  if (figure === "Metaphor") {
     if (usesLikeOrAs) {
       return { correct: false, reason: "A metaphor should be direct, so do not use like or as." }
     }
@@ -5612,40 +5827,19 @@ function validateCreativeAnswer(question, rawAnswer) {
     return { correct: true }
   }
 
-  if (question.figure === "Personification") {
-    const humanActionWords = [
-      "whisper", "whispers", "whispered", "dance", "dances", "danced", "sing", "sings", "sang",
-      "talk", "talks", "talked", "cry", "cries", "cried", "laugh", "laughs", "laughed",
-      "smile", "smiles", "smiled", "hug", "hugs", "hugged", "call", "calls", "called",
-      "scream", "screams", "screamed", "sleep", "sleeps", "slept", "sob", "sobs", "sobbed",
-      "weep", "weeps", "wept", "welcome", "welcomes", "welcomed", "angry", "happy", "sad",
-      "lonely", "friendly", "tired", "stubborn", "grumble", "grumbles", "grumbled",
-      "run", "runs", "ran", "walk", "walks", "walked", "chase", "chases", "chased",
-      "creep", "creeps", "crept", "shout", "shouts", "shouted", "fear", "fears", "feared",
-      "beg", "begs", "begged", "comfort", "comforts", "comforted"
-    ]
-    const hasHumanAction = humanActionWords.some(word => words.includes(word))
-    return hasHumanAction
+  if (figure === "Personification") {
+    return hasPersonificationSignal(words)
       ? { correct: true }
       : { correct: false, reason: "Give the non-human thing a human action or feeling." }
   }
 
-  if (question.figure === "Hyperbole") {
-    const exaggerationWords = [
-      "million", "billion", "trillion", "thousand", "hundred", "forever", "tons", "always",
-      "never", "entire", "whole", "endless", "infinite", "mountain",
-      "ocean", "world", "planet", "universe", "moon", "starving", "dying", "exploded",
-      "biggest", "smallest", "heaviest", "river", "sky", "earth", "death", "lifetime",
-      "lifetimes", "giant", "impossible"
-    ]
-    const hasBigNumber = (answer.match(/\b\d+\b/g) || []).some(numberText => Number(numberText) >= 100)
-    const hasExaggeration = hasBigNumber || exaggerationWords.some(word => words.includes(word))
-    return hasExaggeration
+  if (figure === "Hyperbole") {
+    return hasHyperboleSignal(answer, words)
       ? { correct: true }
       : { correct: false, reason: "Add clear exaggeration so the sentence becomes stronger than real life." }
   }
 
-  if (question.figure === "Alliteration") {
+  if (figure === "Alliteration") {
     const hasAlliteration = hasAlliterationPair(words)
     if (!hasAlliteration) {
       return { correct: false, reason: "Use nearby words that start with the same sound." }
@@ -5660,16 +5854,51 @@ function validateCreativeAnswer(question, rawAnswer) {
 
   return { correct: false, reason: "Please follow the figure of speech in the prompt." }
 }
+function setCreativeCheckPending(isPending) {
+  const input = document.getElementById("playerAnswer")
+  const button = document.getElementById("creativeCheckButton")
 
-function checkCreative() {
-  if (alreadyAnswered) return
-  alreadyAnswered = true
-  clearInterval(questionTimerInterval)
+  if (input) input.disabled = isPending
+  if (button) button.disabled = isPending
+}
 
-  const q = questions[currentQuestion]
-  const rawAnswer = document.getElementById("playerAnswer").value
-  const validation = validateCreativeAnswer(q, rawAnswer)
-  const correct = validation.correct
+function canUseRemoteCreativeChecker() {
+  return canUseMultiplayer() || Boolean(classroomApiBase)
+}
+
+async function requestCreativeAiCheck(question, rawAnswer) {
+  const response = await fetch(getCreativeCheckApiUrl(), {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      figure: question.figure,
+      figureLabel: question.figureLabel || question.figure,
+      literal: question.literal,
+      answer: rawAnswer,
+      hint: question.hint || "",
+      checkRules: question.checkRules || [],
+      requiresSimile: Boolean(question.requiresSimile)
+    })
+  })
+
+  if (!response.ok) {
+    throw new Error("AI checker is unavailable.")
+  }
+
+  const result = await response.json()
+  if (!result || typeof result.correct !== "boolean") {
+    throw new Error("AI checker returned an unreadable result.")
+  }
+
+  return {
+    correct: result.correct,
+    reason: String(result.reason || "").trim(),
+    aiAvailable: Boolean(result.aiAvailable)
+  }
+}
+
+function finishCreativeAnswer(q, rawAnswer, validation) {
+  const correct = Boolean(validation.correct)
 
   if (!developerPreviewMode) {
     recordCurrentRunAnswer(q, rawAnswer, q.figureLabel || q.figure, correct)
@@ -5689,16 +5918,44 @@ function checkCreative() {
     disableChoices()
     if (!developerPreviewMode) setTimeout(nextQuestion, awardDelay || 1500)
     return
-  } else {
-    const correction = validation.reason
-      ? `${validation.reason} ${q.incorrectFeedback || ""}`.trim()
-      : q.incorrectFeedback || `Try again next time. Remember: ${q.hint}`
-    setFeedback("wrong", "Wrong!", correction, true)
-    setGuideState("assets/images/guide-default.png", correction)
   }
 
+  const correction = validation.reason
+    ? `${validation.reason} ${q.incorrectFeedback || ""}`.trim()
+    : q.incorrectFeedback || `Try again next time. Remember: ${q.hint}`
+  setFeedback("wrong", "Wrong!", correction, true)
+  setGuideState("assets/images/guide-default.png", correction)
   updateStats()
   disableChoices()
+}
+async function checkCreative() {
+  if (alreadyAnswered) return
+
+  const q = questions[currentQuestion]
+  const answerInput = document.getElementById("playerAnswer")
+  const rawAnswer = answerInput ? answerInput.value : ""
+  const localValidation = validateCreativeAnswer(q, rawAnswer)
+  let validation = localValidation
+
+  alreadyAnswered = true
+  clearInterval(questionTimerInterval)
+
+  if (String(rawAnswer || "").trim() && canUseRemoteCreativeChecker()) {
+    setCreativeCheckPending(true)
+    setFeedback("pending", "Checking...", "AI is reviewing your answer.")
+    setGuideState("assets/images/guide-default.png", "Checking your answer...")
+
+    try {
+      const aiValidation = await requestCreativeAiCheck(q, rawAnswer)
+      validation = aiValidation.correct || localValidation.correct
+        ? { correct: true }
+        : { correct: false, reason: aiValidation.reason || localValidation.reason }
+    } catch {
+      validation = localValidation
+    }
+  }
+
+  finishCreativeAnswer(q, rawAnswer, validation)
 }
 
 function nextQuestion() {
@@ -5899,6 +6156,9 @@ function disableChoices() {
 
   const input = document.getElementById("playerAnswer")
   if (input) input.disabled = true
+
+  const creativeButton = document.getElementById("creativeCheckButton")
+  if (creativeButton) creativeButton.disabled = true
 }
 
 function updateModuleLocks() {
@@ -5931,7 +6191,7 @@ function updateModuleLocks() {
 
 function lockedMessage(moduleNumber) {
   if (moduleNumber === 2 && !completedGames.has(1)) {
-    showPopup("NOTE", "Please finish Sentence Sleuths Levels 1, 2, and 3 before proceeding.")
+    showPopup("NOTE", "Please finish Sentence Solver Levels 1, 2, and 3 before proceeding.")
     return
   }
 
@@ -5995,16 +6255,24 @@ function showBadgeAward(badgeKey, completedAllBadges = false) {
   }, completedAllBadges ? 3400 : 2300)
 }
 
-function showPopup(title, message) {
+function showPopup(title, message, onClose = null) {
+  pendingPopupAction = typeof onClose === "function" ? onClose : null
   document.getElementById("popupBox").classList.remove("mechanics-popup", "answers-popup", "developer-popup", "developer-password-popup", "developer-review-popup")
   document.getElementById("popupTitle").innerText = title
   document.getElementById("popupMessage").innerText = message
   document.getElementById("popupPanel").classList.remove("hidden")
 }
 
+function showItalicLineInstructionBeforeQuestions(onContinue) {
+  showPopup("Instruction", italicLineInstructionText, onContinue)
+}
+
 function closePopup() {
+  const action = pendingPopupAction
+  pendingPopupAction = null
   document.getElementById("popupBox").classList.remove("mechanics-popup", "answers-popup", "developer-popup", "developer-password-popup", "developer-review-popup")
   document.getElementById("popupPanel").classList.add("hidden")
+  if (action) action()
 }
 
 function showSuccessBoard(gameNumber, nextGame = null) {
@@ -6041,10 +6309,10 @@ function showSentenceLevelSuccessBoard(levelNumber, nextLevel) {
   const summary = `Score: ${score} | Hints: ${hintCount} | Streak: ${streak}`
 
   title.innerText = "Complete!"
-  message.innerText = `Sentence Sleuths Level ${levelNumber} complete!\n${summary}\nLevel ${nextLevel} is unlocked.`
+  message.innerText = `Sentence Solver Level ${levelNumber} complete!\n${summary}\nLevel ${nextLevel} is unlocked.`
   actions.innerHTML = `
-    <button onclick="goToSentenceLevel(${nextLevel})" class="image-btn next-image-btn" aria-label="Go to Sentence Sleuths Level ${nextLevel}" title="Go to Sentence Sleuths Level ${nextLevel}"></button>
-    <button onclick="restartSentenceLevel(${levelNumber})" class="image-btn restart-image-btn" aria-label="Restart Sentence Sleuths Level ${levelNumber}" title="Restart Sentence Sleuths Level ${levelNumber}"></button>
+    <button onclick="goToSentenceLevel(${nextLevel})" class="image-btn next-image-btn" aria-label="Go to Sentence Solver Level ${nextLevel}" title="Go to Sentence Solver Level ${nextLevel}"></button>
+    <button onclick="restartSentenceLevel(${levelNumber})" class="image-btn restart-image-btn" aria-label="Restart Sentence Solver Level ${levelNumber}" title="Restart Sentence Solver Level ${levelNumber}"></button>
   `
 
   document.getElementById("successPanel").classList.remove("hidden")
@@ -6115,7 +6383,7 @@ function showInstructions() {
       <div class="mechanics-games" aria-label="Game modes">
         <div class="mechanics-game-card">
           <span class="mechanics-game-badge">Game 1</span>
-          <strong>Sentence Sleuths</strong>
+          <strong>Sentence Solver</strong>
           <p>Clear Levels 1, 2, and 3 before Text Detectives unlocks.</p>
         </div>
         <div class="mechanics-game-card">
@@ -6366,6 +6634,8 @@ document.addEventListener("click", event => {
 
   createGlitterBurst(event.clientX, event.clientY)
 })
+
+
 
 
 
