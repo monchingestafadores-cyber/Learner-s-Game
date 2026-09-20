@@ -29,6 +29,14 @@ let questionTimeLeft = 15
 let musicMuted = false
 
 let lessonTimerInterval = null
+let lessonTransitionTimer = null
+let lessonVideoTransitionBusy = false
+let lessonTurnCoverStop = null
+let moduleTurnCoverStop = null
+let pendingLessonLayoutUpdate = null
+let activeLearnModuleTopic = null
+let pendingLearnModulePage = null
+let moduleTransitionBusy = false
 let readTimeLeft = 5
 let skipLessonReadTimer = false
 let resetStatsOnNextGameStart = false
@@ -650,7 +658,7 @@ const learnModules = {
     },
     {
       title: "Slide 14",
-      content: `<h2>Analytic Rubric</h2><div class="module3-rubric-table module3-rubric-table-merged" role="table" aria-label="Analytic Rubric"><div class="rubric-row rubric-head" role="row"><span>Criteria</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="rubric-row" role="row"><strong>Use of Sound Devices</strong><span>Correctly uses all required sound devices.</span><span>Uses most sound devices correctly.</span><span>Uses some sound devices with minor errors.</span><span>Uses only one sound device or several errors.</span><span>Does not correctly use the required sound devices.</span></div><div class="rubric-row" role="row"><strong>Creativity</strong><span>Poem is highly creative and original.</span><span>Poem is creative.</span><span>Poem shows some creativity.</span><span>Poem has limited creativity.</span><span>Poem lacks creativity.</span></div><div class="rubric-row" role="row"><strong>Clarity</strong><span>Ideas are clear and organized.</span><span>Ideas are mostly clear.</span><span>Ideas are understandable.</span><span>Ideas are somewhat unclear.</span><span>Ideas are difficult to understand.</span></div><div class="rubric-row" role="row"><strong>Grammar and Mechanics</strong><span>No grammar, spelling, or punctuation errors.</span><span>One or two minor errors.</span><span>Some errors that do not affect meaning.</span><span>Frequent errors that affect understanding.</span><span>Many errors that make the poem difficult to understand.</span></div><div class="rubric-row" role="row"><strong>Completeness</strong><span>All instructions are followed.</span><span>One minor requirement is missing.</span><span>Two requirements are missing.</span><span>Several requirements are missing.</span><span>Most requirements are not completed.</span></div></div><p><strong>Total Score:</strong> ____ /25</p>`
+      content: `<h2>Analytic Rubric</h2><div class="module3-rubric-table module3-rubric-table-merged" role="table" aria-label="Analytic Rubric"><div class="rubric-row rubric-head" role="row"><span>Criteria</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div class="rubric-row" role="row"><strong>Use of Sound Devices</strong><span>Correctly uses all required sound devices.</span><span>Uses most sound devices correctly.</span><span>Uses some sound devices with minor errors.</span><span>Uses only one sound device or several errors.</span><span>Does not correctly use the required sound devices.</span></div><div class="rubric-row" role="row"><strong>Creativity</strong><span>Poem is highly creative and original.</span><span>Poem is creative.</span><span>Poem shows some creativity.</span><span>Poem has limited creativity.</span><span>Poem lacks creativity.</span></div><div class="rubric-row" role="row"><strong>Clarity</strong><span>Ideas are clear and organized.</span><span>Ideas are mostly clear.</span><span>Ideas are understandable.</span><span>Ideas are somewhat unclear.</span><span>Ideas are difficult to understand.</span></div><div class="rubric-row" role="row"><strong>Grammar and Mechanics</strong><span>No grammar, spelling, or punctuation errors.</span><span>One or two minor errors.</span><span>Some errors that do not affect meaning.</span><span>Frequent errors that affect understanding.</span><span>Many errors that make the poem difficult to understand.</span></div><div class="rubric-row" role="row"><strong class="rubric-completeness-label">Completeness</strong><span>All instructions are followed.</span><span>One minor requirement is missing.</span><span>Two requirements are missing.</span><span>Several requirements are missing.</span><span>Most requirements are not completed.</span></div></div><p><strong>Total Score:</strong> ____ /25</p>`
     },
     {
       title: "Slide 15",
@@ -2888,6 +2896,11 @@ function showFullscreenGuide() {
 }
 
 function showChooseMode() {
+  clearModulePageTransition()
+  pendingLearnModulePage = null
+  activeLearnModuleTopic = null
+  pendingLearnModulePage = null
+  activeLearnModuleTopic = null
   if (!playerName) {
     showPlayerSetup()
     return
@@ -2901,6 +2914,10 @@ function showChooseMode() {
 }
 
 function showLearnBlank() {
+  const learnMode = document.getElementById("learnMode")
+  if (!moduleTransitionBusy && activeLearnModuleTopic && learnMode && !learnMode.classList.contains("hidden")) {
+    pendingLearnModulePage = cloneLessonTurnPage()
+  }
   clearInterval(lessonTimerInterval)
   hideAllScreens()
   document.getElementById("learnBlank").classList.remove("hidden")
@@ -2931,9 +2948,10 @@ function showDeveloperCheckPanel() {
   document.getElementById("popupTitle").innerText = "Developer Password"
   popupMessage.innerHTML = `
     <div class="developer-password-form">
-      <input id="developerPasswordInput" type="password" maxlength="12" inputmode="numeric" autocomplete="off" placeholder="Enter password" aria-label="Developer password" onkeydown="if (event.key === 'Enter') submitDeveloperPassword()">
+      <p>Enter the developer password to access the teacher tools.</p>
+      <input id="developerPasswordInput" type="password" inputmode="numeric" autocomplete="off" aria-label="Developer password" placeholder="Enter password" />
       <p id="developerPasswordError" class="developer-password-error" aria-live="polite"></p>
-      <button type="button" onclick="submitDeveloperPassword()">Open Developer Check</button>
+      <button type="button" onclick="submitDeveloperPassword()">Unlock</button>
     </div>
   `
   document.getElementById("popupPanel").classList.remove("hidden")
@@ -2978,16 +2996,33 @@ function openDeveloperCheckPanel() {
       <button type="button" onclick="developerOpenContentList(2)">Check Game 2 Poems</button>
       <button type="button" onclick="developerOpenContentList(3)">Check Game 3 Prompts</button>
       <button type="button" onclick="developerOpenInstructionList()">Check Game Instructions</button>
+      <button type="button" onclick="developerOpenLearnModules()">Open Learning Modules</button>
       <button type="button" onclick="exitDeveloperMode()">Exit Dev Mode</button>
     </div>
   `
   document.getElementById("popupPanel").classList.remove("hidden")
 }
 
+function developerOpenLearnModules() {
+  if (!developerAuthorized) {
+    showDeveloperCheckPanel()
+    return
+  }
+
+  developerPreviewMode = false
+  clearModulePageTransition()
+  clearLessonPageTurn()
+  closePopup()
+  showLearnBlank()
+}
+
 function exitDeveloperMode() {
   developerAuthorized = false
   developerPreviewMode = false
   clearInterval(questionTimerInterval)
+  clearModulePageTransition()
+  pendingLearnModulePage = null
+  activeLearnModuleTopic = null
   hideAllScreens()
   setGameIdVisibility(false)
   closePopup()
@@ -3344,9 +3379,589 @@ function startModule(moduleNumber, skipReadTimer = false, resetGameStats = false
   showLesson()
 }
 
-function startLearnTopic(topicKey) {
+const learnModuleOrder = ["module1", "module2", "module3", "module4"]
+
+function getLearnModuleIndex(topicKey) {
+  return learnModuleOrder.indexOf(topicKey)
+}
+
+function lockModuleTransitionNavigation(locked) {
+  const selectors = [
+    "#learnBlank button",
+    "#learnMode > .lesson-box .nav-buttons button",
+    "#learnMode > .tutorial-guide button"
+  ]
+
+  document.querySelectorAll(selectors.join(", ")).forEach((button) => {
+    if (locked) {
+      button.dataset.moduleTransitionDisabled = button.disabled ? "1" : "0"
+      button.disabled = true
+      button.setAttribute("aria-disabled", "true")
+    } else if (button.dataset.moduleTransitionDisabled) {
+      button.disabled = button.dataset.moduleTransitionDisabled === "1"
+      button.removeAttribute("aria-disabled")
+      delete button.dataset.moduleTransitionDisabled
+    }
+  })
+}
+
+function createModulePageSnapshot(topicKey, templatePage) {
+  const page = templatePage.cloneNode(true)
+  const lessons = learnModules[topicKey] || []
+  const lesson = lessons[0]
+  if (!lesson) return page
+
+  const renderedLesson = getLessonHeaderAndBody(lesson)
+  const title = page.querySelector("#lessonTitle")
+  const pageNumber = page.querySelector("#lessonPage")
+  const content = page.querySelector("#lessonContent")
+
+  if (title) title.innerText = renderedLesson.title
+  if (pageNumber) pageNumber.innerText = "1/" + lessons.length
+  if (content) content.innerHTML = renderedLesson.body
+
+  page.querySelectorAll("button").forEach((button) => {
+    button.disabled = true
+    button.tabIndex = -1
+    button.removeAttribute("onclick")
+  })
+
+  return page
+}
+
+const moduleSnapshotImageCache = new Map()
+
+function loadModuleSnapshotImage(url) {
+  if (!url) return Promise.resolve("")
+  if (url.startsWith("data:")) return Promise.resolve(url)
+  if (moduleSnapshotImageCache.has(url)) return moduleSnapshotImageCache.get(url)
+
+  const promise = new Promise((resolve) => {
+    const image = new Image()
+    image.onload = () => {
+      try {
+        const buffer = document.createElement("canvas")
+        buffer.width = image.naturalWidth || image.width || 1
+        buffer.height = image.naturalHeight || image.height || 1
+        const context = buffer.getContext("2d")
+        context.drawImage(image, 0, 0)
+        resolve(buffer.toDataURL("image/png"))
+      } catch (error) {
+        resolve("")
+      }
+    }
+    image.onerror = () => resolve("")
+    image.src = url
+  })
+
+  moduleSnapshotImageCache.set(url, promise)
+  return promise
+}
+
+async function replaceModuleSnapshotUrls(value) {
+  if (!value || !value.includes("url(")) return value
+  const matches = []
+  const pattern = /url\\(\\s*(['"]?)(.*?)\\1\\s*\\)/g
+  value.replace(pattern, (full, quote, url) => {
+    matches.push({ full, url })
+    return full
+  })
+
+  let result = value
+  for (const match of matches) {
+    if (!match.url || match.url.startsWith("data:")) continue
+    const absoluteUrl = new URL(match.url, document.baseURI).href
+    const dataUrl = await loadModuleSnapshotImage(absoluteUrl)
+    if (dataUrl) result = result.split(match.full).join('url("' + dataUrl + '")')
+  }
+  return result
+}
+
+async function inlineModuleSnapshotAssets(source, clone) {
+  const sourceNodes = [source, ...source.querySelectorAll("*")]
+  const cloneNodes = [clone, ...clone.querySelectorAll("*")]
+  const styleProperties = [
+    "position", "inset", "top", "right", "bottom", "left", "display", "box-sizing",
+    "width", "height", "min-width", "max-width", "min-height", "max-height",
+    "margin", "padding", "font-family", "font-size", "font-weight", "font-style",
+    "line-height", "letter-spacing", "color", "text-align", "text-transform",
+    "white-space", "vertical-align", "background-color", "background-image",
+    "background-position", "background-size", "background-repeat", "border",
+    "border-width", "border-style", "border-color", "border-radius", "box-shadow",
+    "overflow", "z-index", "opacity", "transform", "transform-origin", "flex",
+    "flex-direction", "align-items", "justify-content", "gap", "grid-template-columns",
+    "grid-template-rows", "align-content", "object-fit", "object-position"
+  ]
+
+  for (let index = 0; index < sourceNodes.length; index += 1) {
+    const sourceNode = sourceNodes[index]
+    const cloneNode = cloneNodes[index]
+    if (!cloneNode || sourceNode.nodeType !== 1) continue
+
+    const computed = window.getComputedStyle(sourceNode)
+    const styles = []
+    for (const property of styleProperties) {
+      let value = computed.getPropertyValue(property)
+      if (!value) continue
+      if (value.includes("url(")) value = await replaceModuleSnapshotUrls(value)
+      styles.push(property + ":" + value)
+    }
+    cloneNode.setAttribute("style", styles.join(";"))
+
+    if (sourceNode.tagName === "IMG") {
+      const sourceUrl = sourceNode.currentSrc || sourceNode.src || sourceNode.getAttribute("src")
+      const absoluteUrl = sourceUrl ? new URL(sourceUrl, document.baseURI).href : ""
+      const dataUrl = await loadModuleSnapshotImage(absoluteUrl)
+      if (dataUrl) cloneNode.setAttribute("src", dataUrl)
+    }
+  }
+}
+
+async function rasterizeModulePage(page, canvas) {
+  const hostRect = page.parentElement?.getBoundingClientRect()
+  const pageRect = page.getBoundingClientRect()
+  const width = Math.max(1, Math.round(hostRect?.width || pageRect.width || 1))
+  const height = Math.max(1, Math.round(hostRect?.height || pageRect.height || 1))
+  const clone = page.cloneNode(true)
+
+  await inlineModuleSnapshotAssets(page, clone)
+  clone.style.setProperty("position", "relative")
+  clone.style.setProperty("inset", "auto")
+  clone.style.setProperty("width", width + "px")
+  clone.style.setProperty("height", height + "px")
+  clone.style.setProperty("margin", "0")
+  clone.style.setProperty("transform", "none")
+  clone.style.setProperty("opacity", "1")
+  clone.style.setProperty("visibility", "visible")
+
+  const svg = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xhtml="http://www.w3.org/1999/xhtml" width="' + width + '" height="' + height + '" viewBox="0 0 ' + width + " " + height + '"><foreignObject width="100%" height="100%"><div xmlns="http://www.w3.org/1999/xhtml" style="width:' + width + "px;height:" + height + 'px;overflow:hidden;">' + new XMLSerializer().serializeToString(clone) + "</div></foreignObject></svg>"
+  const image = await new Promise((resolve, reject) => {
+    const snapshot = new Image()
+    snapshot.onload = () => resolve(snapshot)
+    snapshot.onerror = () => reject(new Error("Module page snapshot could not be rendered."))
+    snapshot.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg)
+  })
+
+  const pixelRatio = Math.min(2, Math.max(1, window.devicePixelRatio || 1))
+  canvas.width = Math.round(width * pixelRatio)
+  canvas.height = Math.round(height * pixelRatio)
+  canvas.style.width = width + "px"
+  canvas.style.height = height + "px"
+  const context = canvas.getContext("2d")
+  context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0)
+  context.imageSmoothingEnabled = true
+  context.imageSmoothingQuality = "high"
+  return { context, image, width, height }
+}
+
+function modulePageEase(progress) {
+  const t = Math.max(0, Math.min(1, progress))
+  return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2
+}
+
+function createModuleCurlPaths(width, height, progress, direction) {
+  const forward = direction === "forward"
+  const sweep = Math.max(0, Math.min(1, progress))
+  const edgeX = forward ? width * (1 - sweep) : width * sweep
+  const edgeY = height * (1 - sweep)
+  const bend = Math.min(width, height) * (0.06 + 0.22 * Math.sin(Math.PI * sweep))
+  const visible = new Path2D()
+  const fold = new Path2D()
+  const ridge = new Path2D()
+
+  if (forward) {
+    visible.moveTo(0, 0)
+    visible.lineTo(width, 0)
+    visible.lineTo(width, edgeY)
+    visible.quadraticCurveTo(width - bend * 1.35, edgeY + bend * 0.32, edgeX + bend * 0.18, height - bend * 0.1)
+    visible.quadraticCurveTo(edgeX + bend * 0.65, height - bend * 0.02, width, height)
+    visible.lineTo(0, height)
+    visible.closePath()
+
+    fold.moveTo(width, edgeY)
+    fold.quadraticCurveTo(width - bend * 1.35, edgeY + bend * 0.32, edgeX + bend * 0.18, height - bend * 0.1)
+    fold.quadraticCurveTo(edgeX + bend * 0.65, height - bend * 0.02, width, height)
+    fold.closePath()
+
+    ridge.moveTo(width, edgeY)
+    ridge.quadraticCurveTo(width - bend * 1.35, edgeY + bend * 0.32, edgeX + bend * 0.18, height - bend * 0.1)
+  } else {
+    visible.moveTo(0, 0)
+    visible.lineTo(width, 0)
+    visible.lineTo(width, height)
+    visible.lineTo(edgeX - bend * 0.18, height - bend * 0.1)
+    visible.quadraticCurveTo(bend * 1.35, edgeY + bend * 0.32, 0, edgeY)
+    visible.closePath()
+
+    fold.moveTo(0, edgeY)
+    fold.quadraticCurveTo(bend * 1.35, edgeY + bend * 0.32, edgeX - bend * 0.18, height - bend * 0.1)
+    fold.quadraticCurveTo(edgeX - bend * 0.65, height - bend * 0.02, 0, height)
+    fold.closePath()
+
+    ridge.moveTo(0, edgeY)
+    ridge.quadraticCurveTo(bend * 1.35, edgeY + bend * 0.32, edgeX - bend * 0.18, height - bend * 0.1)
+  }
+
+  return { visible, fold, ridge, forward, edgeX, edgeY, bend }
+}
+
+function drawModulePageCurl(frame, progress, direction) {
+  const { context, image, width, height } = frame
+  const paths = createModuleCurlPaths(width, height, progress, direction)
+  const forward = paths.forward
+  const isLate = progress > 0.82
+  const visibleOpacity = isLate ? Math.max(0, 1 - (progress - 0.82) / 0.18) : 1
+
+  context.clearRect(0, 0, width, height)
+
+  context.save()
+  context.globalAlpha = visibleOpacity
+  context.clip(paths.visible)
+  context.drawImage(image, 0, 0, width, height)
+  context.restore()
+
+  if (progress < 0.005) return
+
+  context.save()
+  context.translate(forward ? 12 : -12, 12)
+  context.filter = "blur(" + Math.round(12 + paths.bend * 0.16) + "px)"
+  context.fillStyle = "rgba(20, 12, 6, " + (0.12 + 0.34 * Math.sin(Math.PI * progress)).toFixed(3) + ")"
+  context.fill(paths.fold)
+  context.restore()
+
+  context.save()
+  context.clip(paths.fold)
+  context.globalAlpha = 0.72
+  if (forward) {
+    context.translate(width, height)
+    context.scale(-1, -1)
+  } else {
+    context.translate(0, height)
+    context.scale(1, -1)
+  }
+  context.drawImage(image, 0, 0, width, height)
+  context.restore()
+
+  context.save()
+  context.clip(paths.fold)
+  const shadowGradient = forward
+    ? context.createLinearGradient(width, paths.edgeY, paths.edgeX, height)
+    : context.createLinearGradient(0, paths.edgeY, paths.edgeX, height)
+  shadowGradient.addColorStop(0, "rgba(45, 22, 6, 0.78)")
+  shadowGradient.addColorStop(0.22, "rgba(112, 54, 13, 0.42)")
+  shadowGradient.addColorStop(0.62, "rgba(255, 222, 150, 0.1)")
+  shadowGradient.addColorStop(1, "rgba(255, 247, 206, 0)")
+  context.fillStyle = shadowGradient
+  context.globalAlpha = 0.92
+  context.fillRect(0, 0, width, height)
+  context.restore()
+
+  context.save()
+  context.lineWidth = Math.max(2, Math.min(7, paths.bend * 0.055))
+  context.strokeStyle = "rgba(74, 39, 11, " + (0.18 + 0.24 * Math.sin(Math.PI * progress)).toFixed(3) + ")"
+  context.shadowColor = "rgba(35, 18, 5, 0.48)"
+  context.shadowBlur = 12 + paths.bend * 0.15
+  context.stroke(paths.ridge)
+  context.shadowColor = "rgba(255, 233, 167, 0.46)"
+  context.shadowBlur = 7
+  context.strokeStyle = "rgba(255, 241, 192, 0.28)"
+  context.stroke(paths.ridge)
+  context.restore()
+}
+
+function destroyModulePageTransition() {
+  document.getElementById("learnMode")?.querySelector(".module-page-flip-host, .module-page-video-host")?.remove()
+}
+
+function clearModulePageTransition() {
+  const learnMode = document.getElementById("learnMode")
+  if (moduleTurnCoverStop) {
+    moduleTurnCoverStop()
+    moduleTurnCoverStop = null
+  }
+  destroyModulePageTransition()
+  moduleTransitionBusy = false
+  learnMode?.classList.remove("module-transition-busy", "module-transition-active", "module-transition-reduced", "module-transition-forward", "module-transition-back")
+  lockModuleTransitionNavigation(false)
+}
+
+function finishModulePageTransition(topicKey) {
+  if (!moduleTransitionBusy) return
+
+  startLearnTopic(topicKey, { preserveScreen: true })
+  clearModulePageTransition()
+}
+
+function prepareModuleFlipPage(page) {
+  page.classList.add("module-page-transition-item")
+  page.setAttribute("aria-hidden", "true")
+  page.querySelectorAll("button").forEach((button) => {
+    button.disabled = true
+    button.tabIndex = -1
+    button.removeAttribute("onclick")
+  })
+  return page
+}
+
+let scrollCurlVideoObjectUrl = ""
+
+const scrollCurlPlaybackRate = 0.88
+
+function getScrollCurlVideoSource() {
+  const fallback = "assets/images/scroll-page-curl-exact-transparent.mp4"
+  if (window.location.protocol !== "file:" || !window.METAPHORIA_SCROLL_CURL_DATA) return fallback
+  if (scrollCurlVideoObjectUrl) return scrollCurlVideoObjectUrl
+
+  try {
+    const binary = atob(window.METAPHORIA_SCROLL_CURL_DATA)
+    const bytes = new Uint8Array(binary.length)
+    for (let index = 0; index < binary.length; index += 1) bytes[index] = binary.charCodeAt(index)
+    scrollCurlVideoObjectUrl = URL.createObjectURL(new Blob([bytes], { type: "video/mp4" }))
+    return scrollCurlVideoObjectUrl
+  } catch (error) {
+    return fallback
+  }
+}
+
+function waitForModuleCurlVideo(video) {
+  if (video.readyState >= HTMLMediaElement.HAVE_METADATA) return Promise.resolve(true)
+
+  return new Promise((resolve) => {
+    let settled = false
+    const settle = (ready) => {
+      if (settled) return
+      settled = true
+      video.removeEventListener("loadedmetadata", onReady)
+      video.removeEventListener("canplay", onReady)
+      video.removeEventListener("error", onError)
+      resolve(ready)
+    }
+    const onReady = () => settle(true)
+    const onError = () => settle(false)
+    video.addEventListener("loadedmetadata", onReady)
+    video.addEventListener("canplay", onReady)
+    video.addEventListener("error", onError)
+    window.setTimeout(() => settle(video.readyState >= HTMLMediaElement.HAVE_METADATA), 1800)
+  })
+}
+
+function createModuleCurlCanvas(video, direction) {
+  const canvas = document.createElement("canvas")
+  canvas.className = "module-page-curl-video-canvas" + (direction === "back" ? " module-page-curl-video-back" : "")
+  canvas.setAttribute("aria-hidden", "true")
+  canvas.dataset.keying = "pending"
+  return canvas
+}
+
+function startModuleCurlCanvasLoop(video, canvas, direction) {
+  const context = canvas.getContext("2d", { willReadFrequently: true })
+  if (!context) {
+    video.classList.add("is-fallback")
+    return { available: false, stop: () => {} }
+  }
+
+  let frameId = 0
+  let stopped = false
+  let smoothedEdges = null
+  let lastProgress = 0
+
+  const stop = () => {
+    stopped = true
+    if (frameId) window.cancelAnimationFrame(frameId)
+  }
+
+  const draw = () => {
+    if (stopped || !video.isConnected || video.ended) return
+
+    const width = video.videoWidth || 768
+    const height = video.videoHeight || 768
+    if (canvas.width !== width || canvas.height !== height) {
+      canvas.width = width
+      canvas.height = height
+    }
+
+    try {
+      context.clearRect(0, 0, width, height)
+      context.drawImage(video, 0, 0, width, height)
+      const image = context.getImageData(0, 0, width, height)
+      const pixels = image.data
+
+      for (let index = 0; index < pixels.length; index += 4) {
+        const red = pixels[index]
+        const green = pixels[index + 1]
+        const blue = pixels[index + 2]
+        const brightest = Math.max(red, green, blue)
+        const greenScreen = green > red * 1.16 && green > blue * 1.16 && green > 42
+        const blackScreen = brightest < 34
+
+        if (blackScreen || greenScreen) {
+          pixels[index + 3] = 0
+        } else if (brightest < 58) {
+          pixels[index + 3] = Math.min(pixels[index + 3], 42)
+        }
+      }
+
+      context.putImageData(image, 0, 0)
+      canvas.dataset.keying = "active"
+      canvas.classList.add("is-ready")
+    } catch (error) {
+      canvas.dataset.keying = "fallback"
+      canvas.classList.remove("is-ready")
+      video.classList.add("is-fallback")
+      stop()
+      return
+    }
+
+    frameId = window.requestAnimationFrame(draw)
+  }
+
+  if (direction === "back") canvas.classList.add("module-page-curl-video-back")
+  frameId = window.requestAnimationFrame(draw)
+  return { available: true, stop }
+}
+
+
+async function runModulePageTransition(topicKey, direction, outgoingPage) {
+  const learnMode = document.getElementById("learnMode")
+  if (!learnMode || !topicKey || !direction || !outgoingPage || moduleTransitionBusy) return
+
+  const currentPage = prepareModuleFlipPage(outgoingPage.cloneNode(true))
+  const nextPage = prepareModuleFlipPage(createModulePageSnapshot(topicKey, outgoingPage))
+  const moduleBackgrounds = {
+    module1: "assets/images/module-1-bg.png",
+    module2: "assets/images/module-2-bg.png",
+    module3: "assets/images/module-3-bg.png",
+    module4: "assets/images/module-3-bg.png"
+  }
+  const applyModuleBackground = (page, moduleKey) => {
+    const background = moduleBackgrounds[moduleKey]
+    if (!background) return
+    page.style.backgroundImage = "url(\"" + background + "\")"
+    page.style.backgroundPosition = "center center"
+    page.style.backgroundSize = "cover"
+    page.style.backgroundRepeat = "no-repeat"
+  }
+  applyModuleBackground(currentPage, activeLearnModuleTopic)
+  applyModuleBackground(nextPage, topicKey)
+
+  const host = document.createElement("div")
+  const reducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches === true
+
+  host.className = "module-page-flip-host module-page-curl-host module-page-video-host module-page-video-prep module-transition-" + direction
+  host.setAttribute("aria-hidden", "true")
+  currentPage.classList.add("module-page-curl-item", "module-page-curl-current")
+  nextPage.classList.add("module-page-curl-item", "module-page-curl-next")
+  host.append(nextPage, currentPage)
+
+  moduleTransitionBusy = true
+  hideAllScreens()
+  setLearnTopicClass(activeLearnModuleTopic || topicKey)
+  learnMode.classList.remove("hidden")
+  learnMode.classList.add("module-transition-busy", "module-transition-active", "module-transition-" + direction)
+  if (reducedMotion) learnMode.classList.add("module-transition-reduced")
+  lockModuleTransitionNavigation(true)
+  learnMode.append(host)
+
+  if (reducedMotion) {
+    currentPage.classList.add("module-page-crossfade-page", "module-page-crossfade-current")
+    nextPage.classList.add("module-page-crossfade-page", "module-page-crossfade-next")
+    host.classList.add("module-page-crossfade")
+    let reducedFinished = false
+    const finishReduced = (event) => {
+      if (event && event.target !== nextPage) return
+      if (reducedFinished) return
+      reducedFinished = true
+      finishModulePageTransition(topicKey)
+    }
+    nextPage.addEventListener("animationend", finishReduced, { once: true })
+    nextPage.addEventListener("animationcancel", finishReduced, { once: true })
+    window.requestAnimationFrame(() => {
+      window.requestAnimationFrame(() => host.classList.add("is-active"))
+    })
+    return
+  }
+
+  const video = document.createElement("video")
+  video.className = "module-page-curl-video" + (direction === "back" ? " module-page-curl-video-back" : "")
+  video.setAttribute("aria-hidden", "true")
+  video.setAttribute("playsinline", "")
+  video.muted = true
+  video.preload = "auto"
+  video.src = getScrollCurlVideoSource()
+  video.playbackRate = scrollCurlPlaybackRate
+  const videoCanvas = createModuleCurlCanvas(video, direction)
+  host.append(videoCanvas, video)
+
+  let finished = false
+  const finish = () => {
+    if (finished) return
+    finished = true
+    finishModulePageTransition(topicKey)
+  }
+  video.addEventListener("ended", finish, { once: true })
+  video.addEventListener("error", finish, { once: true })
+
+  const ready = await waitForModuleCurlVideo(video)
+  if (!moduleTransitionBusy || !host.isConnected) return
+  if (!ready) {
+    finish()
+    return
+  }
+
+  try {
+    video.currentTime = 0
+  } catch (error) {
+    finish()
+    return
+  }
+
+  host.classList.remove("module-page-video-prep")
+
+  window.requestAnimationFrame(() => {
+    host.classList.add("is-active")
+    const playPromise = video.play()
+    if (playPromise?.catch) playPromise.catch(() => finish())
+    startModuleCurlCanvasLoop(video, videoCanvas, direction)
+    moduleTurnCoverStop = startLessonTurnCoverLoop(video, currentPage, direction)
+  })
+}
+
+function navigateLearnModule(topicKey) {
+  if (moduleTransitionBusy) return
+
+  if (developerAuthorized) {
+    pendingLearnModulePage = null
+    clearModulePageTransition()
+    clearLessonPageTurn()
+    startLearnTopic(topicKey)
+    return
+  }
+
+  const nextIndex = getLearnModuleIndex(topicKey)
+  if (nextIndex < 0) {
+    startLearnTopic(topicKey)
+    return
+  }
+
+  const previousIndex = getLearnModuleIndex(activeLearnModuleTopic)
+  const outgoingPage = pendingLearnModulePage
+  pendingLearnModulePage = null
+  const direction = outgoingPage && previousIndex >= 0 && previousIndex !== nextIndex
+    ? nextIndex > previousIndex ? "forward" : "back"
+    : ""
+
+  if (direction) {
+    runModulePageTransition(topicKey, direction, outgoingPage)
+  } else {
+    startLearnTopic(topicKey)
+  }
+}
+
+function startLearnTopic(topicKey, options = {}) {
   const lessons = learnModules[topicKey]
   if (!lessons) return
+  activeLearnModuleTopic = topicKey
+  const preserveScreen = options.preserveScreen === true
 
   playMusic()
   activeLessons = lessons
@@ -3356,7 +3971,7 @@ function startLearnTopic(topicKey) {
   skipLessonReadTimer = false
   resetStatsOnNextGameStart = false
 
-  hideAllScreens()
+  if (!preserveScreen) hideAllScreens()
   setLearnTopicClass(topicKey)
   document.getElementById("learnMode").classList.remove("hidden")
   showLesson()
@@ -3413,27 +4028,479 @@ function fitLessonTitleToOneLine() {
   const targetFontSize = Math.max(11, Math.floor(currentFontSize * (availableWidth / fullWidth) * 0.98))
   title.style.setProperty("--lesson-title-dynamic-font-size", `${targetFontSize}px`)
 }
-function showLesson() {
+
+function clearLessonDestinationTextMask() {
+  const learnMode = document.getElementById("learnMode")
+  const destinationBox = learnMode?.querySelector(":scope > .lesson-box")
+  if (!destinationBox) return
+  destinationBox.style.removeProperty("clip-path")
+  destinationBox.style.removeProperty("will-change")
+}
+
+function clearLessonPageTurn() {
+  const learnMode = document.getElementById("learnMode")
+  if (!learnMode) return
+
+  clearLessonDestinationTextMask()
+
+  if (lessonTurnCoverStop) {
+    lessonTurnCoverStop()
+    lessonTurnCoverStop = null
+  }
+
+  clearTimeout(lessonTransitionTimer)
+  lessonTransitionTimer = null
+  learnMode.classList.remove(
+    "lesson-turn-live-hidden",
+    "lesson-turn-live-forward",
+    "lesson-turn-live-back",
+    "lesson-video-turn-active",
+    "lesson-video-turn-forward",
+    "lesson-video-turn-back",
+    "lesson-video-turn-reduced"
+  )
+  learnMode.querySelector(".lesson-turn-layer, .lesson-video-page-turn-host")?.remove()
+
+  if (lessonVideoTransitionBusy) {
+    lessonVideoTransitionBusy = false
+    lockModuleTransitionNavigation(false)
+  }
+}
+
+function freezeLessonTurnNode(sourceNode, cloneNode) {
+  if (!sourceNode || !cloneNode) return
+
+  const sourceNodes = [sourceNode, ...sourceNode.querySelectorAll("*")]
+  const cloneNodes = [cloneNode, ...cloneNode.querySelectorAll("*")]
+  sourceNodes.forEach((source, index) => {
+    const target = cloneNodes[index]
+    if (!target) return
+    const computed = window.getComputedStyle(source)
+    for (let propertyIndex = 0; propertyIndex < computed.length; propertyIndex += 1) {
+      const property = computed[propertyIndex]
+      if (property === "content" || property.startsWith("animation") || property.startsWith("transition")) continue
+      target.style.setProperty(property, computed.getPropertyValue(property), "important")
+    }
+  })
+
+  cloneNode.style.setProperty("position", "fixed", "important")
+  cloneNode.style.setProperty("margin", "0", "important")
+  cloneNode.style.setProperty("pointer-events", "none", "important")
+  cloneNode.style.setProperty("transform", "none", "important")
+}
+
+function cloneLessonTurnPage() {
+  const learnMode = document.getElementById("learnMode")
+  const page = document.createElement("div")
+  page.className = "lesson-turn-sheet"
+  page.setAttribute("aria-hidden", "true")
+
+  const art = learnMode?.querySelector(".scroll-board-art")
+  if (art) {
+    const artClone = art.cloneNode(true)
+    artClone.style.position = "absolute"
+    page.appendChild(artClone)
+  }
+
+  const box = learnMode?.querySelector(".lesson-box")
+  if (box) {
+    const boxClone = box.cloneNode(true)
+    boxClone.setAttribute("aria-hidden", "true")
+    freezeLessonTurnNode(box, boxClone)
+    boxClone.style.position = "fixed"
+    boxClone.style.pointerEvents = "none"
+    boxClone.querySelectorAll("button").forEach((button) => {
+      button.disabled = true
+      button.tabIndex = -1
+      button.removeAttribute("onclick")
+    })
+    page.appendChild(boxClone)
+  }
+
+  return page
+}
+
+
+function startLessonTurnCoverLoop(video, cover, direction) {
+  let frameId = 0
+  let stopped = false
+  const learnMode = document.getElementById("learnMode")
+  const destinationBox = learnMode?.querySelector(":scope > .lesson-box")
+
+  const stop = () => {
+    stopped = true
+    if (frameId) window.cancelAnimationFrame(frameId)
+    cover.style.clipPath = ""
+  }
+
+  const clamp = (value, min, max) => Math.max(min, Math.min(max, value))
+
+  const getFrame = () => {
+    const coverRect = cover.getBoundingClientRect()
+    const art = cover.querySelector(".scroll-board-art")
+    const artRect = art?.getBoundingClientRect()
+    if (artRect && artRect.width > 1 && artRect.height > 1) {
+      return {
+        left: artRect.left - coverRect.left,
+        top: artRect.top - coverRect.top,
+        width: artRect.width,
+        height: artRect.height
+      }
+    }
+
+    const scale = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--fixed-scale")) || 1
+    return {
+      left: 72 * scale,
+      top: 0,
+      width: 930 * scale,
+      height: 704 * scale
+    }
+  }
+
+  const getDisplayTransform = (canvas) => {
+    const transform = getComputedStyle(canvas).transform
+    const matrix = transform.match(/^matrix\(([^)]+)\)$/)
+    if (matrix) {
+      const values = matrix[1].split(",").map(Number)
+      return { a: values[0] || 1, b: values[1] || 0, c: values[2] || 0, d: values[3] || 1, e: values[4] || 0, f: values[5] || 0 }
+    }
+    const matrix3d = transform.match(/^matrix3d\(([^)]+)\)$/)
+    if (matrix3d) {
+      const values = matrix3d[1].split(",").map(Number)
+      return { a: values[0] || 1, b: values[1] || 0, c: values[4] || 0, d: values[5] || 1, e: values[12] || 0, f: values[13] || 0 }
+    }
+    return { a: 1, b: 0, c: 0, d: 1, e: 0, f: 0 }
+  }
+
+  const setFrameClip = (frame, progress, topEdge, bottomEdge) => {
+    const frameRight = frame.left + frame.width
+    const frameBottom = frame.top + frame.height
+    if (progress >= 0.985) {
+      cover.style.clipPath = direction === "back"
+        ? "polygon(" + frameRight.toFixed(2) + "px " + frame.top.toFixed(2) + "px, " + frameRight.toFixed(2) + "px " + frame.top.toFixed(2) + "px, " + frameRight.toFixed(2) + "px " + frameBottom.toFixed(2) + "px, " + frameRight.toFixed(2) + "px " + frameBottom.toFixed(2) + "px)"
+        : "polygon(" + frame.left.toFixed(2) + "px " + frame.top.toFixed(2) + "px, " + frame.left.toFixed(2) + "px " + frame.top.toFixed(2) + "px, " + frame.left.toFixed(2) + "px " + frameBottom.toFixed(2) + "px, " + frame.left.toFixed(2) + "px " + frameBottom.toFixed(2) + "px)"
+      return
+    }
+
+    if (direction === "back") {
+      cover.style.clipPath = "polygon(" +
+        topEdge.toFixed(2) + "px " + frame.top.toFixed(2) + "px, " +
+        frameRight.toFixed(2) + "px " + frame.top.toFixed(2) + "px, " +
+        frameRight.toFixed(2) + "px " + frameBottom.toFixed(2) + "px, " +
+        bottomEdge.toFixed(2) + "px " + frameBottom.toFixed(2) + "px)"
+    } else {
+      cover.style.clipPath = "polygon(" +
+        frame.left.toFixed(2) + "px " + frame.top.toFixed(2) + "px, " +
+        topEdge.toFixed(2) + "px " + frame.top.toFixed(2) + "px, " +
+        bottomEdge.toFixed(2) + "px " + frameBottom.toFixed(2) + "px, " +
+        frame.left.toFixed(2) + "px " + frameBottom.toFixed(2) + "px)"
+    }
+  }
+
+  const setDestinationTextClip = (frame, edgePoints, fallbackTop, fallbackBottom) => {
+    if (!destinationBox) return
+    const coverRect = cover.getBoundingClientRect()
+    const destinationRect = destinationBox.getBoundingClientRect()
+    if (destinationRect.width < 1 || destinationRect.height < 1) return
+
+    const edgeAtY = (targetY, fallback) => {
+      if (!edgePoints?.length) return fallback
+      const relativeY = targetY - coverRect.top
+      if (relativeY <= edgePoints[0].y) return edgePoints[0].x
+      const last = edgePoints[edgePoints.length - 1]
+      if (relativeY >= last.y) return last.x
+      for (let index = 1; index < edgePoints.length; index += 1) {
+        const before = edgePoints[index - 1]
+        const after = edgePoints[index]
+        if (relativeY > after.y) continue
+        const span = Math.max(1, after.y - before.y)
+        const ratio = clamp((relativeY - before.y) / span, 0, 1)
+        return before.x + ((after.x - before.x) * ratio)
+      }
+      return fallback
+    }
+
+    const toDestinationX = (edgeX) => coverRect.left + edgeX - destinationRect.left
+    const scale = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--fixed-scale")) || 1
+    const guard = Math.max(8 * scale, frame.width * 0.035)
+    const topEdge = toDestinationX(edgeAtY(destinationRect.top, fallbackTop))
+    const bottomEdge = toDestinationX(edgeAtY(destinationRect.bottom, fallbackBottom))
+    const safeTop = clamp(topEdge + (direction === "back" ? -guard : guard), 0, destinationRect.width)
+    const safeBottom = clamp(bottomEdge + (direction === "back" ? -guard : guard), 0, destinationRect.width)
+
+    destinationBox.style.setProperty("will-change", "clip-path")
+    destinationBox.style.clipPath = direction === "back"
+      ? "polygon(0px 0px, " + safeTop.toFixed(2) + "px 0px, " + safeBottom.toFixed(2) + "px 100%, 0px 100%)"
+      : "polygon(" + safeTop.toFixed(2) + "px 0px, 100% 0px, 100% 100%, " + safeBottom.toFixed(2) + "px 100%)"
+  }
+
+  const draw = () => {
+    if (stopped || !video.isConnected || !cover.isConnected) return
+
+    const duration = Number.isFinite(video.duration) && video.duration > 0 ? video.duration : 2
+    const progress = Math.min(1, Math.max(0, video.currentTime / duration))
+    const frame = getFrame()
+    const frameRight = frame.left + frame.width
+    const frameBottom = frame.top + frame.height
+    const canvas = video.parentElement?.querySelector(".module-page-curl-video-canvas")
+    let usedVideoEdge = false
+
+    if (canvas?.dataset.keying === "active" && canvas.width > 1 && canvas.height > 1) {
+      try {
+        const context = canvas.getContext("2d", { willReadFrequently: true })
+        const pixels = context?.getImageData(0, 0, canvas.width, canvas.height).data
+        if (pixels) {
+          const displayTransform = getDisplayTransform(canvas)
+          const edgeAdvance = frame.width * 0.012
+          const centerX = frame.left + (frame.width / 2)
+          const centerY = frame.top + (frame.height / 2)
+          const mapPoint = (rawX, rawY) => {
+            const baseX = frame.left + ((rawX / canvas.width) * frame.width)
+            const baseY = frame.top + ((rawY / canvas.height) * frame.height)
+            const deltaX = baseX - centerX
+            const deltaY = baseY - centerY
+            return {
+              x: centerX + (displayTransform.a * deltaX) + (displayTransform.c * deltaY) + displayTransform.e,
+              y: centerY + (displayTransform.b * deltaX) + (displayTransform.d * deltaY) + displayTransform.f
+            }
+          }
+          const edgePoints = []
+          const sampleCount = 18
+          for (let sample = 0; sample <= sampleCount; sample += 1) {
+            const rawY = Math.floor((sample / sampleCount) * (canvas.height - 1))
+            let minX = canvas.width
+            let maxX = -1
+            let count = 0
+            for (let rawX = 0; rawX < canvas.width; rawX += 1) {
+              const alpha = pixels[((rawY * canvas.width) + rawX) * 4 + 3]
+              if (alpha > 12) {
+                minX = Math.min(minX, rawX)
+                maxX = Math.max(maxX, rawX)
+                count += 1
+              }
+            }
+
+            const y = clamp(mapPoint(0, rawY).y, frame.top, frameBottom)
+            if (count < 4) {
+              edgePoints.push({ x: null, y })
+              continue
+            }
+
+            const mappedMin = mapPoint(minX, rawY).x
+            const mappedMax = mapPoint(maxX, rawY).x
+            edgePoints.push({
+              x: clamp(direction === "back" ? Math.min(mappedMin, mappedMax) + edgeAdvance : Math.max(mappedMin, mappedMax) + edgeAdvance, frame.left, frameRight),
+              y
+            })
+          }
+
+          // Extend the real curl edge through rows where the clip is transparent.
+          const validIndexes = edgePoints
+            .map((point, index) => Number.isFinite(point.x) ? index : -1)
+            .filter(index => index >= 0)
+          if (validIndexes.length) {
+            edgePoints.forEach((point, index) => {
+              if (Number.isFinite(point.x)) return
+              const nearestIndex = validIndexes.reduce((best, candidate) =>
+                Math.abs(candidate - index) < Math.abs(best - index) ? candidate : best,
+                validIndexes[0]
+              )
+              point.x = edgePoints[nearestIndex].x
+            })
+          } else {
+            edgePoints.forEach(point => {
+              point.x = direction === "back" ? frame.left : frameRight
+            })
+          }
+
+          // Remove one-row alpha outliers and keep only a directional guard against pixel noise.
+          for (let index = 1; index < edgePoints.length - 1; index += 1) {
+            const neighbors = [edgePoints[index - 1].x, edgePoints[index].x, edgePoints[index + 1].x].sort((a, b) => a - b)
+            edgePoints[index].x = neighbors[1]
+          }
+          if (!smoothedEdges || progress < lastProgress) {
+            smoothedEdges = edgePoints.map((point) => ({ ...point }))
+          } else {
+            const follow = 1
+            smoothedEdges = edgePoints.map((point, index) => {
+              const previous = smoothedEdges[index]
+              if (!previous) return { ...point }
+              let target = point.x
+              const permittedBackstep = frame.width * 0.004
+              if (direction === "back") target = Math.max(target, previous.x - permittedBackstep)
+              else target = Math.min(target, previous.x + permittedBackstep)
+              return { x: previous.x + ((target - previous.x) * follow), y: point.y }
+            })
+          }
+          lastProgress = progress
+          const visibleEdges = smoothedEdges
+          const topEdge = visibleEdges[0]
+          const bottomEdge = visibleEdges[visibleEdges.length - 1]
+          if (visibleEdges.length > 1 && (topEdge.x !== bottomEdge.x || progress > 0.2)) {
+            if (direction === "back") {
+              const path = visibleEdges.slice().reverse().map((point) => point.x.toFixed(2) + "px " + point.y.toFixed(2) + "px")
+              cover.style.clipPath = "polygon(" +
+                visibleEdges[0].x.toFixed(2) + "px " + visibleEdges[0].y.toFixed(2) + "px, " +
+                frameRight.toFixed(2) + "px " + frame.top.toFixed(2) + "px, " +
+                frameRight.toFixed(2) + "px " + frameBottom.toFixed(2) + "px, " +
+                path.join(", ") + ")"
+            } else {
+              const path = visibleEdges.map((point) => point.x.toFixed(2) + "px " + point.y.toFixed(2) + "px")
+              cover.style.clipPath = "polygon(" +
+                frame.left.toFixed(2) + "px " + frame.top.toFixed(2) + "px, " +
+                path.join(", ") + ", " +
+                frame.left.toFixed(2) + "px " + frameBottom.toFixed(2) + "px)"
+            }
+            setDestinationTextClip(frame, visibleEdges, topEdge.x, bottomEdge.x)
+            usedVideoEdge = true
+          }
+        }
+      } catch (error) {
+        usedVideoEdge = false
+      }
+    }
+
+    if (!usedVideoEdge) {
+      const remaining = Math.max(0, 100 - (progress * 100))
+      const bend = Math.sin(progress * Math.PI) * 12
+      const baseEdge = direction === "back" ? (100 - remaining) : remaining
+      const topRatio = clamp((baseEdge + (direction === "back" ? -bend : bend)) / 100, 0, 1)
+      const bottomRatio = clamp((baseEdge + (direction === "back" ? bend : -bend)) / 100, 0, 1)
+      const topEdge = frame.left + (topRatio * frame.width)
+      const bottomEdge = frame.left + (bottomRatio * frame.width)
+      setFrameClip(frame, progress, topEdge, bottomEdge)
+      setDestinationTextClip(frame, null, topEdge, bottomEdge)
+    }
+
+    frameId = window.requestAnimationFrame(draw)
+  }
+
+  frameId = window.requestAnimationFrame(draw)
+  return stop
+}
+
+async function runLessonPageTransition(direction = "", outgoingPage = null) {
+  if (developerAuthorized) {
+    clearLessonPageTurn()
+    return
+  }
+
+  const learnMode = document.getElementById("learnMode")
+  if (!learnMode || !direction || !outgoingPage || lessonVideoTransitionBusy || moduleTransitionBusy) return
+
+  const reducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches === true
+  const host = document.createElement("div")
+  host.className = "lesson-video-page-turn-host module-page-video-host module-page-video-prep lesson-video-turn-" + direction
+  host.setAttribute("aria-hidden", "true")
+
+  lessonVideoTransitionBusy = true
+  learnMode.classList.add("lesson-video-turn-active", "lesson-video-turn-" + direction)
+  if (reducedMotion) learnMode.classList.add("lesson-video-turn-reduced")
+  lockModuleTransitionNavigation(true)
+  learnMode.append(host)
+
+  let finished = false
+  const finish = () => {
+    if (finished) return
+    finished = true
+    const applyLessonLayout = pendingLessonLayoutUpdate
+    pendingLessonLayoutUpdate = null
+    clearLessonPageTurn()
+    const shouldRefit = typeof applyLessonLayout === "function"
+    applyLessonLayout?.()
+    updateLessonGuide()
+    if (shouldRefit) {
+      window.requestAnimationFrame(fitLessonTitleToOneLine)
+      window.requestAnimationFrame(fitLessonToScroll)
+    }
+  }
+
+  if (reducedMotion) {
+    outgoingPage.classList.add("lesson-video-turn-reduced-old")
+    host.append(outgoingPage)
+    outgoingPage.addEventListener("animationend", finish, { once: true })
+    outgoingPage.addEventListener("animationcancel", finish, { once: true })
+    window.requestAnimationFrame(() => {
+      window.requestAnimationFrame(() => outgoingPage.classList.add("is-active"))
+    })
+    return
+  }
+
+  const video = document.createElement("video")
+  video.className = "module-page-curl-video" + (direction === "back" ? " module-page-curl-video-back" : "")
+  video.setAttribute("aria-hidden", "true")
+  video.setAttribute("playsinline", "")
+  video.muted = true
+  video.preload = "auto"
+  video.src = getScrollCurlVideoSource()
+  video.playbackRate = scrollCurlPlaybackRate
+  const videoCanvas = createModuleCurlCanvas(video, direction)
+  outgoingPage.classList.add("lesson-video-turn-cover")
+  host.append(outgoingPage, videoCanvas, video)
+  lessonTurnCoverStop = startLessonTurnCoverLoop(video, outgoingPage, direction)
+  const earlyPlayPromise = video.play()
+  if (earlyPlayPromise?.catch) earlyPlayPromise.catch(() => {})
+
+  video.addEventListener("ended", finish, { once: true })
+  video.addEventListener("error", finish, { once: true })
+
+  const ready = await waitForModuleCurlVideo(video)
+  if (!lessonVideoTransitionBusy || !host.isConnected) return
+  if (!ready) {
+    finish()
+    return
+  }
+
+
+  host.classList.remove("module-page-video-prep")
+  window.requestAnimationFrame(() => {
+    host.classList.add("is-active")
+    const playPromise = video.play()
+    if (playPromise?.catch) playPromise.catch(() => finish())
+    startModuleCurlCanvasLoop(video, videoCanvas, direction)
+  })
+}
+
+function showLesson(direction = "") {
   const lessons = getActiveLessons()
   const lesson = lessons[lessonIndex]
   if (!lesson) return
+
+  let outgoingPage = null
+  pendingLessonLayoutUpdate = null
+  if (direction) {
+    clearLessonPageTurn()
+    outgoingPage = cloneLessonTurnPage()
+  } else {
+    clearLessonPageTurn()
+  }
+
   const renderedLesson = getLessonHeaderAndBody(lesson)
 
   document.getElementById("lessonTitle").innerText = renderedLesson.title
-  document.getElementById("lessonPage").innerText = `${lessonIndex + 1}/${lessons.length}`
+  document.getElementById("lessonPage").innerText = String(lessonIndex + 1) + "/" + lessons.length
   document.getElementById("lessonContent").innerHTML = renderedLesson.body
   restoreLessonResponses()
   ensureLessonReadabilityStyles()
-  updateLessonLayoutClass(lesson)
-  updateLessonGuide()
-  requestAnimationFrame(fitLessonTitleToOneLine)
-  requestAnimationFrame(fitLessonToScroll)
-  window.setTimeout(fitLessonTitleToOneLine, 120)
-  window.setTimeout(fitLessonToScroll, 120)
+
+  if (direction) {
+    // Prepare the destination layout before the turn; the outgoing clone is frozen above it.
+    updateLessonLayoutClass(lesson)
+    fitLessonTitleToOneLine()
+    fitLessonToScroll()
+    pendingLessonLayoutUpdate = null
+    runLessonPageTransition(direction, outgoingPage)
+  } else {
+    updateLessonLayoutClass(lesson)
+    updateLessonGuide()
+    requestAnimationFrame(fitLessonTitleToOneLine)
+    requestAnimationFrame(fitLessonToScroll)
+    window.setTimeout(fitLessonTitleToOneLine, 120)
+    window.setTimeout(fitLessonToScroll, 120)
+  }
 
   startReadTimer()
 }
-
 function ensureLessonReadabilityStyles() {
   if (document.getElementById("lessonReadabilityStyles")) return
 
@@ -4781,6 +5848,46 @@ function ensureLessonReadabilityStyles() {
   }
 }
 `
+  style.textContent += `
+/* Final runtime v392: keep the Module 3 Analytic Rubric Completeness label intact. */
+#learnMode.learn-topic-module3.lesson-slide-14 .module3-rubric-table-merged .rubric-row {
+  grid-template-columns: calc(150px * var(--fixed-scale)) repeat(5, minmax(0, 1fr)) !important;
+}
+
+#learnMode.learn-topic-module3.lesson-slide-14 .module3-rubric-table-merged .rubric-completeness-label {
+  overflow-wrap: normal !important;
+  word-break: normal !important;
+  hyphens: none !important;
+  white-space: nowrap !important;
+}
+
+@media (max-width: 600px) {
+  #learnMode.learn-topic-module3.lesson-slide-14 .module3-rubric-table-merged .rubric-row {
+    grid-template-columns: calc(200px * var(--fixed-scale)) repeat(5, minmax(0, 1fr)) !important;
+  }
+
+  #learnMode.learn-topic-module3.lesson-slide-14 .module3-rubric-table-merged .rubric-row > span,
+  #learnMode.learn-topic-module3.lesson-slide-14 .module3-rubric-table-merged .rubric-completeness-label {
+    font-size: 8px !important;
+  }
+}
+`
+  style.textContent += `
+/* Final runtime v393: keep mechanics flow text fully visible on narrow screens. */
+#learnMode#learnMode#learnMode#learnMode.learn-topic-game .game-mechanics-card .mechanics-flow-line {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  padding: 0 !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  white-space: nowrap !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  font-size: max(calc(19px * var(--fixed-scale)), 6px) !important;
+  line-height: 1.05 !important;
+}
+`
   document.head.appendChild(style)
 }
 function resetLessonFit(learnMode, content) {
@@ -5098,10 +6205,11 @@ function updateLessonGuide() {
 function startReadTimer() {
   clearInterval(lessonTimerInterval)
   document.getElementById("readTimer").innerText = ""
-  document.getElementById("nextLessonBtn").disabled = false
+  if (!lessonVideoTransitionBusy && !moduleTransitionBusy) document.getElementById("nextLessonBtn").disabled = false
 }
 
 function nextLesson() {
+  if (lessonVideoTransitionBusy || moduleTransitionBusy) return
   lessonIndex++
 
   const lessons = getActiveLessons()
@@ -5118,13 +6226,13 @@ function nextLesson() {
     return
   }
 
-  showLesson()
+  showLesson("forward")
 }
 
 function backLesson() {
   if (lessonIndex > 0) {
     lessonIndex--
-    showLesson()
+    showLesson("back")
   } else {
     skipLessonReadTimer = false
     if (lessonStartsGame) {
@@ -6350,72 +7458,22 @@ function showInstructions() {
 
   popupBox.classList.remove("answers-popup", "developer-popup")
   popupBox.classList.add("mechanics-popup")
-  document.getElementById("popupTitle").innerText = "Game Mechanics"
+  document.getElementById("popupTitle").innerText = "Options"
   popupMessage.innerHTML = `
-    <div class="mechanics-guide">
-      <div class="mechanics-flow" aria-label="Game flow">
-        <div class="mechanics-step">
-          <span class="mechanics-number">1</span>
-          <strong>Learn First</strong>
-          <p>Read the short tutorial before each game.</p>
-        </div>
-        <div class="mechanics-step">
-          <span class="mechanics-number">2</span>
-          <strong>Answer</strong>
-          <p>Choose the best answer or type your own sentence.</p>
-        </div>
-        <div class="mechanics-step">
-          <span class="mechanics-number">3</span>
-          <strong>Get Feedback</strong>
-          <p>See correct or wrong feedback after every item.</p>
-        </div>
-        <div class="mechanics-step">
-          <span class="mechanics-number">4</span>
-          <strong>Unlock</strong>
-          <p>Pass with 60% or higher in Game 1, or 4 out of 5 in the other games.</p>
-        </div>
-      </div>
+    <div class="about-metaphoria" aria-label="About Metaphoria">
+      <p class="about-lead">Welcome to Metaphoria, an interactive learning platform designed to make the study of literary devices more engaging, meaningful, and enjoyable for Grade 7 learners. This website provides a space where students can explore different ways language can be used creatively to express ideas, emotions, and experiences. Through interactive lessons, examples, activities, and assessments, Metaphoria aims to make literary concepts easier to understand while encouraging learners to think critically, express their creativity, and appreciate the beauty of literature.</p>
 
-      <div class="mechanics-games" aria-label="Game modes">
-        <div class="mechanics-game-card">
-          <span class="mechanics-game-badge">Game 1</span>
-          <strong>Sentence Solver</strong>
-          <p>Clear Levels 1, 2, and 3 before Text Detectives unlocks.</p>
-        </div>
-        <div class="mechanics-game-card">
-          <span class="mechanics-game-badge">Game 2</span>
-          <strong>Text Detectives</strong>
-          <p>Analyze lines and clues from longer text.</p>
-        </div>
-        <div class="mechanics-game-card">
-          <span class="mechanics-game-badge">Game 3</span>
-          <strong>Expression Lab</strong>
-          <p>Create your own figurative language from a given clue.</p>
-        </div>
-      </div>
+      <p>The name Metaphoria is inspired by the word "metaphor," a literary device that compares one thing to another to create a deeper meaning or clearer image. Combined with the idea of "euphoria," which means a feeling of excitement or happiness, Metaphoria represents the joy and excitement of discovering the power of words. It reflects our goal of creating a learning experience where students can explore language creatively, discover new meanings, and see literature in a more imaginative way. Metaphoria is where words come alive, ideas take shape, and learning becomes an adventure.</p>
 
-      <div class="mechanics-rules" aria-label="Rules and tools">
-        <div class="mechanics-rule">
-          <span>Score</span>
-          <strong>+10 / +15</strong>
-          <p>Choice answers earn 10. Creative answers earn 15.</p>
-        </div>
-        <div class="mechanics-rule">
-          <span>Timer</span>
-          <strong>15 sec</strong>
-          <p>The green bar shows time left for each question.</p>
-        </div>
-        <div class="mechanics-rule">
-          <span>Hints</span>
-          <strong>Earned</strong>
-          <p>Answer correctly to earn guide help for later items.</p>
-        </div>
-        <div class="mechanics-rule">
-          <span>50/50</span>
-          <strong>Games 1-2</strong>
-          <p>Remove wrong choices when you need support.</p>
-        </div>
-      </div>
+      <h3>General Objectives of Metaphoria</h3>
+      <p>The Metaphoria learning material aims to:</p>
+      <ul>
+        <li>To create a learning material that is aligned with the MATATAG Curriculum, particularly in developing Grade 7 learners' understanding and application of literary devices.</li>
+        <li>To provide an engaging and interactive learning experience that helps learners understand literary devices through accessible explanations, examples, and activities.</li>
+        <li>To develop learners' critical thinking and analytical skills by encouraging them to identify, interpret, and analyze the use of literary devices in various texts.</li>
+        <li>To enhance learners' creativity and communication skills by providing opportunities for them to apply literary devices in their own writing and expressions.</li>
+        <li>To foster learners' appreciation of literature and the creative use of language by helping them recognize how literary devices make texts more meaningful, expressive, and engaging.</li>
+      </ul>
     </div>
   `
   document.getElementById("popupPanel").classList.remove("hidden")
@@ -6483,8 +7541,19 @@ document.addEventListener("fullscreenchange", updateFullscreenButton)
 document.addEventListener("webkitfullscreenchange", updateFullscreenButton)
 document.addEventListener("MSFullscreenChange", updateFullscreenButton)
 
+
+const curlControlDefaults = Object.freeze({"curl-next-x":150,"curl-next-y":55,"curl-next-scale":1.24,"curl-back-x":-140,"curl-back-y":55,"curl-back-scale":1.24,"curl-phone-next-x":150,"curl-phone-next-y":55,"curl-phone-back-x":-140,"curl-phone-back-y":55,"curl-phone-scale":1.08})
+const curlControlIds = Object.freeze({"curl-next-x":["curlNextXRange","curlNextXValue"],"curl-next-y":["curlNextYRange","curlNextYValue"],"curl-next-scale":["curlNextScaleRange","curlNextScaleValue"],"curl-back-x":["curlBackXRange","curlBackXValue"],"curl-back-y":["curlBackYRange","curlBackYValue"],"curl-back-scale":["curlBackScaleRange","curlBackScaleValue"],"curl-phone-next-x":["curlPhoneNextXRange","curlPhoneNextXValue"],"curl-phone-next-y":["curlPhoneNextYRange","curlPhoneNextYValue"],"curl-phone-back-x":["curlPhoneBackXRange","curlPhoneBackXValue"],"curl-phone-back-y":["curlPhoneBackYRange","curlPhoneBackYValue"],"curl-phone-scale":["curlPhoneScaleRange","curlPhoneScaleValue"]})
+function formatCurlControlValue(name,value){const n=Number(value);return !Number.isFinite(n)?"":name.includes("scale")?n.toFixed(2):`${Math.round(n)}px`}
+function applyCurlControlValue(name,value){const n=Number(value);if(!Object.prototype.hasOwnProperty.call(curlControlDefaults,name)||!Number.isFinite(n))return;document.documentElement.style.setProperty(`--${name}`,name.includes("scale")?n.toFixed(2):`${n}px`)}
+function persistCurlControls(){const values={};Object.keys(curlControlDefaults).forEach(name=>{const n=Number.parseFloat(getComputedStyle(document.documentElement).getPropertyValue(`--${name}`));values[name]=Number.isFinite(n)?n:curlControlDefaults[name]});try{localStorage.setItem("metaphoriaCurlControls",JSON.stringify(values))}catch{}}
+function syncCurlControls(){Object.entries(curlControlDefaults).forEach(([name,fallback])=>{const ids=curlControlIds[name],range=document.getElementById(ids[0]),output=document.getElementById(ids[1]);if(!range||!output)return;const n=Number.parseFloat(getComputedStyle(document.documentElement).getPropertyValue(`--${name}`)),value=Number.isFinite(n)?n:fallback;range.value=String(value);output.textContent=formatCurlControlValue(name,value)})}
+function updateCurlControl(name,value,outputId=""){applyCurlControlValue(name,value);const output=document.getElementById(outputId);if(output)output.textContent=formatCurlControlValue(name,value);persistCurlControls()}
+function resetCurlControls(){Object.entries(curlControlDefaults).forEach(([name,value])=>applyCurlControlValue(name,value));try{localStorage.removeItem("metaphoriaCurlControls")}catch{}syncCurlControls()}
+function loadCurlControls(){let saved=null;try{saved=JSON.parse(localStorage.getItem("metaphoriaCurlControls")||"null")}catch{};Object.entries(curlControlDefaults).forEach(([name,fallback])=>applyCurlControlValue(name,saved&&Number.isFinite(Number(saved[name]))?Number(saved[name]):fallback))}
 function openSettings() {
   clearInterval(questionTimerInterval)
+  syncCurlControls()
   document.getElementById("settingsPanel").classList.remove("hidden")
 }
 
@@ -6609,6 +7678,7 @@ function sparkButton(button) {
   createGlitterBurst(rect.left + rect.width / 2, rect.top + rect.height / 2)
 }
 
+loadCurlControls()
 loadPlayerProfile()
 updateGameIdCard()
 initMultiplayer()

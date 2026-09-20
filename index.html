@@ -4,7 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Metaphoria</title>
-  <link rel="stylesheet" href="style.css?v=397" />
+  <link rel="stylesheet" href="style.css?v=462" />
+  <link rel="preload" href="assets/images/scroll-page-curl-exact-transparent.mp4" as="video" type="video/mp4" />
 </head>
 
 <body>
@@ -133,19 +134,19 @@
       <button type="button" onclick="showChooseMode()" class="image-btn back-image-btn map-back-btn" aria-label="Back" title="Back"></button>
       <h1 class="learn-map-title">Literary Devices</h1>
 
-      <button type="button" onclick="startLearnTopic('module1')" class="learn-card learn-card-image learn-module1-card" aria-label="Module 1" title="Module 1">
+      <button type="button" onclick="navigateLearnModule('module1')" class="learn-card learn-card-image learn-module1-card" aria-label="Module 1" title="Module 1">
         <span>Module 1</span>
       </button>
 
-      <button type="button" onclick="startLearnTopic('module2')" class="learn-card learn-card-image learn-module2-card" aria-label="Module 2" title="Module 2">
+      <button type="button" onclick="navigateLearnModule('module2')" class="learn-card learn-card-image learn-module2-card" aria-label="Module 2" title="Module 2">
         <span>Module 2</span>
       </button>
 
-      <button type="button" onclick="startLearnTopic('module3')" class="learn-card learn-card-image learn-module3-card" aria-label="Module 3" title="Module 3">
+      <button type="button" onclick="navigateLearnModule('module3')" class="learn-card learn-card-image learn-module3-card" aria-label="Module 3" title="Module 3">
         <span>Module 3</span>
       </button>
 
-      <button type="button" onclick="startLearnTopic('module4')" class="learn-card learn-card-image learn-module4-card" aria-label="Module 4" title="Module 4">
+      <button type="button" onclick="navigateLearnModule('module4')" class="learn-card learn-card-image learn-module4-card" aria-label="Module 4" title="Module 4">
         <span>Module 4</span>
       </button>
     </section>
@@ -245,6 +246,28 @@
     <section id="settingsPanel" class="overlay hidden">
       <div class="popup">
         <h2>Settings</h2>
+        <section class="curl-controls" aria-labelledby="curlControlsTitle">
+          <h3 id="curlControlsTitle">Page Turn Controls</h3>
+          <p class="curl-controls-help">Adjust the live page curl. X moves the clip right, Y moves it down, and Size changes its scale.</p>
+          <div class="curl-control-group">
+            <h4>Desktop</h4>
+            <label class="curl-control-row"><span>Next X</span><input id="curlNextXRange" type="range" min="-160" max="420" step="1" oninput="updateCurlControl('curl-next-x', this.value, 'curlNextXValue')" /><output id="curlNextXValue">150px</output></label>
+            <label class="curl-control-row"><span>Next Y</span><input id="curlNextYRange" type="range" min="-80" max="320" step="1" oninput="updateCurlControl('curl-next-y', this.value, 'curlNextYValue')" /><output id="curlNextYValue">55px</output></label>
+            <label class="curl-control-row"><span>Next Size</span><input id="curlNextScaleRange" type="range" min="0.75" max="1.7" step="0.01" oninput="updateCurlControl('curl-next-scale', this.value, 'curlNextScaleValue')" /><output id="curlNextScaleValue">1.24</output></label>
+            <label class="curl-control-row"><span>Back X</span><input id="curlBackXRange" type="range" min="-320" max="420" step="1" oninput="updateCurlControl('curl-back-x', this.value, 'curlBackXValue')" /><output id="curlBackXValue">-140px</output></label>
+            <label class="curl-control-row"><span>Back Y</span><input id="curlBackYRange" type="range" min="-80" max="320" step="1" oninput="updateCurlControl('curl-back-y', this.value, 'curlBackYValue')" /><output id="curlBackYValue">55px</output></label>
+            <label class="curl-control-row"><span>Back Size</span><input id="curlBackScaleRange" type="range" min="0.75" max="1.7" step="0.01" oninput="updateCurlControl('curl-back-scale', this.value, 'curlBackScaleValue')" /><output id="curlBackScaleValue">1.24</output></label>
+          </div>
+          <div class="curl-control-group">
+            <h4>Phone</h4>
+            <label class="curl-control-row"><span>Next X</span><input id="curlPhoneNextXRange" type="range" min="-160" max="420" step="1" oninput="updateCurlControl('curl-phone-next-x', this.value, 'curlPhoneNextXValue')" /><output id="curlPhoneNextXValue">150px</output></label>
+            <label class="curl-control-row"><span>Next Y</span><input id="curlPhoneNextYRange" type="range" min="-80" max="320" step="1" oninput="updateCurlControl('curl-phone-next-y', this.value, 'curlPhoneNextYValue')" /><output id="curlPhoneNextYValue">55px</output></label>
+            <label class="curl-control-row"><span>Back X</span><input id="curlPhoneBackXRange" type="range" min="-320" max="420" step="1" oninput="updateCurlControl('curl-phone-back-x', this.value, 'curlPhoneBackXValue')" /><output id="curlPhoneBackXValue">-140px</output></label>
+            <label class="curl-control-row"><span>Back Y</span><input id="curlPhoneBackYRange" type="range" min="-80" max="320" step="1" oninput="updateCurlControl('curl-phone-back-y', this.value, 'curlPhoneBackYValue')" /><output id="curlPhoneBackYValue">55px</output></label>
+            <label class="curl-control-row"><span>Phone Size</span><input id="curlPhoneScaleRange" type="range" min="0.7" max="1.5" step="0.01" oninput="updateCurlControl('curl-phone-scale', this.value, 'curlPhoneScaleValue')" /><output id="curlPhoneScaleValue">1.08</output></label>
+          </div>
+          <button type="button" class="btn blue curl-reset-btn" onclick="resetCurlControls()">Reset Page Turn Controls</button>
+        </section>
         <button onclick="toggleMusic()" class="btn blue">Mute / Unmute</button>
         <button onclick="restartGame()" class="btn orange">Restart Game</button>
         <button onclick="endGame()" class="btn red">End Game</button>
@@ -285,7 +308,8 @@
     <source src="assets/music/lofi.mp3" type="audio/mpeg" />
   </audio>
 
-  <script src="script.js?v=164"></script>
+  <script src="assets/images/scroll-page-curl-exact-transparent-data.js?v=1"></script>
+  <script src="script.js?v=228"></script>
 </body>
 </html>
 

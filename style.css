@@ -10683,3 +10683,2197 @@ body {
     display: none !important;
   }
 }
+
+/* v398: magical lesson sparkle and page-turn effects for Modules 1-4. */
+#learnMode:not(.hidden) {
+  isolation: isolate;
+  perspective: 1100px;
+}
+
+#learnMode:not(.hidden)::before,
+#learnMode:not(.hidden)::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+#learnMode:not(.hidden)::before {
+  z-index: 1;
+  opacity: 0;
+  background:
+    linear-gradient(
+      112deg,
+      transparent 0%,
+      transparent 34%,
+      rgba(255, 255, 255, 0.04) 42%,
+      rgba(255, 240, 171, 0.3) 49%,
+      rgba(255, 255, 255, 0.08) 55%,
+      transparent 64%,
+      transparent 100%
+    );
+  background-size: 260% 100%;
+  mix-blend-mode: screen;
+}
+
+#learnMode:not(.hidden)::after {
+  z-index: 1;
+  opacity: 0.18;
+  background:
+    radial-gradient(circle at 12% 18%, rgba(255, 247, 184, 0.95) 0 1px, transparent 2px),
+    radial-gradient(circle at 24% 74%, rgba(255, 255, 255, 0.8) 0 1px, transparent 2px),
+    radial-gradient(circle at 38% 28%, rgba(255, 226, 122, 0.92) 0 1px, transparent 2px),
+    radial-gradient(circle at 53% 82%, rgba(255, 255, 255, 0.75) 0 1px, transparent 2px),
+    radial-gradient(circle at 67% 18%, rgba(255, 235, 145, 0.9) 0 1px, transparent 2px),
+    radial-gradient(circle at 79% 68%, rgba(255, 255, 255, 0.78) 0 1px, transparent 2px),
+    radial-gradient(circle at 91% 34%, rgba(255, 225, 115, 0.85) 0 1px, transparent 2px);
+  animation: lesson-star-twinkle 4.8s ease-in-out infinite alternate;
+  mix-blend-mode: screen;
+}
+
+#learnMode:not(.hidden) .lesson-box {
+  z-index: 3 !important;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+}
+
+#learnMode:not(.hidden) .tutorial-guide {
+  z-index: 4 !important;
+}
+
+#learnMode.lesson-turn-forward .lesson-box {
+  animation: lesson-page-turn-forward 820ms cubic-bezier(0.2, 0.78, 0.22, 1) both;
+}
+
+#learnMode.lesson-turn-back .lesson-box {
+  animation: lesson-page-turn-back 820ms cubic-bezier(0.2, 0.78, 0.22, 1) both;
+}
+
+#learnMode.lesson-turn-forward::before,
+#learnMode.lesson-turn-back::before {
+  animation: lesson-magic-sheen 820ms ease-out both;
+}
+
+@keyframes lesson-page-turn-forward {
+  0% {
+    opacity: 0.18;
+    transform: perspective(1100px) rotateY(72deg) translateX(5%);
+    filter: brightness(1.28) saturate(1.16);
+  }
+  46% {
+    opacity: 0.88;
+    transform: perspective(1100px) rotateY(-8deg) translateX(-1%);
+  }
+  100% {
+    opacity: 1;
+    transform: perspective(1100px) rotateY(0deg) translateX(0);
+    filter: none;
+  }
+}
+
+@keyframes lesson-page-turn-back {
+  0% {
+    opacity: 0.18;
+    transform: perspective(1100px) rotateY(-72deg) translateX(-5%);
+    filter: brightness(1.28) saturate(1.16);
+  }
+  46% {
+    opacity: 0.88;
+    transform: perspective(1100px) rotateY(8deg) translateX(1%);
+  }
+  100% {
+    opacity: 1;
+    transform: perspective(1100px) rotateY(0deg) translateX(0);
+    filter: none;
+  }
+}
+
+@keyframes lesson-magic-sheen {
+  0% {
+    opacity: 0;
+    background-position: 120% 0;
+  }
+  24% {
+    opacity: 0.92;
+  }
+  100% {
+    opacity: 0;
+    background-position: -80% 0;
+  }
+}
+
+@keyframes lesson-star-twinkle {
+  0% {
+    opacity: 0.1;
+    transform: scale(0.99);
+  }
+  100% {
+    opacity: 0.28;
+    transform: scale(1.01);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #learnMode:not(.hidden)::after {
+    animation: none;
+    opacity: 0.12;
+  }
+
+  #learnMode.lesson-turn-forward::before,
+  #learnMode.lesson-turn-back::before {
+    animation: none;
+    opacity: 0;
+  }
+
+  #learnMode.lesson-turn-forward .lesson-box,
+  #learnMode.lesson-turn-back .lesson-box {
+    animation: none;
+  }
+}
+
+/* v399: more physical curled-page motion for the lesson flip. */
+#learnMode.lesson-turn-forward .lesson-box {
+  transform-origin: right center;
+  animation: lesson-realistic-flip-forward 820ms cubic-bezier(0.18, 0.78, 0.22, 1) both;
+}
+
+#learnMode.lesson-turn-back .lesson-box {
+  transform-origin: left center;
+  animation: lesson-realistic-flip-back 820ms cubic-bezier(0.18, 0.78, 0.22, 1) both;
+}
+
+#learnMode:not(.hidden) .lesson-box::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 18%;
+  pointer-events: none;
+  z-index: 4;
+  opacity: 0;
+  border-radius: 0.35em;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.08) 30%,
+    rgba(255, 244, 179, 0.68) 52%,
+    rgba(116, 65, 11, 0.24) 75%,
+    transparent 100%
+  );
+  filter: blur(1px);
+  mix-blend-mode: screen;
+}
+
+#learnMode.lesson-turn-forward .lesson-box::after {
+  right: -2%;
+  animation: lesson-page-edge-forward 820ms ease-out both;
+}
+
+#learnMode.lesson-turn-back .lesson-box::after {
+  left: -2%;
+  transform: scaleX(-1);
+  animation: lesson-page-edge-back 820ms ease-out both;
+}
+
+@keyframes lesson-realistic-flip-forward {
+  0% {
+    opacity: 0.12;
+    transform: perspective(1500px) rotateY(-84deg) rotateZ(2deg) translateX(7%) scaleX(0.14);
+    filter: brightness(1.32) saturate(1.18) drop-shadow(-18px 14px 12px rgba(32, 13, 0, 0.38));
+  }
+  22% {
+    opacity: 0.64;
+    transform: perspective(1500px) rotateY(-56deg) rotateZ(1.2deg) translateX(5%) scaleX(0.62);
+    filter: brightness(1.2) saturate(1.14) drop-shadow(-12px 12px 10px rgba(32, 13, 0, 0.32));
+  }
+  52% {
+    opacity: 0.96;
+    transform: perspective(1500px) rotateY(9deg) rotateZ(-0.4deg) translateX(-1%) scaleX(1.01);
+    filter: brightness(1.06) saturate(1.05) drop-shadow(-5px 8px 7px rgba(32, 13, 0, 0.24));
+  }
+  100% {
+    opacity: 1;
+    transform: perspective(1500px) rotateY(0deg) rotateZ(0deg) translateX(0) scaleX(1);
+    filter: none;
+  }
+}
+
+@keyframes lesson-realistic-flip-back {
+  0% {
+    opacity: 0.12;
+    transform: perspective(1500px) rotateY(84deg) rotateZ(-2deg) translateX(-7%) scaleX(0.14);
+    filter: brightness(1.32) saturate(1.18) drop-shadow(18px 14px 12px rgba(32, 13, 0, 0.38));
+  }
+  22% {
+    opacity: 0.64;
+    transform: perspective(1500px) rotateY(56deg) rotateZ(-1.2deg) translateX(-5%) scaleX(0.62);
+    filter: brightness(1.2) saturate(1.14) drop-shadow(12px 12px 10px rgba(32, 13, 0, 0.32));
+  }
+  52% {
+    opacity: 0.96;
+    transform: perspective(1500px) rotateY(-9deg) rotateZ(0.4deg) translateX(1%) scaleX(1.01);
+    filter: brightness(1.06) saturate(1.05) drop-shadow(5px 8px 7px rgba(32, 13, 0, 0.24));
+  }
+  100% {
+    opacity: 1;
+    transform: perspective(1500px) rotateY(0deg) rotateZ(0deg) translateX(0) scaleX(1);
+    filter: none;
+  }
+}
+
+@keyframes lesson-page-edge-forward {
+  0% {
+    opacity: 0;
+    transform: translateX(130%) skewY(-5deg) scaleY(0.92);
+  }
+  22% {
+    opacity: 0.9;
+    transform: translateX(22%) skewY(-3deg) scaleY(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-510%) skewY(0deg) scaleY(1.04);
+  }
+}
+
+@keyframes lesson-page-edge-back {
+  0% {
+    opacity: 0;
+    transform: scaleX(-1) translateX(130%) skewY(5deg) scaleY(0.92);
+  }
+  22% {
+    opacity: 0.9;
+    transform: scaleX(-1) translateX(22%) skewY(3deg) scaleY(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scaleX(-1) translateX(-510%) skewY(0deg) scaleY(1.04);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #learnMode.lesson-turn-forward .lesson-box,
+  #learnMode.lesson-turn-back .lesson-box,
+  #learnMode.lesson-turn-forward .lesson-box::after,
+  #learnMode.lesson-turn-back .lesson-box::after {
+    animation: none;
+  }
+}
+
+/* Final v400: document-backed About Metaphoria popup. */
+.overlay .popup.mechanics-popup {
+  max-height: min(calc(720px * var(--fixed-scale)), 88vh);
+  overflow: hidden;
+}
+
+.overlay .popup.mechanics-popup .about-metaphoria {
+  max-height: min(calc(520px * var(--fixed-scale)), 62vh);
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: calc(4px * var(--fixed-scale)) calc(12px * var(--fixed-scale)) calc(8px * var(--fixed-scale));
+  color: #351900;
+  text-align: left;
+  font-size: max(calc(17px * var(--fixed-scale)), 11px);
+  line-height: 1.28;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(126, 73, 16, 0.82) rgba(255, 235, 174, 0.34);
+}
+
+.overlay .popup.mechanics-popup .about-metaphoria p {
+  margin: 0 0 calc(12px * var(--fixed-scale));
+}
+
+.overlay .popup.mechanics-popup .about-metaphoria .about-lead {
+  font-weight: 800;
+}
+
+.overlay .popup.mechanics-popup .about-metaphoria h3 {
+  margin: calc(16px * var(--fixed-scale)) 0 calc(7px * var(--fixed-scale));
+  color: #4d2500;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: max(calc(22px * var(--fixed-scale)), 14px);
+  line-height: 1.1;
+  text-align: center;
+}
+
+.overlay .popup.mechanics-popup .about-metaphoria ul {
+  margin: 0;
+  padding-left: calc(24px * var(--fixed-scale));
+}
+
+.overlay .popup.mechanics-popup .about-metaphoria li {
+  margin: 0 0 calc(8px * var(--fixed-scale));
+  padding-left: calc(3px * var(--fixed-scale));
+}
+
+@media (max-width: 700px), (orientation: landscape) and (max-height: 560px) {
+  .overlay .popup.mechanics-popup {
+    max-height: min(calc(720px * var(--fixed-scale)), 86vh);
+  }
+
+  .overlay .popup.mechanics-popup .about-metaphoria {
+    max-height: min(calc(500px * var(--fixed-scale)), 57vh);
+    padding-left: calc(8px * var(--fixed-scale));
+    padding-right: calc(8px * var(--fixed-scale));
+    font-size: max(calc(16px * var(--fixed-scale)), 10px);
+    line-height: 1.22;
+  }
+
+  .overlay .popup.mechanics-popup .about-metaphoria h3 {
+    font-size: max(calc(20px * var(--fixed-scale)), 13px);
+  }
+}
+/* Final v401: synchronized book page turn with separate old and new paper sheets. */
+#learnMode .lesson-turn-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  overflow: visible;
+  pointer-events: none;
+  perspective: 1800px;
+  transform-style: preserve-3d;
+}
+
+#learnMode.lesson-turn-live-hidden > .scroll-board-art,
+#learnMode.lesson-turn-live-hidden > .lesson-box {
+  visibility: hidden !important;
+}
+
+#learnMode .lesson-turn-sheet {
+  position: absolute;
+  inset: 0;
+  overflow: visible;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  transform-origin: center center;
+  will-change: transform, filter;
+}
+
+#learnMode .lesson-turn-sheet .scroll-board-art,
+#learnMode .lesson-turn-sheet .lesson-box {
+  backface-visibility: hidden;
+}
+
+#learnMode .lesson-turn-layer .lesson-turn-page-old {
+  z-index: 2;
+}
+
+#learnMode .lesson-turn-layer .lesson-turn-page-new {
+  z-index: 1;
+}
+
+#learnMode .lesson-turn-layer.lesson-turn-forward .lesson-turn-sheet {
+  transform-origin: left center;
+}
+
+#learnMode .lesson-turn-layer.lesson-turn-back .lesson-turn-sheet {
+  transform-origin: right center;
+}
+
+#learnMode .lesson-turn-layer.is-active.lesson-turn-forward .lesson-turn-page-old {
+  animation: book-page-out-forward 920ms cubic-bezier(0.22, 0.72, 0.18, 1) both;
+}
+
+#learnMode .lesson-turn-layer.is-active.lesson-turn-forward .lesson-turn-page-new {
+  animation: book-page-in-forward 920ms cubic-bezier(0.22, 0.72, 0.18, 1) both;
+}
+
+#learnMode .lesson-turn-layer.is-active.lesson-turn-back .lesson-turn-page-old {
+  animation: book-page-out-back 920ms cubic-bezier(0.22, 0.72, 0.18, 1) both;
+}
+
+#learnMode .lesson-turn-layer.is-active.lesson-turn-back .lesson-turn-page-new {
+  animation: book-page-in-back 920ms cubic-bezier(0.22, 0.72, 0.18, 1) both;
+}
+
+#learnMode .lesson-turn-sheet::after {
+  content: "";
+  position: absolute;
+  top: 5%;
+  bottom: 5%;
+  width: 24px;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 8;
+  border-radius: 50%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(78, 39, 7, 0.1) 26%,
+    rgba(255, 250, 197, 0.86) 52%,
+    rgba(77, 38, 5, 0.18) 78%,
+    transparent
+  );
+  filter: blur(2px);
+}
+
+#learnMode .lesson-turn-layer.lesson-turn-forward .lesson-turn-page-old::after {
+  left: 0;
+  animation: book-page-fold-forward 920ms ease-in-out both;
+}
+
+#learnMode .lesson-turn-layer.lesson-turn-back .lesson-turn-page-old::after {
+  right: 0;
+  animation: book-page-fold-back 920ms ease-in-out both;
+}
+
+@keyframes book-page-out-forward {
+  0% {
+    opacity: 1;
+    transform: rotateY(0deg) translateZ(0);
+    filter: brightness(1) saturate(1);
+  }
+  38% {
+    opacity: 1;
+    transform: rotateY(-62deg) translateX(-1%);
+    filter: brightness(1.08) saturate(1.05) drop-shadow(10px 10px 8px rgba(39, 18, 0, 0.2));
+  }
+  72% {
+    opacity: 0.96;
+    transform: rotateY(-132deg) translateX(-2%);
+    filter: brightness(0.94) saturate(0.92) drop-shadow(20px 12px 10px rgba(39, 18, 0, 0.25));
+  }
+  100% {
+    opacity: 0.82;
+    transform: rotateY(-180deg) translateX(-2%);
+    filter: brightness(0.84) saturate(0.82);
+  }
+}
+
+@keyframes book-page-in-forward {
+  0% {
+    opacity: 0.82;
+    transform: rotateY(180deg) translateX(2%);
+    filter: brightness(0.82) saturate(0.8);
+  }
+  38% {
+    opacity: 0.9;
+    transform: rotateY(128deg) translateX(1%);
+    filter: brightness(0.92) saturate(0.92);
+  }
+  72% {
+    opacity: 1;
+    transform: rotateY(54deg) translateX(0.4%);
+    filter: brightness(1.04) saturate(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: rotateY(0deg) translateX(0);
+    filter: none;
+  }
+}
+
+@keyframes book-page-out-back {
+  0% {
+    opacity: 1;
+    transform: rotateY(0deg) translateZ(0);
+    filter: brightness(1) saturate(1);
+  }
+  38% {
+    opacity: 1;
+    transform: rotateY(62deg) translateX(1%);
+    filter: brightness(1.08) saturate(1.05) drop-shadow(-10px 10px 8px rgba(39, 18, 0, 0.2));
+  }
+  72% {
+    opacity: 0.96;
+    transform: rotateY(132deg) translateX(2%);
+    filter: brightness(0.94) saturate(0.92) drop-shadow(-20px 12px 10px rgba(39, 18, 0, 0.25));
+  }
+  100% {
+    opacity: 0.82;
+    transform: rotateY(180deg) translateX(2%);
+    filter: brightness(0.84) saturate(0.82);
+  }
+}
+
+@keyframes book-page-in-back {
+  0% {
+    opacity: 0.82;
+    transform: rotateY(-180deg) translateX(-2%);
+    filter: brightness(0.82) saturate(0.8);
+  }
+  38% {
+    opacity: 0.9;
+    transform: rotateY(-128deg) translateX(-1%);
+    filter: brightness(0.92) saturate(0.92);
+  }
+  72% {
+    opacity: 1;
+    transform: rotateY(-54deg) translateX(-0.4%);
+    filter: brightness(1.04) saturate(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: rotateY(0deg) translateX(0);
+    filter: none;
+  }
+}
+
+@keyframes book-page-fold-forward {
+  0%, 16% {
+    opacity: 0;
+    transform: translateX(0) scaleY(0.94);
+  }
+  38% {
+    opacity: 0.88;
+    transform: translateX(42vw) scaleY(1);
+  }
+  72% {
+    opacity: 0.3;
+    transform: translateX(84vw) scaleY(1.03);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(104vw) scaleY(1.04);
+  }
+}
+
+@keyframes book-page-fold-back {
+  0%, 16% {
+    opacity: 0;
+    transform: translateX(0) scaleY(0.94);
+  }
+  38% {
+    opacity: 0.88;
+    transform: translateX(-42vw) scaleY(1);
+  }
+  72% {
+    opacity: 0.3;
+    transform: translateX(-84vw) scaleY(1.03);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-104vw) scaleY(1.04);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #learnMode .lesson-turn-layer.is-active .lesson-turn-sheet,
+  #learnMode .lesson-turn-layer.is-active .lesson-turn-sheet::after {
+    animation: none !important;
+  }
+
+  #learnMode .lesson-turn-layer.is-active .lesson-turn-page-old {
+    display: none;
+  }
+
+  #learnMode .lesson-turn-layer.is-active .lesson-turn-page-new {
+    transform: none;
+    opacity: 1;
+  }
+}
+/* Final v402: visible About Metaphoria welcome button label. */
+#welcomeScreen .option-image-btn {
+  position: relative;
+  isolation: isolate;
+}
+
+#welcomeScreen .option-image-btn::before {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  top: 34%;
+  right: 13%;
+  bottom: 34%;
+  left: 13%;
+  border: calc(2px * var(--fixed-scale)) solid rgba(255, 237, 153, 0.88);
+  border-radius: calc(8px * var(--fixed-scale));
+  background: linear-gradient(180deg, rgba(113, 55, 9, 0.96), rgba(47, 18, 2, 0.96));
+  box-shadow:
+    inset 0 calc(2px * var(--fixed-scale)) 0 rgba(255, 245, 182, 0.2),
+    0 calc(2px * var(--fixed-scale)) 0 rgba(0, 0, 0, 0.34);
+  pointer-events: none;
+}
+
+#welcomeScreen .option-image-btn::after {
+  content: "About Metaphoria";
+  position: absolute;
+  z-index: 2;
+  top: 34%;
+  right: 13%;
+  bottom: 34%;
+  left: 13%;
+  display: grid;
+  place-items: center;
+  padding: 0 calc(4px * var(--fixed-scale));
+  color: #fff4a8;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: max(calc(14px * var(--fixed-scale)), 7px);
+  font-weight: 900;
+  line-height: 1;
+  white-space: nowrap;
+  text-shadow:
+    0 calc(2px * var(--fixed-scale)) 0 #4b1d00,
+    0 0 calc(4px * var(--fixed-scale)) rgba(255, 230, 111, 0.72);
+  pointer-events: none;
+}
+
+@media (max-width: 700px), (orientation: landscape) and (max-height: 560px) {
+  #welcomeScreen .option-image-btn::after {
+    font-size: max(calc(13px * var(--fixed-scale)), 6px);
+  }
+}
+/* Final v403: simplified book peel and clean About button. */
+#learnMode .lesson-turn-layer {
+  z-index: 6;
+}
+
+#learnMode.lesson-turn-live-hidden > .scroll-board-art,
+#learnMode.lesson-turn-live-hidden > .lesson-box {
+  visibility: visible !important;
+}
+
+#learnMode.lesson-turn-live-hidden .tutorial-guide {
+  z-index: 7 !important;
+}
+
+#learnMode .lesson-turn-layer .lesson-turn-page-new {
+  display: none !important;
+}
+
+#learnMode .lesson-turn-layer.is-active.lesson-turn-forward .lesson-turn-page-old {
+  animation: book-page-peel-forward 920ms cubic-bezier(0.2, 0.72, 0.2, 1) both;
+}
+
+#learnMode .lesson-turn-layer.is-active.lesson-turn-back .lesson-turn-page-old {
+  animation: book-page-peel-back 920ms cubic-bezier(0.2, 0.72, 0.2, 1) both;
+}
+
+@keyframes book-page-peel-forward {
+  0% {
+    opacity: 1;
+    transform: rotateY(0deg) translateX(0) rotateZ(0deg);
+    filter: brightness(1) saturate(1);
+  }
+  34% {
+    opacity: 1;
+    transform: rotateY(-48deg) translateX(-1%) rotateZ(-0.4deg);
+    filter: brightness(1.06) saturate(1.02) drop-shadow(8px 10px 7px rgba(39, 18, 0, 0.18));
+  }
+  68% {
+    opacity: 0.96;
+    transform: rotateY(-126deg) translateX(-2%) rotateZ(-0.8deg);
+    filter: brightness(0.94) saturate(0.92) drop-shadow(18px 12px 10px rgba(39, 18, 0, 0.24));
+  }
+  100% {
+    opacity: 0.08;
+    transform: rotateY(-180deg) translateX(-3%) rotateZ(-1deg);
+    filter: brightness(0.8) saturate(0.78);
+  }
+}
+
+@keyframes book-page-peel-back {
+  0% {
+    opacity: 1;
+    transform: rotateY(0deg) translateX(0) rotateZ(0deg);
+    filter: brightness(1) saturate(1);
+  }
+  34% {
+    opacity: 1;
+    transform: rotateY(48deg) translateX(1%) rotateZ(0.4deg);
+    filter: brightness(1.06) saturate(1.02) drop-shadow(-8px 10px 7px rgba(39, 18, 0, 0.18));
+  }
+  68% {
+    opacity: 0.96;
+    transform: rotateY(126deg) translateX(2%) rotateZ(0.8deg);
+    filter: brightness(0.94) saturate(0.92) drop-shadow(-18px 12px 10px rgba(39, 18, 0, 0.24));
+  }
+  100% {
+    opacity: 0.08;
+    transform: rotateY(180deg) translateX(3%) rotateZ(1deg);
+    filter: brightness(0.8) saturate(0.78);
+  }
+}
+
+#welcomeScreen .option-image-btn {
+  background-image: none !important;
+  background:
+    linear-gradient(180deg, #ffd86a 0%, #df8518 38%, #7b2e04 72%, #3b1602 100%) !important;
+  border: calc(3px * var(--fixed-scale)) solid #ffeaa1 !important;
+  border-radius: calc(16px * var(--fixed-scale)) !important;
+  box-shadow:
+    inset 0 calc(3px * var(--fixed-scale)) 0 rgba(255, 255, 221, 0.55),
+    inset 0 calc(-5px * var(--fixed-scale)) 0 rgba(45, 13, 0, 0.42),
+    0 calc(5px * var(--fixed-scale)) 0 rgba(40, 15, 0, 0.35) !important;
+}
+
+#welcomeScreen .option-image-btn::before {
+  top: 8%;
+  right: 7%;
+  bottom: 8%;
+  left: 7%;
+  border: calc(2px * var(--fixed-scale)) solid rgba(255, 243, 169, 0.78);
+  border-radius: calc(10px * var(--fixed-scale));
+  background: linear-gradient(180deg, rgba(121, 50, 4, 0.22), rgba(30, 8, 0, 0.3));
+  box-shadow: inset 0 calc(2px * var(--fixed-scale)) 0 rgba(255, 255, 221, 0.18);
+}
+
+#welcomeScreen .option-image-btn::after {
+  top: 8%;
+  right: 7%;
+  bottom: 8%;
+  left: 7%;
+  padding: 0 calc(5px * var(--fixed-scale));
+  font-size: max(calc(14px * var(--fixed-scale)), 7px);
+  text-shadow:
+    0 calc(2px * var(--fixed-scale)) 0 #4b1d00,
+    0 0 calc(5px * var(--fixed-scale)) rgba(255, 230, 111, 0.72);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #learnMode .lesson-turn-layer.is-active .lesson-turn-page-old {
+    animation: none !important;
+    opacity: 0;
+  }
+}
+/* Final v404: clean page peel and restored button artwork. */
+#learnMode .lesson-turn-layer .lesson-turn-page-old::after {
+  display: none !important;
+}
+
+#learnMode .lesson-turn-layer.is-active.lesson-turn-forward .lesson-turn-page-old,
+#learnMode .lesson-turn-layer.is-active.lesson-turn-back .lesson-turn-page-old {
+  animation-duration: 760ms;
+  animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1);
+}
+
+#learnMode .lesson-turn-layer.is-active.lesson-turn-forward .lesson-turn-page-old {
+  animation-name: clean-book-peel-forward;
+}
+
+#learnMode .lesson-turn-layer.is-active.lesson-turn-back .lesson-turn-page-old {
+  animation-name: clean-book-peel-back;
+}
+
+@keyframes clean-book-peel-forward {
+  0% {
+    opacity: 1;
+    transform: rotateY(0deg);
+    filter: none;
+  }
+  50% {
+    opacity: 1;
+    transform: rotateY(-90deg);
+    filter: brightness(0.94);
+  }
+  100% {
+    opacity: 0;
+    transform: rotateY(-180deg);
+    filter: brightness(0.86);
+  }
+}
+
+@keyframes clean-book-peel-back {
+  0% {
+    opacity: 1;
+    transform: rotateY(0deg);
+    filter: none;
+  }
+  50% {
+    opacity: 1;
+    transform: rotateY(90deg);
+    filter: brightness(0.94);
+  }
+  100% {
+    opacity: 0;
+    transform: rotateY(180deg);
+    filter: brightness(0.86);
+  }
+}
+
+#welcomeScreen .option-image-btn {
+  background-color: transparent !important;
+  background-image: url("assets/buttons/option-btn.png") !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+#welcomeScreen .option-image-btn::before {
+  top: 34%;
+  right: 12%;
+  bottom: 34%;
+  left: 12%;
+  border: calc(2px * var(--fixed-scale)) solid rgba(255, 235, 153, 0.9);
+  border-radius: calc(8px * var(--fixed-scale));
+  background: linear-gradient(180deg, rgba(93, 42, 5, 0.98), rgba(45, 15, 1, 0.98));
+  box-shadow:
+    inset 0 calc(2px * var(--fixed-scale)) 0 rgba(255, 246, 193, 0.2),
+    0 calc(2px * var(--fixed-scale)) 0 rgba(0, 0, 0, 0.3);
+}
+
+#welcomeScreen .option-image-btn::after {
+  top: 34%;
+  right: 12%;
+  bottom: 34%;
+  left: 12%;
+  padding: 0 calc(3px * var(--fixed-scale));
+  font-size: max(calc(14px * var(--fixed-scale)), 7px);
+  line-height: 1;
+}
+/* Final v405: soft paper flip and restored Options button. */
+#learnMode .lesson-turn-layer.is-active.lesson-turn-forward .lesson-turn-page-old,
+#learnMode .lesson-turn-layer.is-active.lesson-turn-back .lesson-turn-page-old {
+  animation-duration: 960ms;
+  animation-timing-function: cubic-bezier(0.42, 0, 0.18, 1);
+  filter: none;
+}
+
+#learnMode .lesson-turn-layer.is-active.lesson-turn-forward .lesson-turn-page-old {
+  animation-name: soft-paper-flip-forward;
+}
+
+#learnMode .lesson-turn-layer.is-active.lesson-turn-back .lesson-turn-page-old {
+  animation-name: soft-paper-flip-back;
+}
+
+@keyframes soft-paper-flip-forward {
+  0% {
+    opacity: 1;
+    transform: rotateY(0deg) translateX(0) skewY(0deg);
+    filter: brightness(1);
+  }
+  28% {
+    opacity: 1;
+    transform: rotateY(-24deg) translateX(-0.4%) skewY(-0.18deg);
+    filter: brightness(1.02);
+  }
+  56% {
+    opacity: 1;
+    transform: rotateY(-78deg) translateX(-1.2%) skewY(-0.32deg);
+    filter: brightness(0.98);
+  }
+  82% {
+    opacity: 1;
+    transform: rotateY(-142deg) translateX(-2%) skewY(-0.16deg);
+    filter: brightness(0.94);
+  }
+  100% {
+    opacity: 1;
+    transform: rotateY(-180deg) translateX(-2.4%) skewY(0deg);
+    filter: brightness(0.9);
+  }
+}
+
+@keyframes soft-paper-flip-back {
+  0% {
+    opacity: 1;
+    transform: rotateY(0deg) translateX(0) skewY(0deg);
+    filter: brightness(1);
+  }
+  28% {
+    opacity: 1;
+    transform: rotateY(24deg) translateX(0.4%) skewY(0.18deg);
+    filter: brightness(1.02);
+  }
+  56% {
+    opacity: 1;
+    transform: rotateY(78deg) translateX(1.2%) skewY(0.32deg);
+    filter: brightness(0.98);
+  }
+  82% {
+    opacity: 1;
+    transform: rotateY(142deg) translateX(2%) skewY(0.16deg);
+    filter: brightness(0.94);
+  }
+  100% {
+    opacity: 1;
+    transform: rotateY(180deg) translateX(2.4%) skewY(0deg);
+    filter: brightness(0.9);
+  }
+}
+
+#welcomeScreen .option-image-btn {
+  background-color: transparent !important;
+  background-image: url("assets/buttons/option-btn.png") !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+#welcomeScreen .option-image-btn::before,
+#welcomeScreen .option-image-btn::after {
+  content: none !important;
+  display: none !important;
+}
+/* Final v406: explicit Options label stays readable over the original artwork. */
+#welcomeScreen .option-image-btn {
+  position: relative;
+}
+
+#welcomeScreen .option-image-btn .option-button-label {
+  position: absolute;
+  z-index: 3;
+  top: 38%;
+  right: 14%;
+  bottom: 36%;
+  left: 14%;
+  display: grid;
+  place-items: center;
+  color: #fff4a8;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: max(calc(15px * var(--fixed-scale)), 8px);
+  font-weight: 900;
+  line-height: 1;
+  white-space: nowrap;
+  text-shadow:
+    0 calc(2px * var(--fixed-scale)) 0 #4b1d00,
+    0 0 calc(4px * var(--fixed-scale)) rgba(255, 230, 111, 0.72);
+  pointer-events: none;
+}/* Final v407: a soft paper curl instead of a rigid card rotation. */
+#learnMode .lesson-turn-layer {
+  perspective: none;
+  transform-style: flat;
+}
+
+#learnMode .lesson-turn-layer .lesson-turn-page-old {
+  transform-style: flat;
+  backface-visibility: visible;
+  transform-origin: left center;
+  will-change: transform, opacity, filter;
+}
+
+#learnMode .lesson-turn-layer.lesson-turn-back .lesson-turn-page-old {
+  transform-origin: right center;
+}
+
+#learnMode .lesson-turn-layer.is-active.lesson-turn-forward .lesson-turn-page-old,
+#learnMode .lesson-turn-layer.is-active.lesson-turn-back .lesson-turn-page-old {
+  animation-duration: 980ms;
+  animation-timing-function: cubic-bezier(0.42, 0.04, 0.18, 1);
+  animation-fill-mode: both;
+}
+
+#learnMode .lesson-turn-layer.is-active.lesson-turn-forward .lesson-turn-page-old {
+  animation-name: soft-paper-curl-forward;
+}
+
+#learnMode .lesson-turn-layer.is-active.lesson-turn-back .lesson-turn-page-old {
+  animation-name: soft-paper-curl-back;
+}
+
+#learnMode .lesson-turn-layer .lesson-turn-page-old::after {
+  display: block !important;
+  content: "";
+  position: absolute;
+  top: 2%;
+  bottom: 2%;
+  width: 14px;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 20;
+  border-radius: 50%;
+  filter: blur(1px);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 249, 205, 0.72) 42%,
+    rgba(91, 43, 6, 0.24) 68%,
+    transparent
+  );
+}
+
+#learnMode .lesson-turn-layer.lesson-turn-forward .lesson-turn-page-old::after {
+  left: calc(100% - 7px);
+  animation: soft-paper-fold-edge-forward 980ms cubic-bezier(0.42, 0.04, 0.18, 1) both;
+}
+
+#learnMode .lesson-turn-layer.lesson-turn-back .lesson-turn-page-old::after {
+  right: calc(100% - 7px);
+  animation: soft-paper-fold-edge-back 980ms cubic-bezier(0.42, 0.04, 0.18, 1) both;
+}
+
+@keyframes soft-paper-curl-forward {
+  0% {
+    opacity: 1;
+    transform: translateX(0) rotateZ(0deg) scaleX(1) skewY(0deg);
+    filter: brightness(1) saturate(1);
+  }
+  24% {
+    opacity: 1;
+    transform: translateX(-0.2%) rotateZ(-0.12deg) scaleX(0.98) skewY(-0.14deg);
+    filter: brightness(1.02) saturate(1.01);
+  }
+  52% {
+    opacity: 1;
+    transform: translateX(-0.8%) rotateZ(-0.34deg) scaleX(0.82) skewY(-0.42deg);
+    filter: brightness(1.01) saturate(0.99);
+  }
+  78% {
+    opacity: 0.76;
+    transform: translateX(-1.8%) rotateZ(-0.48deg) scaleX(0.46) skewY(-0.58deg);
+    filter: brightness(0.97) saturate(0.96);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-2.8%) rotateZ(-0.18deg) scaleX(0.035) skewY(0deg);
+    filter: brightness(0.94) saturate(0.94);
+  }
+}
+
+@keyframes soft-paper-curl-back {
+  0% {
+    opacity: 1;
+    transform: translateX(0) rotateZ(0deg) scaleX(1) skewY(0deg);
+    filter: brightness(1) saturate(1);
+  }
+  24% {
+    opacity: 1;
+    transform: translateX(0.2%) rotateZ(0.12deg) scaleX(0.98) skewY(0.14deg);
+    filter: brightness(1.02) saturate(1.01);
+  }
+  52% {
+    opacity: 1;
+    transform: translateX(0.8%) rotateZ(0.34deg) scaleX(0.82) skewY(0.42deg);
+    filter: brightness(1.01) saturate(0.99);
+  }
+  78% {
+    opacity: 0.76;
+    transform: translateX(1.8%) rotateZ(0.48deg) scaleX(0.46) skewY(0.58deg);
+    filter: brightness(0.97) saturate(0.96);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(2.8%) rotateZ(0.18deg) scaleX(0.035) skewY(0deg);
+    filter: brightness(0.94) saturate(0.94);
+  }
+}
+
+@keyframes soft-paper-fold-edge-forward {
+  0%, 20% { opacity: 0; }
+  38% { opacity: 0.78; }
+  72% { opacity: 0.52; }
+  100% { opacity: 0; }
+}
+
+@keyframes soft-paper-fold-edge-back {
+  0%, 20% { opacity: 0; }
+  38% { opacity: 0.78; }
+  72% { opacity: 0.52; }
+  100% { opacity: 0; }
+}
+/* Final v408: restore the full Options artwork and soften the paper curl. */
+#welcomeScreen .option-image-btn {
+  background-color: transparent !important;
+  background-image: url("assets/buttons/option-btn.png") !important;
+  background-size: contain !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+}
+
+#learnMode .lesson-turn-layer.is-active.lesson-turn-forward .lesson-turn-page-old,
+#learnMode .lesson-turn-layer.is-active.lesson-turn-back .lesson-turn-page-old {
+  animation-duration: 1200ms;
+  animation-timing-function: cubic-bezier(0.37, 0.05, 0.22, 1);
+}
+
+#learnMode .lesson-turn-layer.lesson-turn-forward .lesson-turn-page-old::after {
+  animation-duration: 1200ms;
+  animation-timing-function: cubic-bezier(0.37, 0.05, 0.22, 1);
+}
+
+#learnMode .lesson-turn-layer.lesson-turn-back .lesson-turn-page-old::after {
+  animation-duration: 1200ms;
+  animation-timing-function: cubic-bezier(0.37, 0.05, 0.22, 1);
+}
+
+@keyframes soft-paper-curl-forward {
+  0% {
+    opacity: 1;
+    transform: translateX(0) rotateZ(0deg) scaleX(1) skewY(0deg);
+    filter: brightness(1) saturate(1);
+  }
+  14% {
+    opacity: 1;
+    transform: translateX(-0.05%) rotateZ(-0.04deg) scaleX(0.995) skewY(-0.04deg);
+    filter: brightness(1.01) saturate(1);
+  }
+  30% {
+    opacity: 1;
+    transform: translateX(-0.2%) rotateZ(-0.12deg) scaleX(0.95) skewY(-0.14deg);
+    filter: brightness(1.015) saturate(0.995);
+  }
+  48% {
+    opacity: 1;
+    transform: translateX(-0.55%) rotateZ(-0.24deg) scaleX(0.82) skewY(-0.3deg);
+    filter: brightness(1.01) saturate(0.985);
+  }
+  66% {
+    opacity: 0.98;
+    transform: translateX(-1.1%) rotateZ(-0.38deg) scaleX(0.62) skewY(-0.48deg);
+    filter: brightness(0.995) saturate(0.975);
+  }
+  82% {
+    opacity: 0.82;
+    transform: translateX(-1.8%) rotateZ(-0.46deg) scaleX(0.38) skewY(-0.52deg);
+    filter: brightness(0.975) saturate(0.96);
+  }
+  94% {
+    opacity: 0.42;
+    transform: translateX(-2.45%) rotateZ(-0.3deg) scaleX(0.14) skewY(-0.25deg);
+    filter: brightness(0.95) saturate(0.95);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-2.8%) rotateZ(-0.12deg) scaleX(0.025) skewY(0deg);
+    filter: brightness(0.94) saturate(0.94);
+  }
+}
+
+@keyframes soft-paper-curl-back {
+  0% {
+    opacity: 1;
+    transform: translateX(0) rotateZ(0deg) scaleX(1) skewY(0deg);
+    filter: brightness(1) saturate(1);
+  }
+  14% {
+    opacity: 1;
+    transform: translateX(0.05%) rotateZ(0.04deg) scaleX(0.995) skewY(0.04deg);
+    filter: brightness(1.01) saturate(1);
+  }
+  30% {
+    opacity: 1;
+    transform: translateX(0.2%) rotateZ(0.12deg) scaleX(0.95) skewY(0.14deg);
+    filter: brightness(1.015) saturate(0.995);
+  }
+  48% {
+    opacity: 1;
+    transform: translateX(0.55%) rotateZ(0.24deg) scaleX(0.82) skewY(0.3deg);
+    filter: brightness(1.01) saturate(0.985);
+  }
+  66% {
+    opacity: 0.98;
+    transform: translateX(1.1%) rotateZ(0.38deg) scaleX(0.62) skewY(0.48deg);
+    filter: brightness(0.995) saturate(0.975);
+  }
+  82% {
+    opacity: 0.82;
+    transform: translateX(1.8%) rotateZ(0.46deg) scaleX(0.38) skewY(0.52deg);
+    filter: brightness(0.975) saturate(0.96);
+  }
+  94% {
+    opacity: 0.42;
+    transform: translateX(2.45%) rotateZ(0.3deg) scaleX(0.14) skewY(0.25deg);
+    filter: brightness(0.95) saturate(0.95);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(2.8%) rotateZ(0.12deg) scaleX(0.025) skewY(0deg);
+    filter: brightness(0.94) saturate(0.94);
+  }
+}
+/* Final v409: keep the replacement page hidden until the paper curl finishes. */
+#learnMode.lesson-turn-live-hidden > .scroll-board-art,
+#learnMode.lesson-turn-live-hidden > .lesson-box {
+  visibility: hidden !important;
+}
+/* Final v410: compositor-friendly, high-refresh paper motion. */
+#learnMode .lesson-turn-layer {
+  will-change: opacity;
+}
+
+#learnMode .lesson-turn-layer .lesson-turn-page-old {
+  backface-visibility: hidden;
+  transform: translate3d(0, 0, 0);
+  will-change: transform, opacity;
+  filter: none !important;
+}
+
+#learnMode .lesson-turn-layer .lesson-turn-page-old::after {
+  filter: none;
+  will-change: opacity;
+}
+
+#learnMode .lesson-turn-layer.is-active.lesson-turn-forward .lesson-turn-page-old,
+#learnMode .lesson-turn-layer.is-active.lesson-turn-back .lesson-turn-page-old {
+  animation-duration: 1200ms;
+  animation-timing-function: linear;
+  animation-fill-mode: both;
+}
+
+@keyframes soft-paper-curl-forward {
+  0% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) rotateZ(0deg) scaleX(1) skewY(0deg);
+  }
+  14% {
+    opacity: 1;
+    transform: translate3d(-0.05%, 0, 0) rotateZ(-0.04deg) scaleX(0.995) skewY(-0.04deg);
+  }
+  30% {
+    opacity: 1;
+    transform: translate3d(-0.2%, 0, 0) rotateZ(-0.12deg) scaleX(0.95) skewY(-0.14deg);
+  }
+  48% {
+    opacity: 1;
+    transform: translate3d(-0.55%, 0, 0) rotateZ(-0.24deg) scaleX(0.82) skewY(-0.3deg);
+  }
+  66% {
+    opacity: 0.98;
+    transform: translate3d(-1.1%, 0, 0) rotateZ(-0.38deg) scaleX(0.62) skewY(-0.48deg);
+  }
+  82% {
+    opacity: 0.82;
+    transform: translate3d(-1.8%, 0, 0) rotateZ(-0.46deg) scaleX(0.38) skewY(-0.52deg);
+  }
+  94% {
+    opacity: 0.42;
+    transform: translate3d(-2.45%, 0, 0) rotateZ(-0.3deg) scaleX(0.14) skewY(-0.25deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(-2.8%, 0, 0) rotateZ(-0.12deg) scaleX(0.025) skewY(0deg);
+  }
+}
+
+@keyframes soft-paper-curl-back {
+  0% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) rotateZ(0deg) scaleX(1) skewY(0deg);
+  }
+  14% {
+    opacity: 1;
+    transform: translate3d(0.05%, 0, 0) rotateZ(0.04deg) scaleX(0.995) skewY(0.04deg);
+  }
+  30% {
+    opacity: 1;
+    transform: translate3d(0.2%, 0, 0) rotateZ(0.12deg) scaleX(0.95) skewY(0.14deg);
+  }
+  48% {
+    opacity: 1;
+    transform: translate3d(0.55%, 0, 0) rotateZ(0.24deg) scaleX(0.82) skewY(0.3deg);
+  }
+  66% {
+    opacity: 0.98;
+    transform: translate3d(1.1%, 0, 0) rotateZ(0.38deg) scaleX(0.62) skewY(0.48deg);
+  }
+  82% {
+    opacity: 0.82;
+    transform: translate3d(1.8%, 0, 0) rotateZ(0.46deg) scaleX(0.38) skewY(0.52deg);
+  }
+  94% {
+    opacity: 0.42;
+    transform: translate3d(2.45%, 0, 0) rotateZ(0.3deg) scaleX(0.14) skewY(0.25deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(2.8%, 0, 0) rotateZ(0.12deg) scaleX(0.025) skewY(0deg);
+  }
+}
+/* Final v411: synchronized paper peel with no fold seam line. */
+#learnMode.lesson-turn-live-hidden > .scroll-board-art,
+#learnMode.lesson-turn-live-hidden > .lesson-box {
+  visibility: visible !important;
+  clip-path: inset(0 0 0 100%);
+  will-change: clip-path;
+}
+
+#learnMode.lesson-turn-live-forward > .scroll-board-art,
+#learnMode.lesson-turn-live-forward > .lesson-box {
+  animation: reveal-paper-forward 1200ms cubic-bezier(0.35, 0.05, 0.2, 1) both;
+}
+
+#learnMode.lesson-turn-live-back > .scroll-board-art,
+#learnMode.lesson-turn-live-back > .lesson-box {
+  animation: reveal-paper-back 1200ms cubic-bezier(0.35, 0.05, 0.2, 1) both;
+}
+
+#learnMode .lesson-turn-layer {
+  perspective: 1800px;
+  transform-style: preserve-3d;
+}
+
+#learnMode .lesson-turn-layer .lesson-turn-page-old {
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  will-change: transform, opacity;
+}
+
+#learnMode .lesson-turn-layer .lesson-turn-page-old::after {
+  display: none !important;
+  content: none !important;
+}
+
+#learnMode .lesson-turn-layer.is-active.lesson-turn-forward .lesson-turn-page-old,
+#learnMode .lesson-turn-layer.is-active.lesson-turn-back .lesson-turn-page-old {
+  animation-duration: 1200ms;
+  animation-timing-function: cubic-bezier(0.35, 0.05, 0.2, 1);
+  animation-fill-mode: both;
+}
+
+#learnMode .lesson-turn-layer.is-active.lesson-turn-forward .lesson-turn-page-old {
+  animation-name: realistic-paper-peel-forward;
+}
+
+#learnMode .lesson-turn-layer.is-active.lesson-turn-back .lesson-turn-page-old {
+  animation-name: realistic-paper-peel-back;
+}
+
+@keyframes reveal-paper-forward {
+  0% { clip-path: inset(0 0 0 100%); }
+  100% { clip-path: inset(0); }
+}
+
+@keyframes reveal-paper-back {
+  0% { clip-path: inset(0 100% 0 0); }
+  100% { clip-path: inset(0); }
+}
+
+@keyframes realistic-paper-peel-forward {
+  0% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) rotateY(0deg) rotateZ(0deg) scaleX(1) skewY(0deg);
+  }
+  16% {
+    opacity: 1;
+    transform: translate3d(-0.05%, 0, 0) rotateY(-4deg) rotateZ(-0.04deg) scaleX(0.99) skewY(-0.04deg);
+  }
+  34% {
+    opacity: 1;
+    transform: translate3d(-0.2%, 0, 0) rotateY(-10deg) rotateZ(-0.12deg) scaleX(0.96) skewY(-0.12deg);
+  }
+  52% {
+    opacity: 1;
+    transform: translate3d(-0.55%, 0, 0) rotateY(-21deg) rotateZ(-0.22deg) scaleX(0.88) skewY(-0.24deg);
+  }
+  70% {
+    opacity: 0.96;
+    transform: translate3d(-1.1%, 0, 0) rotateY(-36deg) rotateZ(-0.34deg) scaleX(0.67) skewY(-0.34deg);
+  }
+  86% {
+    opacity: 0.72;
+    transform: translate3d(-1.9%, 0, 0) rotateY(-55deg) rotateZ(-0.28deg) scaleX(0.36) skewY(-0.24deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(-2.8%, 0, 0) rotateY(-72deg) rotateZ(-0.12deg) scaleX(0.04) skewY(0deg);
+  }
+}
+
+@keyframes realistic-paper-peel-back {
+  0% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) rotateY(0deg) rotateZ(0deg) scaleX(1) skewY(0deg);
+  }
+  16% {
+    opacity: 1;
+    transform: translate3d(0.05%, 0, 0) rotateY(4deg) rotateZ(0.04deg) scaleX(0.99) skewY(0.04deg);
+  }
+  34% {
+    opacity: 1;
+    transform: translate3d(0.2%, 0, 0) rotateY(10deg) rotateZ(0.12deg) scaleX(0.96) skewY(0.12deg);
+  }
+  52% {
+    opacity: 1;
+    transform: translate3d(0.55%, 0, 0) rotateY(21deg) rotateZ(0.22deg) scaleX(0.88) skewY(0.24deg);
+  }
+  70% {
+    opacity: 0.96;
+    transform: translate3d(1.1%, 0, 0) rotateY(36deg) rotateZ(0.34deg) scaleX(0.67) skewY(0.34deg);
+  }
+  86% {
+    opacity: 0.72;
+    transform: translate3d(1.9%, 0, 0) rotateY(55deg) rotateZ(0.28deg) scaleX(0.36) skewY(0.24deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(2.8%, 0, 0) rotateY(72deg) rotateZ(0.12deg) scaleX(0.04) skewY(0deg);
+  }
+}
+/* Final v412: PowerPoint-style page curl, not a wipe or rigid card flip. */
+#learnMode .lesson-turn-layer {
+  perspective: none;
+  transform-style: flat;
+}
+
+#learnMode .lesson-turn-layer .lesson-turn-page-old {
+  transform-style: flat;
+  backface-visibility: visible;
+  will-change: clip-path, transform, opacity;
+}
+
+#learnMode .lesson-turn-layer.is-active.lesson-turn-forward .lesson-turn-page-old,
+#learnMode .lesson-turn-layer.is-active.lesson-turn-back .lesson-turn-page-old {
+  animation-duration: 1200ms;
+  animation-timing-function: cubic-bezier(0.35, 0.05, 0.2, 1);
+  animation-fill-mode: both;
+}
+
+#learnMode .lesson-turn-layer.is-active.lesson-turn-forward .lesson-turn-page-old {
+  animation-name: powerpoint-page-curl-forward;
+}
+
+#learnMode .lesson-turn-layer.is-active.lesson-turn-back .lesson-turn-page-old {
+  animation-name: powerpoint-page-curl-back;
+}
+
+#learnMode.lesson-turn-live-forward > .scroll-board-art,
+#learnMode.lesson-turn-live-forward > .lesson-box {
+  animation: powerpoint-curl-reveal-forward 1200ms cubic-bezier(0.35, 0.05, 0.2, 1) both;
+}
+
+#learnMode.lesson-turn-live-back > .scroll-board-art,
+#learnMode.lesson-turn-live-back > .lesson-box {
+  animation: powerpoint-curl-reveal-back 1200ms cubic-bezier(0.35, 0.05, 0.2, 1) both;
+}
+
+#learnMode .lesson-turn-layer .lesson-turn-page-old::after {
+  display: none !important;
+  content: none !important;
+}
+
+@keyframes powerpoint-page-curl-forward {
+  0% {
+    opacity: 1;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    transform: translate3d(0, 0, 0) rotateZ(0deg);
+  }
+  18% {
+    opacity: 1;
+    clip-path: polygon(0 0, 96% 0, 100% 20%, 96% 40%, 100% 60%, 95% 80%, 98% 100%, 0 100%);
+    transform: translate3d(-0.05%, 0, 0) rotateZ(-0.04deg);
+  }
+  36% {
+    opacity: 1;
+    clip-path: polygon(0 0, 76% 0, 83% 20%, 75% 40%, 82% 60%, 73% 80%, 78% 100%, 0 100%);
+    transform: translate3d(-0.2%, 0, 0) rotateZ(-0.12deg);
+  }
+  54% {
+    opacity: 1;
+    clip-path: polygon(0 0, 56% 0, 64% 20%, 54% 40%, 62% 60%, 52% 80%, 59% 100%, 0 100%);
+    transform: translate3d(-0.55%, 0, 0) rotateZ(-0.22deg);
+  }
+  72% {
+    opacity: 0.94;
+    clip-path: polygon(0 0, 36% 0, 43% 20%, 33% 40%, 41% 60%, 31% 80%, 38% 100%, 0 100%);
+    transform: translate3d(-1.1%, 0, 0) rotateZ(-0.3deg);
+  }
+  88% {
+    opacity: 0.58;
+    clip-path: polygon(0 0, 14% 0, 21% 20%, 11% 40%, 19% 60%, 9% 80%, 16% 100%, 0 100%);
+    transform: translate3d(-1.8%, 0, 0) rotateZ(-0.2deg);
+  }
+  100% {
+    opacity: 0;
+    clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
+    transform: translate3d(-2.4%, 0, 0) rotateZ(-0.08deg);
+  }
+}
+
+@keyframes powerpoint-page-curl-back {
+  0% {
+    opacity: 1;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    transform: translate3d(0, 0, 0) rotateZ(0deg);
+  }
+  18% {
+    opacity: 1;
+    clip-path: polygon(4% 0, 100% 0, 100% 100%, 2% 100%, 0 80%, 4% 60%, 0 40%, 4% 20%);
+    transform: translate3d(0.05%, 0, 0) rotateZ(0.04deg);
+  }
+  36% {
+    opacity: 1;
+    clip-path: polygon(24% 0, 100% 0, 100% 100%, 22% 100%, 17% 80%, 25% 60%, 17% 40%, 24% 20%);
+    transform: translate3d(0.2%, 0, 0) rotateZ(0.12deg);
+  }
+  54% {
+    opacity: 1;
+    clip-path: polygon(44% 0, 100% 0, 100% 100%, 41% 100%, 36% 80%, 44% 60%, 36% 40%, 44% 20%);
+    transform: translate3d(0.55%, 0, 0) rotateZ(0.22deg);
+  }
+  72% {
+    opacity: 0.94;
+    clip-path: polygon(64% 0, 100% 0, 100% 100%, 62% 100%, 57% 80%, 65% 60%, 57% 40%, 64% 20%);
+    transform: translate3d(1.1%, 0, 0) rotateZ(0.3deg);
+  }
+  88% {
+    opacity: 0.58;
+    clip-path: polygon(86% 0, 100% 0, 100% 100%, 84% 100%, 79% 80%, 87% 60%, 79% 40%, 86% 20%);
+    transform: translate3d(1.8%, 0, 0) rotateZ(0.2deg);
+  }
+  100% {
+    opacity: 0;
+    clip-path: polygon(100% 0, 100% 0, 100% 100%, 100% 100%);
+    transform: translate3d(2.4%, 0, 0) rotateZ(0.08deg);
+  }
+}
+
+@keyframes powerpoint-curl-reveal-forward {
+  0% {
+    clip-path: polygon(100% 0, 100% 0, 100% 100%, 100% 100%);
+  }
+  18% {
+    clip-path: polygon(96% 0, 100% 0, 100% 100%, 98% 100%, 95% 80%, 100% 60%, 96% 40%, 100% 20%);
+  }
+  36% {
+    clip-path: polygon(76% 0, 100% 0, 100% 100%, 78% 100%, 73% 80%, 82% 60%, 75% 40%, 83% 20%);
+  }
+  54% {
+    clip-path: polygon(56% 0, 100% 0, 100% 100%, 59% 100%, 52% 80%, 62% 60%, 54% 40%, 64% 20%);
+  }
+  72% {
+    clip-path: polygon(36% 0, 100% 0, 100% 100%, 38% 100%, 31% 80%, 41% 60%, 33% 40%, 43% 20%);
+  }
+  88% {
+    clip-path: polygon(14% 0, 100% 0, 100% 100%, 16% 100%, 9% 80%, 19% 60%, 11% 40%, 21% 20%);
+  }
+  100% {
+    clip-path: inset(0);
+  }
+}
+
+@keyframes powerpoint-curl-reveal-back {
+  0% {
+    clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
+  }
+  18% {
+    clip-path: polygon(0 0, 4% 20%, 0 40%, 4% 60%, 0 80%, 2% 100%, 0 100%);
+  }
+  36% {
+    clip-path: polygon(0 0, 24% 0, 17% 20%, 25% 40%, 17% 60%, 22% 80%, 24% 100%, 0 100%);
+  }
+  54% {
+    clip-path: polygon(0 0, 44% 0, 36% 20%, 44% 40%, 36% 60%, 41% 80%, 44% 100%, 0 100%);
+  }
+  72% {
+    clip-path: polygon(0 0, 64% 0, 57% 20%, 65% 40%, 57% 60%, 62% 80%, 64% 100%, 0 100%);
+  }
+  88% {
+    clip-path: polygon(0 0, 86% 0, 79% 20%, 87% 40%, 79% 60%, 84% 80%, 86% 100%, 0 100%);
+  }
+  100% {
+    clip-path: inset(0);
+  }
+}
+/* Final v413: restore the visible hinge bend for an actual paper turn. */
+#learnMode .lesson-turn-layer {
+  perspective: 1800px;
+  transform-style: preserve-3d;
+}
+
+#learnMode .lesson-turn-layer .lesson-turn-page-old {
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  transform-origin: left center;
+}
+
+#learnMode .lesson-turn-layer.lesson-turn-back .lesson-turn-page-old {
+  transform-origin: right center;
+}
+
+@keyframes powerpoint-page-curl-forward {
+  0% {
+    opacity: 1;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    transform: perspective(1800px) translate3d(0, 0, 0) rotateY(0deg) rotateZ(0deg);
+  }
+  18% {
+    opacity: 1;
+    clip-path: polygon(0 0, 96% 0, 100% 20%, 96% 40%, 100% 60%, 95% 80%, 98% 100%, 0 100%);
+    transform: perspective(1800px) translate3d(-0.05%, 0, 0) rotateY(-6deg) rotateZ(-0.04deg);
+  }
+  36% {
+    opacity: 1;
+    clip-path: polygon(0 0, 76% 0, 83% 20%, 75% 40%, 82% 60%, 73% 80%, 78% 100%, 0 100%);
+    transform: perspective(1800px) translate3d(-0.2%, 0, 0) rotateY(-14deg) rotateZ(-0.12deg);
+  }
+  54% {
+    opacity: 1;
+    clip-path: polygon(0 0, 56% 0, 64% 20%, 54% 40%, 62% 60%, 52% 80%, 59% 100%, 0 100%);
+    transform: perspective(1800px) translate3d(-0.55%, 0, 0) rotateY(-28deg) rotateZ(-0.22deg);
+  }
+  72% {
+    opacity: 0.94;
+    clip-path: polygon(0 0, 36% 0, 43% 20%, 33% 40%, 41% 60%, 31% 80%, 38% 100%, 0 100%);
+    transform: perspective(1800px) translate3d(-1.1%, 0, 0) rotateY(-48deg) rotateZ(-0.3deg);
+  }
+  88% {
+    opacity: 0.58;
+    clip-path: polygon(0 0, 14% 0, 21% 20%, 11% 40%, 19% 60%, 9% 80%, 16% 100%, 0 100%);
+    transform: perspective(1800px) translate3d(-1.8%, 0, 0) rotateY(-66deg) rotateZ(-0.2deg);
+  }
+  100% {
+    opacity: 0;
+    clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
+    transform: perspective(1800px) translate3d(-2.4%, 0, 0) rotateY(-80deg) rotateZ(-0.08deg);
+  }
+}
+
+@keyframes powerpoint-page-curl-back {
+  0% {
+    opacity: 1;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    transform: perspective(1800px) translate3d(0, 0, 0) rotateY(0deg) rotateZ(0deg);
+  }
+  18% {
+    opacity: 1;
+    clip-path: polygon(4% 0, 100% 0, 100% 100%, 2% 100%, 0 80%, 4% 60%, 0 40%, 4% 20%);
+    transform: perspective(1800px) translate3d(0.05%, 0, 0) rotateY(6deg) rotateZ(0.04deg);
+  }
+  36% {
+    opacity: 1;
+    clip-path: polygon(24% 0, 100% 0, 100% 100%, 22% 100%, 17% 80%, 25% 60%, 17% 40%, 24% 20%);
+    transform: perspective(1800px) translate3d(0.2%, 0, 0) rotateY(14deg) rotateZ(0.12deg);
+  }
+  54% {
+    opacity: 1;
+    clip-path: polygon(44% 0, 100% 0, 100% 100%, 41% 100%, 36% 80%, 44% 60%, 36% 40%, 44% 20%);
+    transform: perspective(1800px) translate3d(0.55%, 0, 0) rotateY(28deg) rotateZ(0.22deg);
+  }
+  72% {
+    opacity: 0.94;
+    clip-path: polygon(64% 0, 100% 0, 100% 100%, 62% 100%, 57% 80%, 65% 60%, 57% 40%, 64% 20%);
+    transform: perspective(1800px) translate3d(1.1%, 0, 0) rotateY(48deg) rotateZ(0.3deg);
+  }
+  88% {
+    opacity: 0.58;
+    clip-path: polygon(86% 0, 100% 0, 100% 100%, 84% 100%, 79% 80%, 87% 60%, 79% 40%, 86% 20%);
+    transform: perspective(1800px) translate3d(1.8%, 0, 0) rotateY(66deg) rotateZ(0.2deg);
+  }
+  100% {
+    opacity: 0;
+    clip-path: polygon(100% 0, 100% 0, 100% 100%, 100% 100%);
+    transform: perspective(1800px) translate3d(2.4%, 0, 0) rotateY(80deg) rotateZ(0.08deg);
+  }
+}
+/* Final v414: smooth paper flip with no zigzag clip-path. */
+#learnMode .lesson-turn-layer {
+  perspective: 2200px;
+  transform-style: preserve-3d;
+}
+
+#learnMode .lesson-turn-layer .lesson-turn-page-old {
+  clip-path: none !important;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  transform-origin: left center;
+  will-change: transform, opacity;
+}
+
+#learnMode .lesson-turn-layer.lesson-turn-back .lesson-turn-page-old {
+  transform-origin: right center;
+}
+
+#learnMode .lesson-turn-layer.is-active.lesson-turn-forward .lesson-turn-page-old,
+#learnMode .lesson-turn-layer.is-active.lesson-turn-back .lesson-turn-page-old {
+  animation-duration: 1200ms;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  animation-fill-mode: both;
+}
+
+#learnMode .lesson-turn-layer.is-active.lesson-turn-forward .lesson-turn-page-old {
+  animation-name: smooth-paper-turn-forward;
+}
+
+#learnMode .lesson-turn-layer.is-active.lesson-turn-back .lesson-turn-page-old {
+  animation-name: smooth-paper-turn-back;
+}
+
+#learnMode.lesson-turn-live-forward > .scroll-board-art,
+#learnMode.lesson-turn-live-forward > .lesson-box {
+  animation: smooth-paper-reveal-forward 1200ms cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+#learnMode.lesson-turn-live-back > .scroll-board-art,
+#learnMode.lesson-turn-live-back > .lesson-box {
+  animation: smooth-paper-reveal-back 1200ms cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+@keyframes smooth-paper-reveal-forward {
+  0% { clip-path: inset(0 0 0 100%); }
+  22% { clip-path: inset(0 0 0 78%); }
+  45% { clip-path: inset(0 0 0 55%); }
+  68% { clip-path: inset(0 0 0 32%); }
+  84% { clip-path: inset(0 0 0 16%); }
+  100% { clip-path: inset(0); }
+}
+
+@keyframes smooth-paper-reveal-back {
+  0% { clip-path: inset(0 100% 0 0); }
+  22% { clip-path: inset(0 78% 0 0); }
+  45% { clip-path: inset(0 55% 0 0); }
+  68% { clip-path: inset(0 32% 0 0); }
+  84% { clip-path: inset(0 16% 0 0); }
+  100% { clip-path: inset(0); }
+}
+
+@keyframes smooth-paper-turn-forward {
+  0% {
+    opacity: 1;
+    transform: perspective(2200px) translate3d(0, 0, 0) rotateY(0deg) rotateZ(0deg) scaleY(1);
+  }
+  22% {
+    opacity: 1;
+    transform: perspective(2200px) translate3d(-0.1%, 0, 0) rotateY(-14deg) rotateZ(-0.08deg) scaleY(0.999);
+  }
+  45% {
+    opacity: 1;
+    transform: perspective(2200px) translate3d(-0.35%, 0, 0) rotateY(-38deg) rotateZ(-0.16deg) scaleY(0.997);
+  }
+  68% {
+    opacity: 0.96;
+    transform: perspective(2200px) translate3d(-0.8%, 0, 0) rotateY(-70deg) rotateZ(-0.22deg) scaleY(0.995);
+  }
+  84% {
+    opacity: 0.56;
+    transform: perspective(2200px) translate3d(-1.5%, 0, 0) rotateY(-94deg) rotateZ(-0.16deg) scaleY(0.998);
+  }
+  100% {
+    opacity: 0;
+    transform: perspective(2200px) translate3d(-2.2%, 0, 0) rotateY(-112deg) rotateZ(-0.06deg) scaleY(1);
+  }
+}
+
+@keyframes smooth-paper-turn-back {
+  0% {
+    opacity: 1;
+    transform: perspective(2200px) translate3d(0, 0, 0) rotateY(0deg) rotateZ(0deg) scaleY(1);
+  }
+  22% {
+    opacity: 1;
+    transform: perspective(2200px) translate3d(0.1%, 0, 0) rotateY(14deg) rotateZ(0.08deg) scaleY(0.999);
+  }
+  45% {
+    opacity: 1;
+    transform: perspective(2200px) translate3d(0.35%, 0, 0) rotateY(38deg) rotateZ(0.16deg) scaleY(0.997);
+  }
+  68% {
+    opacity: 0.96;
+    transform: perspective(2200px) translate3d(0.8%, 0, 0) rotateY(70deg) rotateZ(0.22deg) scaleY(0.995);
+  }
+  84% {
+    opacity: 0.56;
+    transform: perspective(2200px) translate3d(1.5%, 0, 0) rotateY(94deg) rotateZ(0.16deg) scaleY(0.998);
+  }
+  100% {
+    opacity: 0;
+    transform: perspective(2200px) translate3d(2.2%, 0, 0) rotateY(112deg) rotateZ(0.06deg) scaleY(1);
+  }
+}
+/* Final v426: supplied MP4 curl with transparent keyed compositing and local fallback. */
+
+#learnMode .module-page-curl-video,
+#learnMode .module-page-curl-video-canvas {
+  inset: auto;
+  left: calc(var(--fixed-left) + (72px * var(--fixed-scale)));
+  top: calc(var(--fixed-top) + (0px * var(--fixed-scale)));
+  width: calc(930px * var(--fixed-scale));
+  height: calc(704px * var(--fixed-scale));
+  object-fit: fill;
+}
+
+
+#learnMode .module-page-curl-item .scroll-board-art,
+#learnMode .module-page-curl-item .tutorial-guide,
+#learnMode .module-page-curl-item .nav-buttons,
+#learnMode .module-page-curl-item .read-timer {
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
+
+#learnMode.module-transition-active,
+#learnMode.module-transition-active .module-page-flip-host,
+#learnMode.module-transition-active .module-page-curl-host,
+#learnMode.module-transition-active .module-page-video-host {
+  overflow: visible !important;
+}
+
+#learnMode.module-transition-active > .scroll-board-art,
+#learnMode.module-transition-active > .lesson-box,
+#learnMode.module-transition-active > .tutorial-guide {
+  visibility: hidden !important;
+}
+
+#learnMode.module-transition-busy > .lesson-box .nav-buttons,
+#learnMode.module-transition-busy > .lesson-box .nav-buttons button,
+#learnMode.module-transition-busy > .tutorial-guide button {
+  pointer-events: none !important;
+}
+
+#learnMode .module-page-video-host {
+  position: absolute;
+  inset: 0;
+  z-index: 40;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+  perspective: 1800px;
+  transform-style: preserve-3d;
+  isolation: isolate;
+  contain: layout;
+}
+
+#learnMode .module-page-video-prep {
+  opacity: 1;
+}
+
+#learnMode .module-page-curl-item {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  overflow: visible;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  pointer-events: none;
+}
+
+#learnMode .module-page-curl-next {
+  z-index: 1;
+  opacity: 1;
+  visibility: visible;
+}
+
+#learnMode .module-page-curl-current {
+  z-index: 2;
+  opacity: 1;
+  visibility: visible;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+#learnMode .module-page-video-source {
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
+
+#learnMode .module-page-curl-video,
+#learnMode .module-page-curl-video-canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  opacity: 0;
+  pointer-events: none;
+  background: transparent;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+#learnMode .module-page-curl-video {
+  z-index: 5;
+  mix-blend-mode: screen;
+  filter: saturate(0.96) brightness(0.82) contrast(1.06);
+}
+
+#learnMode .module-page-curl-video-canvas {
+  z-index: 6;
+}
+
+#learnMode .module-page-curl-video-canvas.is-ready {
+  opacity: 1;
+}
+
+#learnMode .module-page-curl-video.is-fallback {
+  opacity: 0.72;
+}
+
+#learnMode .module-page-curl-video-back,
+#learnMode .module-page-curl-video-canvas.module-page-curl-video-back {
+  transform: scaleX(-1);
+}
+
+#learnMode.module-transition-active .module-page-curl-video,
+#learnMode.module-transition-active .module-page-curl-video-canvas {
+  will-change: opacity, transform;
+}
+
+#learnMode.module-transition-reduced .module-page-video-host .module-page-curl-video,
+#learnMode.module-transition-reduced .module-page-video-host .module-page-curl-video-canvas {
+  display: none;
+}
+
+#learnMode.module-transition-reduced .module-page-video-host .module-page-curl-current {
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+#learnMode.module-transition-reduced .module-page-crossfade-page {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  transform: none !important;
+  clip-path: none !important;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+#learnMode.module-transition-reduced .module-page-crossfade-current {
+  opacity: 1;
+}
+
+#learnMode.module-transition-reduced .module-page-crossfade-next {
+  opacity: 0;
+}
+
+#learnMode.module-transition-reduced .module-page-crossfade.is-active .module-page-crossfade-current {
+  animation: module-page-crossfade-out 160ms ease-out both;
+}
+
+#learnMode.module-transition-reduced .module-page-crossfade.is-active .module-page-crossfade-next {
+  animation: module-page-crossfade-in 160ms ease-out both;
+}
+
+@keyframes module-page-crossfade-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes module-page-crossfade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@media (max-width: 900px) {
+  #learnMode .module-page-video-host {
+    perspective: 1200px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #learnMode.module-transition-active .module-page-curl-video,
+  #learnMode.module-transition-active .module-page-curl-video-canvas {
+    animation: none !important;
+  }
+}
+
+
+/* Final v429: make the supplied curl use the exact live parchment bounds. */
+#learnMode .module-page-video-host .module-page-curl-video,
+#learnMode .module-page-video-host .module-page-curl-video-canvas {
+  inset: auto !important;
+  left: calc(var(--fixed-left) + (72px * var(--fixed-scale))) !important;
+  top: calc(var(--fixed-top) + (0px * var(--fixed-scale))) !important;
+  width: calc(930px * var(--fixed-scale)) !important;
+  height: calc(704px * var(--fixed-scale)) !important;
+  object-fit: fill !important;
+}
+
+
+/* Final v430: use the supplied parchment curl for in-lesson slide changes too. */
+#learnMode.lesson-video-turn-active:not(.lesson-video-turn-reduced) > .scroll-board-art,
+#learnMode.lesson-video-turn-active:not(.lesson-video-turn-reduced) > .lesson-box,
+#learnMode.lesson-video-turn-active:not(.lesson-video-turn-reduced) > .tutorial-guide {
+  visibility: hidden !important;
+}
+
+#learnMode.lesson-video-turn-reduced > .scroll-board-art,
+#learnMode.lesson-video-turn-reduced > .lesson-box,
+#learnMode.lesson-video-turn-reduced > .tutorial-guide {
+  visibility: visible !important;
+}
+
+#learnMode.lesson-video-turn-active .lesson-video-page-turn-host .module-page-curl-video,
+#learnMode.lesson-video-turn-active .lesson-video-page-turn-host .module-page-curl-video-canvas {
+  will-change: opacity, transform;
+}
+
+#learnMode .lesson-video-page-turn-host {
+  z-index: 42;
+}
+
+#learnMode .lesson-video-turn-reduced-old {
+  position: absolute;
+  inset: 0;
+  opacity: 1;
+  pointer-events: none;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+#learnMode.lesson-video-turn-reduced .lesson-video-turn-reduced-old.is-active {
+  animation: lesson-video-turn-crossfade-out 160ms ease-out both;
+}
+
+@keyframes lesson-video-turn-crossfade-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+
+/* Final v433: keep the updated live slide under the curling parchment. */
+#learnMode.lesson-video-turn-active:not(.lesson-video-turn-reduced) > .scroll-board-art,
+#learnMode.lesson-video-turn-active:not(.lesson-video-turn-reduced) > .lesson-box {
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+#learnMode.lesson-video-turn-active:not(.lesson-video-turn-reduced) > .tutorial-guide {
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
+
+
+/* Final v435: hold the current slide above the next slide until the curl reveals it. */
+#learnMode .lesson-video-turn-cover {
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 4 !important;
+  pointer-events: none !important;
+  background: transparent !important;
+  opacity: 1 !important;
+  clip-path: inset(0);
+  transform: none !important;
+  will-change: clip-path;
+}
+
+#learnMode .lesson-video-turn-cover .nav-buttons,
+#learnMode .lesson-video-turn-cover .read-timer {
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
+
+
+/* Final v438: keep the guide character visible during lesson curls. */
+#learnMode.lesson-video-turn-active:not(.lesson-video-turn-reduced) > .tutorial-guide {
+  visibility: visible !important;
+  opacity: 1 !important;
+  z-index: 50 !important;
+}
+
+#learnMode.lesson-video-turn-active:not(.lesson-video-turn-reduced) > .tutorial-guide .tutorial-guide-img,
+#learnMode.lesson-video-turn-active:not(.lesson-video-turn-reduced) > .tutorial-guide .tutorial-bubble {
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+
+/* Final v446: keep outgoing lesson text attached to the turning parchment. */
+#learnMode .lesson-video-turn-cover > .lesson-box {
+  z-index: 5 !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: none !important;
+}
+
+/* Final v445: sync the visible curl with the live page reveal. */
+#learnMode .lesson-video-page-turn-host .module-page-curl-video,
+#learnMode .lesson-video-page-turn-host .module-page-curl-video-canvas {
+  transform: translate(calc(180px * var(--fixed-scale)), calc(10px * var(--fixed-scale))) scale(1.2);
+  transform-origin: center center;
+}
+
+#learnMode .lesson-video-page-turn-host .module-page-curl-video-back,
+#learnMode .lesson-video-page-turn-host .module-page-curl-video-canvas.module-page-curl-video-back {
+  transform: translate(calc(180px * var(--fixed-scale)), calc(10px * var(--fixed-scale))) scaleX(-1) scale(1.2);
+}
+
+/* Final v443: keep the enlarged curl inside the exact parchment frame. */
+#learnMode .module-page-video-host {
+  clip-path: inset(
+    var(--fixed-top)
+    calc(100% - (var(--fixed-left) + (1002px * var(--fixed-scale))))
+    calc(100% - (var(--fixed-top) + (704px * var(--fixed-scale))))
+    calc(var(--fixed-left) + (72px * var(--fixed-scale)))
+  );
+}
+
+/* Final v441: never expose the unkeyed MP4 matte in local-file previews. */
+#learnMode .module-page-video-host .module-page-curl-video.is-fallback {
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+@media (max-width: 700px) {
+  #learnMode .lesson-video-page-turn-host .module-page-curl-video,
+  #learnMode .lesson-video-page-turn-host .module-page-curl-video-canvas {
+    transform: translate(calc(180px * var(--fixed-scale)), calc(5px * var(--fixed-scale))) scale(1.05);
+  }
+
+  #learnMode .lesson-video-page-turn-host .module-page-curl-video-back,
+  #learnMode .lesson-video-page-turn-host .module-page-curl-video-canvas.module-page-curl-video-back {
+    transform: translate(calc(180px * var(--fixed-scale)), calc(5px * var(--fixed-scale))) scaleX(-1) scale(1.05);
+  }
+}
+
+/* Final v455: anchor the supplied curl at the lower parchment corners. */
+#learnMode .module-page-video-host .module-page-curl-video,
+#learnMode .module-page-video-host .module-page-curl-video-canvas {
+  transform: translate(calc(180px * var(--fixed-scale)), calc(125px * var(--fixed-scale))) scale(1.24);
+  transform-origin: center center;
+}
+
+#learnMode .module-page-video-host .module-page-curl-video-back,
+#learnMode .module-page-video-host .module-page-curl-video-canvas.module-page-curl-video-back {
+  transform: translate(calc(180px * var(--fixed-scale)), calc(125px * var(--fixed-scale))) scaleX(-1) scale(1.24);
+}
+
+@media (max-width: 700px) {
+  #learnMode .module-page-video-host .module-page-curl-video,
+  #learnMode .module-page-video-host .module-page-curl-video-canvas {
+    transform: translate(calc(180px * var(--fixed-scale)), calc(125px * var(--fixed-scale))) scale(1.08);
+  }
+
+  #learnMode .module-page-video-host .module-page-curl-video-back,
+  #learnMode .module-page-video-host .module-page-curl-video-canvas.module-page-curl-video-back {
+    transform: translate(calc(180px * var(--fixed-scale)), calc(125px * var(--fixed-scale))) scaleX(-1) scale(1.08);
+  }
+}
+
+/* Final v453: keep the destination text fixed under the curl and preserve the outgoing geometry. */
+#learnMode .lesson-video-turn-cover > .lesson-box {
+  transform: none !important;
+}
+
+#learnMode .lesson-video-turn-cover {
+  contain: layout paint;
+}
+
+/* Final v456: user-tunable curl controls. Change these values to reposition or resize the supplied clip. */
+:root {
+  --curl-next-x: 150px;
+  --curl-next-y: 55px;
+  --curl-next-scale: 1.24;
+  --curl-back-x: -140px;
+  --curl-back-y: 55px;
+  --curl-back-scale: 1.24;
+  --curl-phone-next-x: 150px;
+  --curl-phone-next-y: 55px;
+  --curl-phone-back-x: -140px;
+  --curl-phone-back-y: 55px;
+  --curl-phone-scale: 1.08;
+}
+
+#learnMode .module-page-video-host .module-page-curl-video,
+#learnMode .module-page-video-host .module-page-curl-video-canvas {
+  transform: translate(calc(var(--curl-next-x) * var(--fixed-scale)), calc(var(--curl-next-y) * var(--fixed-scale))) scale(var(--curl-next-scale));
+}
+
+#learnMode .module-page-video-host .module-page-curl-video-back,
+#learnMode .module-page-video-host .module-page-curl-video-canvas.module-page-curl-video-back {
+  transform: translate(calc(var(--curl-back-x) * var(--fixed-scale)), calc(var(--curl-back-y) * var(--fixed-scale))) scaleX(-1) scale(var(--curl-back-scale));
+}
+
+@media (max-width: 700px) {
+  #learnMode .module-page-video-host .module-page-curl-video,
+  #learnMode .module-page-video-host .module-page-curl-video-canvas {
+    transform: translate(calc(var(--curl-phone-next-x) * var(--fixed-scale)), calc(var(--curl-phone-next-y) * var(--fixed-scale))) scale(var(--curl-phone-scale));
+  }
+
+  #learnMode .module-page-video-host .module-page-curl-video-back,
+  #learnMode .module-page-video-host .module-page-curl-video-canvas.module-page-curl-video-back {
+    transform: translate(calc(var(--curl-phone-back-x) * var(--fixed-scale)), calc(var(--curl-phone-back-y) * var(--fixed-scale))) scaleX(-1) scale(var(--curl-phone-scale));
+  }
+}
+
+/* Final v462: move both curl clips slightly upward for tuning the supplied curl clip in Settings. */
+#settingsPanel .popup{max-height:min(92vh,calc(690px * var(--fixed-scale)));overflow-y:auto;scrollbar-width:thin}
+#settingsPanel .curl-controls{margin:0 auto calc(16px * var(--fixed-scale));padding:calc(12px * var(--fixed-scale));border:calc(2px * var(--fixed-scale)) solid rgba(126,73,16,.48);border-radius:calc(12px * var(--fixed-scale));background:rgba(255,239,183,.42);text-align:left}
+#settingsPanel .curl-controls h3,#settingsPanel .curl-controls h4{margin:0;color:#4d2500;font-family:Georgia,"Times New Roman",serif}
+#settingsPanel .curl-controls h3{margin-bottom:calc(5px * var(--fixed-scale));text-align:center;font-size:calc(22px * var(--fixed-scale))}
+#settingsPanel .curl-controls h4{margin-bottom:calc(6px * var(--fixed-scale));font-size:calc(17px * var(--fixed-scale))}
+#settingsPanel .curl-controls-help{margin:0 0 calc(10px * var(--fixed-scale));font-size:calc(13px * var(--fixed-scale));line-height:1.2;text-align:center}
+#settingsPanel .curl-control-group+.curl-control-group{margin-top:calc(11px * var(--fixed-scale));padding-top:calc(9px * var(--fixed-scale));border-top:calc(1px * var(--fixed-scale)) solid rgba(126,73,16,.35)}
+#settingsPanel .curl-control-row{display:grid;grid-template-columns:calc(76px * var(--fixed-scale)) minmax(0,1fr) calc(54px * var(--fixed-scale));align-items:center;gap:calc(7px * var(--fixed-scale));margin:calc(6px * var(--fixed-scale)) 0;color:#4f2d00;font-size:calc(13px * var(--fixed-scale));font-weight:800}
+#settingsPanel .curl-control-row input[type="range"]{width:100%;min-width:0;accent-color:#a46613;cursor:pointer}
+#settingsPanel .curl-control-row output{display:block;padding:calc(3px * var(--fixed-scale)) calc(4px * var(--fixed-scale));border-radius:calc(5px * var(--fixed-scale));background:rgba(255,250,220,.7);color:#4d2500;font-size:calc(12px * var(--fixed-scale));font-variant-numeric:tabular-nums;text-align:center}
+#settingsPanel .curl-reset-btn{margin-top:calc(12px * var(--fixed-scale));width:100%;max-width:none}
+@media (max-width:700px),(orientation:landscape) and (max-height:560px){#settingsPanel .popup{max-height:88vh}#settingsPanel .curl-controls{padding:calc(9px * var(--fixed-scale))}#settingsPanel .curl-control-row{grid-template-columns:calc(67px * var(--fixed-scale)) minmax(0,1fr) calc(49px * var(--fixed-scale));gap:calc(5px * var(--fixed-scale));font-size:calc(12px * var(--fixed-scale))}#settingsPanel .curl-controls-help{font-size:calc(12px * var(--fixed-scale))}}
