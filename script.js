@@ -2996,6 +2996,8 @@ function openDeveloperCheckPanel() {
       <button type="button" onclick="developerOpenContentList(2)">Check Game 2 Poems</button>
       <button type="button" onclick="developerOpenContentList(3)">Check Game 3 Prompts</button>
       <button type="button" onclick="developerOpenInstructionList()">Check Game Instructions</button>
+      <button type="button" onclick="developerOpenFinalCelebration()">Preview Celebration Slide</button>
+      <button type="button" onclick="developerOpenAcknowledgement()">Preview Acknowledgement</button>
       <button type="button" onclick="developerOpenLearnModules()">Open Learning Modules</button>
       <button type="button" onclick="exitDeveloperMode()">Exit Dev Mode</button>
     </div>
@@ -3003,6 +3005,31 @@ function openDeveloperCheckPanel() {
   document.getElementById("popupPanel").classList.remove("hidden")
 }
 
+function developerOpenFinalCelebration() {
+  if (!developerAuthorized) {
+    showDeveloperCheckPanel()
+    return
+  }
+
+  developerPreviewMode = false
+  clearModulePageTransition()
+  clearLessonPageTurn()
+  closePopup()
+  showFinalCelebrationBoard()
+}
+
+function developerOpenAcknowledgement() {
+  if (!developerAuthorized) {
+    showDeveloperCheckPanel()
+    return
+  }
+
+  developerPreviewMode = false
+  clearModulePageTransition()
+  clearLessonPageTurn()
+  closePopup()
+  showAcknowledgementBoard()
+}
 function developerOpenLearnModules() {
   if (!developerAuthorized) {
     showDeveloperCheckPanel()
@@ -3709,7 +3736,7 @@ const scrollCurlPlaybackRate = 0.88
 
 function getScrollCurlVideoSource() {
   const fallback = "assets/images/scroll-page-curl-exact-transparent.mp4"
-  if (window.location.protocol !== "file:" || !window.METAPHORIA_SCROLL_CURL_DATA) return fallback
+  if (!window.METAPHORIA_SCROLL_CURL_DATA) return fallback
   if (scrollCurlVideoObjectUrl) return scrollCurlVideoObjectUrl
 
   try {
@@ -7114,7 +7141,7 @@ function finishGame() {
       showSuccessBoard(currentGame, currentGame + 1)
     } else {
       savePlayerProfile()
-      showSuccessBoard(currentGame)
+      showFinalCelebrationBoard()
     }
   } else {
     rollbackCurrentRunProgress()
@@ -7406,6 +7433,50 @@ function showSuccessBoard(gameNumber, nextGame = null) {
   createCompletionFireworks()
 }
 
+function showFinalCelebrationBoard() {
+  document.getElementById("successPanel")?.classList.add("hidden")
+  document.getElementById("acknowledgementPanel")?.classList.add("hidden")
+  document.getElementById("celebrationPanel")?.classList.remove("hidden")
+  createCompletionFireworks()
+}
+
+function showAcknowledgementBoard() {
+  document.getElementById("celebrationPanel")?.classList.add("hidden")
+  document.getElementById("acknowledgementPanel")?.classList.remove("hidden")
+  showAcknowledgementSlide(0)
+}
+
+function showAcknowledgementSlide(index = 0) {
+  const panel = document.getElementById("acknowledgementPanel")
+  if (!panel) return
+
+  const slides = Array.from(panel.querySelectorAll("[data-acknowledgement-slide]"))
+  if (!slides.length) return
+
+  const safeIndex = Math.max(0, Math.min(slides.length - 1, Number(index) || 0))
+  slides.forEach((slide, slideIndex) => {
+    const active = slideIndex === safeIndex
+    slide.classList.toggle("acknowledgement-slide-active", active)
+    slide.setAttribute("aria-hidden", active ? "false" : "true")
+  })
+
+  const buttons = panel.querySelectorAll(".acknowledgement-nav-btn")
+  const backButton = buttons[0]
+  const nextButton = buttons[1]
+  if (backButton) backButton.disabled = safeIndex === 0
+  if (nextButton) nextButton.classList.toggle("hidden", safeIndex === slides.length - 1)
+
+  const counter = document.getElementById("acknowledgementSlideCounter")
+  if (counter) counter.innerText = (safeIndex + 1) + "/" + slides.length
+
+  const finishButton = panel.querySelector(".acknowledgement-finish-btn")
+  if (finishButton) finishButton.classList.toggle("hidden", safeIndex !== slides.length - 1)
+}
+
+function finishAcknowledgement() {
+  document.getElementById("acknowledgementPanel")?.classList.add("hidden")
+  showModuleMap()
+}
 function showSentenceLevelSuccessBoard(levelNumber, nextLevel) {
   const title = document.getElementById("successTitle")
   const message = document.getElementById("successMessage")

@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Metaphoria</title>
-  <link rel="stylesheet" href="style.css?v=462" />
+  <link rel="stylesheet" href="style.css?v=466" />
   <link rel="preload" href="assets/images/scroll-page-curl-exact-transparent.mp4" as="video" type="video/mp4" />
 </head>
 
@@ -293,6 +293,59 @@
       </div>
     </section>
 
+    <!-- FINAL CELEBRATION -->
+    <section id="celebrationPanel" class="overlay hidden">
+      <div class="celebration-board" role="dialog" aria-live="polite">
+        <div class="celebration-copy">
+          <p class="celebration-kicker">All games complete!</p>
+          <h2>Congratulations!</h2>
+          <p class="celebration-message">You passed every game in Metaphoria.</p>
+          <p class="celebration-submessage">Your literary adventure is complete.</p>
+          <button type="button" class="btn green celebration-continue-btn" onclick="showAcknowledgementBoard()">View Acknowledgement</button>
+        </div>
+        <img class="celebration-cheer-girl" src="assets/images/guide-cheer.png" alt="Cheering guide" />
+      </div>
+    </section>
+
+    <!-- ACKNOWLEDGEMENT -->
+    <section id="acknowledgementPanel" class="overlay hidden">
+      <div class="acknowledgement-board" role="dialog" aria-labelledby="acknowledgementTitle">
+        <h2 id="acknowledgementTitle">Acknowledgement</h2>
+        <div class="acknowledgement-content">
+          <section class="acknowledgement-slide acknowledgement-slide-active" data-acknowledgement-slide="0" aria-hidden="false">
+            <p>First and foremost, we would like to express our deepest gratitude to the Almighty God for giving us the strength, wisdom, guidance, patience, and perseverance throughout the development and completion of Metaphoria. Without His blessings, this project would not have been possible.</p>
+            <p>We would like to extend our special thanks to our Research Advisers, Ms. Cindy Grace M. Villanueva and Dr. Vicent S. Esmalde, for their valuable guidance, suggestions, and constructive feedback throughout the development of our research and output.</p>
+            <p>We would also like to express our sincere appreciation to Mr. Richard M. Nepomuceno for his guidance and assistance in the creation of our output. His insights and support contributed greatly to the improvement and completion of this project.</p>
+            <p>We are also deeply grateful to our website developer and layout artist, Darvin Kile G. Reyes, for his skills, creativity, dedication, and effort in designing and developing our website and bringing our ideas for Metaphoria to life.</p>
+            <p>We are deeply grateful to our parents and families for their unwavering guidance, encouragement, support, and financial assistance throughout the completion of this project. Their sacrifices, patience, and continuous belief in us motivated us to persevere despite the challenges we encountered.</p>
+            <p>Lastly, we extend our heartfelt appreciation to everyone who, in one way or another, contributed to the success of Metaphoria. Your support and assistance will always be remembered and valued.</p>
+          </section>
+          <section class="acknowledgement-slide acknowledgement-team-slide" data-acknowledgement-slide="1" aria-hidden="true">
+            <p class="acknowledgement-team-intro">With gratitude, we recognize the creators of Metaphoria.</p>
+            <div class="acknowledgement-names" aria-label="Metaphoria creators">
+              <figure class="acknowledgement-person">
+                <img src="assets/images/acknowledgement/joan-linatoc.png" alt="Joan Linatoc" />
+                <figcaption>Linatoc, Joan</figcaption>
+              </figure>
+              <figure class="acknowledgement-person">
+                <img src="assets/images/acknowledgement/francisca-poblador.png" alt="Francisca M. Poblador" />
+                <figcaption>Poblador, Francisca M.</figcaption>
+              </figure>
+              <figure class="acknowledgement-person">
+                <img src="assets/images/acknowledgement/aira-yangco.png" alt="Aira R. Yangco" />
+                <figcaption>Yangco, Aira R.</figcaption>
+              </figure>
+            </div>
+          </section>
+        </div>
+        <div class="acknowledgement-controls" aria-label="Acknowledgement slides">
+          <button type="button" class="btn blue acknowledgement-nav-btn" onclick="showAcknowledgementSlide(0)">Back</button>
+          <span id="acknowledgementSlideCounter">1/2</span>
+          <button type="button" class="btn blue acknowledgement-nav-btn" onclick="showAcknowledgementSlide(1)">Next</button>
+        </div>
+        <button type="button" class="btn green acknowledgement-finish-btn hidden" onclick="finishAcknowledgement()">Back to Modules</button>
+      </div>
+    </section>
     <!-- BADGE AWARD -->
     <section id="badgePanel" class="overlay hidden">
       <div class="badge-award-board" role="dialog" aria-live="polite">
@@ -309,7 +362,7 @@
   </audio>
 
   <script src="assets/images/scroll-page-curl-exact-transparent-data.js?v=1"></script>
-  <script src="script.js?v=228"></script>
+  <script src="script.js?v=231"></script>
 </body>
 </html>
 
