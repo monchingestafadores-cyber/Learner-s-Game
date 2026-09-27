@@ -13238,3 +13238,12 @@ body {
 .acknowledgement-finish-btn {
   flex: 0 0 auto;
 }
+/* Final v468: justified About Metaphoria body text. */
+.overlay .popup.mechanics-popup .about-metaphoria p,
+.overlay .popup.mechanics-popup .about-metaphoria li {
+  text-align: justify;
+}
+
+.overlay .popup.mechanics-popup .about-metaphoria h3 {
+  text-align: center;
+}
