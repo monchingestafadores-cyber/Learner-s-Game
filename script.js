@@ -7394,8 +7394,17 @@ function showPopup(title, message, onClose = null) {
   document.getElementById("popupPanel").classList.remove("hidden")
 }
 
+function getItalicLineInstructionText() {
+  if (currentGame === 2) {
+    const poemTitle = activeGame2Text?.title || game2LiteraryTexts[0]?.title || "the poem"
+    return 'Read the italicized line excerpt from the poem "' + poemTitle + '". This is the line you should analyze to answer the question.'
+  }
+
+  return italicLineInstructionText
+}
+
 function showItalicLineInstructionBeforeQuestions(onContinue) {
-  showPopup("Instruction", italicLineInstructionText, onContinue)
+  showPopup("Instruction", getItalicLineInstructionText(), onContinue)
 }
 
 function closePopup() {
@@ -7529,7 +7538,7 @@ function showInstructions() {
 
   popupBox.classList.remove("answers-popup", "developer-popup")
   popupBox.classList.add("mechanics-popup")
-  document.getElementById("popupTitle").innerText = "Options"
+  document.getElementById("popupTitle").innerText = "About Metaphoria"
   popupMessage.innerHTML = `
     <div class="about-metaphoria" aria-label="About Metaphoria">
       <p class="about-lead">Welcome to Metaphoria, an interactive learning platform designed to make the study of literary devices more engaging, meaningful, and enjoyable for Grade 7 learners. This website provides a space where students can explore different ways language can be used creatively to express ideas, emotions, and experiences. Through interactive lessons, examples, activities, and assessments, Metaphoria aims to make literary concepts easier to understand while encouraging learners to think critically, express their creativity, and appreciate the beauty of literature.</p>
