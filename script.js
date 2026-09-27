@@ -61,6 +61,7 @@ let developerAuthorized = false
 let developerPreviewMode = false
 let developerLastQuestionList = { type: "questions", game: 1 }
 let pendingPopupAction = null
+let acknowledgementReturnTarget = "modules"
 
 const fixedLayout = {
   width: 1280,
@@ -7449,10 +7450,15 @@ function showFinalCelebrationBoard() {
   createCompletionFireworks()
 }
 
-function showAcknowledgementBoard() {
+function showAcknowledgementBoard(returnTarget = "modules") {
+  acknowledgementReturnTarget = returnTarget === "profile" ? "profile" : "modules"
   document.getElementById("celebrationPanel")?.classList.add("hidden")
   document.getElementById("acknowledgementPanel")?.classList.remove("hidden")
   showAcknowledgementSlide(0)
+}
+
+function showAcknowledgementBeforeStart() {
+  showAcknowledgementBoard("profile")
 }
 
 function showAcknowledgementSlide(index = 0) {
@@ -7479,12 +7485,21 @@ function showAcknowledgementSlide(index = 0) {
   if (counter) counter.innerText = (safeIndex + 1) + "/" + slides.length
 
   const finishButton = panel.querySelector(".acknowledgement-finish-btn")
-  if (finishButton) finishButton.classList.toggle("hidden", safeIndex !== slides.length - 1)
+  if (finishButton) {
+    finishButton.classList.toggle("hidden", safeIndex !== slides.length - 1)
+    finishButton.innerText = acknowledgementReturnTarget === "profile" ? "Continue to Game" : "Back to Modules"
+  }
 }
 
 function finishAcknowledgement() {
+  const returnTarget = acknowledgementReturnTarget
+  acknowledgementReturnTarget = "modules"
   document.getElementById("acknowledgementPanel")?.classList.add("hidden")
-  showModuleMap()
+  if (returnTarget === "profile") {
+    showProfileHub()
+  } else {
+    showModuleMap()
+  }
 }
 function showSentenceLevelSuccessBoard(levelNumber, nextLevel) {
   const title = document.getElementById("successTitle")
