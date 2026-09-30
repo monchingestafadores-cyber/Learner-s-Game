@@ -13247,3 +13247,12 @@ body {
 .overlay .popup.mechanics-popup .about-metaphoria h3 {
   text-align: center;
 }
+/* Final v469: keep the Francisca acknowledgement name on one line. */
+.acknowledgement-person .acknowledgement-name-nowrap {
+  white-space: nowrap;
+}
+/* Final v470: justify the main acknowledgement text. */
+.acknowledgement-slide:not(.acknowledgement-team-slide) p {
+  text-align: justify;
+  text-justify: inter-word;
+}
