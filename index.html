@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Metaphoria</title>
-  <link rel="stylesheet" href="style.css?v=472" />
+  <link rel="stylesheet" href="style.css?v=475" />
   <link rel="preload" href="assets/images/scroll-page-curl-exact-transparent.mp4" as="video" type="video/mp4" />
 </head>
 
@@ -192,14 +192,15 @@
           <button onclick="backLesson()" class="image-btn back-image-btn" aria-label="Back" title="Back"></button>
           <button id="nextLessonBtn" onclick="nextLesson()" class="image-btn next-image-btn" aria-label="Next" title="Next" disabled></button>
         </div>
-        <div class="learn-home-row">
-          <button type="button" class="btn blue learn-home-btn" onclick="homeFromLearnMode()" aria-label="Home" title="Back to Modules">Home</button>
-        </div>
+
       </div>
 
       <div class="tutorial-guide" aria-live="polite">
         <div id="lessonGuideBubble" class="guide-bubble tutorial-bubble">I will guide you through this lesson.</div>
         <img id="lessonGuide" src="assets/images/guide-default.png" class="game-guide tutorial-guide-img" alt="" />
+        <div class="learn-home-row">
+          <button type="button" class="btn blue learn-home-btn" onclick="homeFromLearnMode()" aria-label="Home" title="Back to Modules">Home</button>
+        </div>
       </div>
     </section>
 

@@ -13318,3 +13318,62 @@ body {
     font-size: 11px;
   }
 }
+/* Final v473: keep the Home button visible below Learn Mode navigation. */
+#learnMode > .lesson-box {
+  overflow: visible;
+}
+
+#learnMode > .lesson-box .learn-home-row,
+#learnMode > .lesson-box .learn-home-btn {
+  visibility: visible;
+  opacity: 1;
+}
+
+#learnMode > .lesson-box .learn-home-row {
+  z-index: 20;
+}
+/* Final v474: anchor Home below the Back and Next buttons. */
+#learnMode > .lesson-box .learn-home-row {
+  position: absolute;
+  top: auto;
+  right: auto;
+  bottom: -56px;
+  left: 50%;
+  width: max-content;
+  margin: 0;
+  transform: translateX(-50%);
+}
+
+#learnMode > .lesson-box .learn-home-btn {
+  position: static;
+}
+
+@media (max-width: 700px), (orientation: landscape) and (max-height: 560px) {
+  #learnMode > .lesson-box .learn-home-row {
+    bottom: -40px;
+  }
+}
+/* Final v475: place Home on the guide girl skirt area. */
+#learnMode > .tutorial-guide .learn-home-row {
+  position: absolute;
+  top: auto;
+  right: auto;
+  bottom: 12%;
+  left: 50%;
+  z-index: 20;
+  width: max-content;
+  margin: 0;
+  transform: translateX(-50%);
+  pointer-events: auto;
+}
+
+#learnMode > .tutorial-guide .learn-home-btn {
+  position: static;
+  pointer-events: auto;
+}
+
+@media (max-width: 700px), (orientation: landscape) and (max-height: 560px) {
+  #learnMode > .tutorial-guide .learn-home-row {
+    bottom: 10%;
+  }
+}
