@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Metaphoria</title>
-  <link rel="stylesheet" href="style.css?v=471" />
+  <link rel="stylesheet" href="style.css?v=472" />
   <link rel="preload" href="assets/images/scroll-page-curl-exact-transparent.mp4" as="video" type="video/mp4" />
 </head>
 
@@ -179,7 +179,6 @@
     <section id="learnMode" class="screen hidden">
       <img class="scroll-board-art" src="assets/images/scroll-new.png" alt="" />
       <div class="lesson-box">
-        <button type="button" class="btn blue learn-home-btn" onclick="homeFromLearnMode()" aria-label="Home" title="Back to Modules">Home</button>
         <h1 id="lessonTitle">Game 1</h1>
         <p id="lessonPage">1/3</p>
 
@@ -192,6 +191,9 @@
         <div class="nav-buttons">
           <button onclick="backLesson()" class="image-btn back-image-btn" aria-label="Back" title="Back"></button>
           <button id="nextLessonBtn" onclick="nextLesson()" class="image-btn next-image-btn" aria-label="Next" title="Next" disabled></button>
+        </div>
+        <div class="learn-home-row">
+          <button type="button" class="btn blue learn-home-btn" onclick="homeFromLearnMode()" aria-label="Home" title="Back to Modules">Home</button>
         </div>
       </div>
 
