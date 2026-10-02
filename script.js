@@ -2926,6 +2926,19 @@ function showLearnBlank() {
   syncMultiplayerScore("screen")
 }
 
+function homeFromLearnMode() {
+  clearInterval(lessonTimerInterval)
+  clearLessonPageTurn()
+  clearModulePageTransition()
+  pendingLessonLayoutUpdate = null
+  activeLessons = null
+  activeGuideMessages = null
+  activeLearnModuleTopic = null
+  pendingLearnModulePage = null
+  skipLessonReadTimer = false
+  showLearnBlank()
+}
+
 function showModuleMap() {
   playMusic()
   hideAllScreens()
@@ -3417,6 +3430,7 @@ function lockModuleTransitionNavigation(locked) {
   const selectors = [
     "#learnBlank button",
     "#learnMode > .lesson-box .nav-buttons button",
+    "#learnMode > .lesson-box .learn-home-btn",
     "#learnMode > .tutorial-guide button"
   ]
 

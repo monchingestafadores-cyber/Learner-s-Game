@@ -13256,3 +13256,31 @@ body {
   text-align: justify;
   text-justify: inter-word;
 }
+/* Final v471: add a direct Home button to Learn Mode. */
+#learnMode > .lesson-box {
+  position: relative;
+}
+
+#learnMode > .lesson-box .learn-home-btn {
+  position: absolute;
+  top: clamp(6px, 1.2vh, 14px);
+  left: clamp(8px, 1.5vw, 18px);
+  z-index: 8;
+  min-width: clamp(66px, 8vw, 94px);
+  height: clamp(34px, 5vh, 48px);
+  margin: 0;
+  padding: 0 12px;
+  font-size: clamp(11px, 1.15vw, 15px);
+  line-height: 1;
+}
+
+@media (max-width: 700px), (orientation: landscape) and (max-height: 560px) {
+  #learnMode > .lesson-box .learn-home-btn {
+    top: 5px;
+    left: 7px;
+    min-width: 64px;
+    height: 32px;
+    padding: 0 9px;
+    font-size: 11px;
+  }
+}
