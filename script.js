@@ -24,7 +24,7 @@ let gameStartRecords = {
 
 let alreadyAnswered = false
 let questionTimerInterval = null
-let questionDuration = 15
+let questionDuration = 30
 let questionTimeLeft = 15
 let musicMuted = false
 
@@ -3279,7 +3279,7 @@ function developerPreviewPoem(textIndex = 0) {
   alreadyAnswered = true
   activeGame2Text = game2LiteraryTexts[Math.max(0, Math.min(game2LiteraryTexts.length - 1, textIndex))] || game2LiteraryTexts[0]
   activeGame2ReadingPart = 0
-  questionDuration = 15
+  questionDuration = 30
 
   const playMode = document.getElementById("playMode")
   playMode.classList.remove("game1-bg", "game2-bg", "game3-bg", "practice-replay", "reading-text-mode")
@@ -3376,13 +3376,13 @@ function developerPreviewQuestion(gameNumber, sentenceLevel = 0, questionIndex =
     currentSentenceLevel = sentenceLevel || 1
     const level = getSentenceSleuthLevel(currentSentenceLevel)
     questions = [level.questions[questionIndex] || level.questions[0]]
-    questionDuration = 15
+    questionDuration = 30
     playMode.classList.add("game1-bg")
   } else if (gameNumber === 2) {
     const safeIndex = Math.max(0, Math.min(questionBank.game2.length - 1, questionIndex))
     activeGame2Text = game2LiteraryTexts[Math.floor(safeIndex / 5)] || game2LiteraryTexts[0]
     questions = [questionBank.game2[safeIndex]]
-    questionDuration = 15
+    questionDuration = 30
     playMode.classList.add("game2-bg")
   } else {
     const safeIndex = Math.max(0, Math.min(questionBank.game3.length - 1, questionIndex))
@@ -6422,13 +6422,13 @@ function startGame(gameNumber, resetCarriedStats = false, sentenceLevel = 1) {
   if (currentGame === 1) {
     const activeSentenceLevel = getSentenceSleuthLevel()
     questions = prepareQuestionsForRun(activeSentenceLevel.questions, getQuestionLimitForGame(1))
-    questionDuration = 15
+    questionDuration = 30
     playMode.classList.add("game1-bg")
   } else if (currentGame === 2) {
     activeGame2Text = shuffle(game2LiteraryTexts)[0]
     activeGame2ReadingPart = 0
     questions = prepareQuestionsForRun(activeGame2Text.questions, QUESTIONS_PER_RUN)
-    questionDuration = 15
+    questionDuration = 30
     playMode.classList.add("game2-bg")
   } else {
     questions = prepareQuestionsForRun(questionBank.game3, QUESTIONS_PER_RUN)
