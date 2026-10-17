@@ -58,6 +58,7 @@ let currentRunAnswers = []
 let learnResponses = {}
 let learnResponseSaveTimer = null
 let developerAuthorized = false
+let playerUnlockCheatPending = false
 let developerPreviewMode = false
 let developerLastQuestionList = { type: "questions", game: 1 }
 let pendingPopupAction = null
@@ -69,6 +70,7 @@ const fixedLayout = {
 }
 
 const DEVELOPER_PASSWORD = "135790"
+const PLAYER_UNLOCK_CODE = "777"
 
 const QUESTIONS_PER_RUN = 5
 const PASSING_ANSWERS = 4
@@ -2626,6 +2628,11 @@ function applyPlayerProfile(profile) {
   currentRunAnswers = []
   allBadgesBonusAwarded = cleanProfile.allBadgesBonusAwarded
 
+  if (playerUnlockCheatPending) {
+    applyPlayerUnlockState()
+    playerUnlockCheatPending = false
+  }
+
   updateGameIdCard()
   syncMultiplayerScore("profile")
 }
@@ -2876,6 +2883,10 @@ function submitPlayerName() {
   resetPlayerProgress()
   activeProfileId = createProfileId()
   playerName = name
+  if (playerUnlockCheatPending) {
+    applyPlayerUnlockState()
+    playerUnlockCheatPending = false
+  }
   creatingNewPlayer = false
   savePlayerProfile()
   updateGameIdCard()
@@ -2972,11 +2983,36 @@ function showDeveloperCheckPanel() {
   requestAnimationFrame(() => document.getElementById("developerPasswordInput")?.focus())
 }
 
+function applyPlayerUnlockState() {
+  unlockedGame = 3
+  completedGames = new Set([1, 2])
+  unlockedSentenceLevel = sentenceSleuthLevels.length
+  completedSentenceLevels = new Set(sentenceSleuthLevels.map(level => level.level))
+}
+
+function unlockAllPlayerContent() {
+  playerUnlockCheatPending = true
+  applyPlayerUnlockState()
+  updateModuleLocks()
+
+  if (playerName) {
+    savePlayerProfile()
+    playerUnlockCheatPending = false
+  }
+}
 function submitDeveloperPassword() {
   const input = document.getElementById("developerPasswordInput")
   const error = document.getElementById("developerPasswordError")
 
-  if ((input?.value || "") !== DEVELOPER_PASSWORD) {
+  const enteredPassword = input?.value || ""
+  if (enteredPassword === PLAYER_UNLOCK_CODE) {
+    unlockAllPlayerContent()
+    closePopup()
+    showPopup("Player Unlock", "All games and levels are now unlocked. Developer Mode was not opened.")
+    return
+  }
+
+  if (enteredPassword !== DEVELOPER_PASSWORD) {
     if (error) error.innerText = "Incorrect password."
     if (input) {
       input.value = ""
